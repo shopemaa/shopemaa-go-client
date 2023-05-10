@@ -1,0 +1,21 @@
+model:
+  package: models
+  filename: ./models/models_gen.go
+client:
+  package: client
+  filename: ./client.go
+models:
+  Int:
+    model:
+      - github.com/99designs/gqlgen/graphql.Int
+      - github.com/99designs/gqlgen/graphql.Int32
+      - github.com/99designs/gqlgen/graphql.Int64
+  Date:
+    model: github.com/99designs/gqlgen/graphql.Time
+endpoint:
+  url: https://api.shopemaa.com/query
+query:
+  - "./queries/*.graphql"
+generate:
+  clientV2: true
+  clientInterfaceName: "ShopemaaGraphQLClient"
