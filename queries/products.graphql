@@ -1,0 +1,38 @@
+query Products($search: Search!, $page: Int!, $limit: Int!){
+    productSearch(search: $search, sort: {
+        by: CreatedAt
+        direction: Desc
+    }, pagination: {
+        perPage: $limit
+        page: $page
+    }) {
+        id
+        name
+        slug
+        description
+        sku
+        stock
+        maxItemPerOrder
+        price
+        fullImages
+        isDigitalProduct
+        views
+        createdAt
+        productUnit
+        updatedAt
+        category {
+            id
+            name
+            slug
+            description
+            fullImage
+        }
+        attributes {
+            id
+            name
+            values
+            isRequired
+        }
+        productSpecificDiscount
+    }
+}

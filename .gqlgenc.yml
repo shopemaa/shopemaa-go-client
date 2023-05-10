@@ -12,10 +12,11 @@ models:
       - github.com/99designs/gqlgen/graphql.Int64
   Date:
     model: github.com/99designs/gqlgen/graphql.Time
-endpoint:
-  url: https://api.shopemaa.com/query
+schema:
+  - "./schema.graphqls"
 query:
   - "./queries/*.graphql"
+  - "./mutations/*.graphql"
 generate:
   clientV2: true
   clientInterfaceName: "ShopemaaGraphQLClient"

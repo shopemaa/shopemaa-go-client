@@ -1131,15 +1131,6 @@ type StoreSecret struct {
 	SecretType SecretType `json:"secretType"`
 }
 
-type Subscription struct {
-	ProductCreated Product `json:"productCreated"`
-	ProductUpdated Product `json:"productUpdated"`
-	CartCreated    Cart    `json:"cartCreated"`
-	CartUpdated    Cart    `json:"cartUpdated"`
-	OrderCreated   Order   `json:"orderCreated"`
-	OrderUpdated   Order   `json:"orderUpdated"`
-}
-
 type UpdateAttributeParams struct {
 	Name       string   `json:"name"`
 	Values     []string `json:"values"`
