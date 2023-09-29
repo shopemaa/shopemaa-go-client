@@ -1,0 +1,12 @@
+query category($id: String!) {
+    category(id: $id) {
+        id
+        name
+        slug
+        description
+        image
+        fullImage
+        productCount
+        position
+    }
+}

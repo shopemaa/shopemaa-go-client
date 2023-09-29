@@ -1,0 +1,13 @@
+query collectionByAdmin($id: String!) {
+    collectionByAdmin(id: $id) {
+        id
+        name
+        slug
+        description
+        fullImage
+        image
+        position
+        productCount
+        isPublished
+    }
+}

@@ -1,5 +1,5 @@
-query categories($query: String, $page: Int!, $limit: Int!) {
-    categories(search: {
+query collections($query: String, $page: Int!, $limit: Int!) {
+    collections(search: {
         query: $query
         filters: []
     }, sort: {
@@ -13,9 +13,9 @@ query categories($query: String, $page: Int!, $limit: Int!) {
         name
         slug
         description
-        image
         fullImage
-        productCount
+        image
         position
+        productCount
     }
 }

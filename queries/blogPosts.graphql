@@ -1,0 +1,31 @@
+query blogPosts($search: Search!, $pagination: Pagination!, $sort: Sort!) {
+    blogPosts(search: $search, pagination: $pagination, sort: $sort) {
+        id
+        slug
+        title
+        isPublished
+        bannerImage
+        bannerImageFull
+        content
+        createdAt
+        favourites
+        isFeatured
+        views
+        updatedAt
+        comments {
+            id
+            customer {
+                email
+                firstName
+                lastName
+                phone
+                profilePicture
+                profilePictureFull
+            }
+            createdAt
+            updatedAt
+            content
+        }
+        tags
+    }
+}

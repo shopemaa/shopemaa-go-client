@@ -1,0 +1,35 @@
+query abandonedCarts($pagination: Pagination!) {
+    abandonedCarts(pagination: $pagination) {
+        id
+        isShippingRequired
+        cartItems {
+            id
+            purchasePrice
+            purchaseTimeCost
+            quantity
+            product {
+                id
+                slug
+                description
+                name
+                price
+                productSpecificDiscount
+                productUnit
+                isDigitalProduct
+                isPublished
+            }
+            attributes {
+                name
+                selectedValue
+            }
+            variation {
+                name
+                price
+                id
+                cost
+                sku
+                stock
+            }
+        }
+    }
+}

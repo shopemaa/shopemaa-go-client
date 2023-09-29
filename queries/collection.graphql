@@ -1,0 +1,12 @@
+query collection($id: String!) {
+    collection(id: $id) {
+        id
+        name
+        slug
+        description
+        fullImage
+        image
+        position
+        productCount
+    }
+}

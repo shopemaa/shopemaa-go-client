@@ -1,5 +1,5 @@
-query categories($query: String, $page: Int!, $limit: Int!) {
-    categories(search: {
+query categoriesByAdmin($query: String, $page: Int!, $limit: Int!) {
+    categoriesByAdmin(search: {
         query: $query
         filters: []
     }, sort: {
@@ -17,5 +17,6 @@ query categories($query: String, $page: Int!, $limit: Int!) {
         fullImage
         productCount
         position
+        isPublished
     }
 }

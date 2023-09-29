@@ -1,0 +1,13 @@
+query categoryByAdmin($id: String!) {
+    categoryByAdmin(id: $id) {
+        id
+        name
+        slug
+        description
+        image
+        fullImage
+        productCount
+        position
+        isPublished
+    }
+}
