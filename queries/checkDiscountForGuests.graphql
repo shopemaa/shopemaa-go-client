@@ -1,0 +1,4 @@
+query checkDiscountForGuests($couponCode: String!, $cartId: String!, $shippingMethodId: String) {
+    checkDiscountForGuests(couponCode: $couponCode, cartId: $cartId, shippingMethodId: $shippingMethodId)
+}
+

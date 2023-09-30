@@ -1,11 +1,5 @@
-query products($search: Search!, $page: Int!, $limit: Int!){
-    products(search: $search, sort: {
-        by: CreatedAt
-        direction: Desc
-    }, pagination: {
-        perPage: $limit
-        page: $page
-    }) {
+query product($productId: String!){
+    product(productId: $productId) {
         id
         name
         slug

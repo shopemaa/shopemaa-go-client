@@ -21,17 +21,35 @@ type ShopemaaGraphQLClient interface {
 	CategoriesByAdmin(ctx context.Context, query *string, page int, limit int, interceptors ...clientv2.RequestInterceptor) (*CategoriesByAdmin, error)
 	Category(ctx context.Context, id string, interceptors ...clientv2.RequestInterceptor) (*Category, error)
 	CategoryByAdmin(ctx context.Context, id string, interceptors ...clientv2.RequestInterceptor) (*CategoryByAdmin, error)
+	CheckDiscount(ctx context.Context, couponCode string, cartID string, shippingMethodID *string, interceptors ...clientv2.RequestInterceptor) (*CheckDiscount, error)
+	CheckDiscountByAdmin(ctx context.Context, couponCode string, cartID string, shippingMethodID *string, customerID *string, interceptors ...clientv2.RequestInterceptor) (*CheckDiscountByAdmin, error)
+	CheckDiscountForGuests(ctx context.Context, couponCode string, cartID string, shippingMethodID *string, interceptors ...clientv2.RequestInterceptor) (*CheckDiscountForGuests, error)
 	CheckPaymentProcessingFee(ctx context.Context, cartID string, paymentMethodID string, shippingMethodID *string, interceptors ...clientv2.RequestInterceptor) (*CheckPaymentProcessingFee, error)
-	CheckDiscountForGuests(ctx context.Context, cartID string, couponCode string, shippingMethodID *string, interceptors ...clientv2.RequestInterceptor) (*CheckDiscountForGuests, error)
 	CheckShippingCharge(ctx context.Context, cartID string, shippingMethodID string, interceptors ...clientv2.RequestInterceptor) (*CheckShippingCharge, error)
 	Collection(ctx context.Context, id string, interceptors ...clientv2.RequestInterceptor) (*Collection, error)
 	CollectionByAdmin(ctx context.Context, id string, interceptors ...clientv2.RequestInterceptor) (*CollectionByAdmin, error)
 	Collections(ctx context.Context, query *string, page int, limit int, interceptors ...clientv2.RequestInterceptor) (*Collections, error)
 	CollectionsByAdmin(ctx context.Context, query *string, page int, limit int, interceptors ...clientv2.RequestInterceptor) (*CollectionsByAdmin, error)
-	Countries(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*Countries, error)
+	CouponCode(ctx context.Context, id string, interceptors ...clientv2.RequestInterceptor) (*CouponCode, error)
+	CouponCodes(ctx context.Context, search models.Search, sort *models.Sort, pagination models.Pagination, interceptors ...clientv2.RequestInterceptor) (*CouponCodes, error)
+	CustomerProfile(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*CustomerProfile, error)
+	CustomersByAdmin(ctx context.Context, params models.Search, sort models.Sort, pagination models.Pagination, interceptors ...clientv2.RequestInterceptor) (*CustomersByAdmin, error)
+	LocationByID(ctx context.Context, id string, interceptors ...clientv2.RequestInterceptor) (*LocationByID, error)
+	Locations(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*Locations, error)
+	MediaByAdmin(ctx context.Context, sort models.Sort, pagination *models.Pagination, interceptors ...clientv2.RequestInterceptor) (*MediaByAdmin, error)
+	Order(ctx context.Context, hash string, interceptors ...clientv2.RequestInterceptor) (*Order, error)
+	OrderByAdmin(ctx context.Context, id string, interceptors ...clientv2.RequestInterceptor) (*OrderByAdmin, error)
 	OrderByCustomerEmail(ctx context.Context, hash string, email string, interceptors ...clientv2.RequestInterceptor) (*OrderByCustomerEmail, error)
+	Orders(ctx context.Context, params models.POrderSearchParams, sort models.Sort, pagination models.Pagination, interceptors ...clientv2.RequestInterceptor) (*Orders, error)
+	OrdersByAdmin(ctx context.Context, params models.OrderSearchParams, sort models.Sort, pagination models.Pagination, interceptors ...clientv2.RequestInterceptor) (*OrdersByAdmin, error)
 	PaymentMethods(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*PaymentMethods, error)
+	Product(ctx context.Context, productID string, interceptors ...clientv2.RequestInterceptor) (*Product, error)
+	ProductByAdmin(ctx context.Context, productID string, interceptors ...clientv2.RequestInterceptor) (*ProductByAdmin, error)
+	ProductBySlug(ctx context.Context, productSlug string, interceptors ...clientv2.RequestInterceptor) (*ProductBySlug, error)
+	ProductSearch(ctx context.Context, search models.Search, page int, limit int, interceptors ...clientv2.RequestInterceptor) (*ProductSearch, error)
+	ProductSearchByAdmin(ctx context.Context, search models.Search, page int, limit int, interceptors ...clientv2.RequestInterceptor) (*ProductSearchByAdmin, error)
 	Products(ctx context.Context, search models.Search, page int, limit int, interceptors ...clientv2.RequestInterceptor) (*Products, error)
+	ProductsByAdmin(ctx context.Context, search models.Search, page int, limit int, interceptors ...clientv2.RequestInterceptor) (*ProductsByAdmin, error)
 	ShippingMethods(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*ShippingMethods, error)
 	StoreBySecret(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*StoreBySecret, error)
 	OrderGuestCheckout(ctx context.Context, params models.GuestCheckoutPlaceOrderParams, interceptors ...clientv2.RequestInterceptor) (*OrderGuestCheckout, error)
@@ -1844,29 +1862,1847 @@ func (t *CollectionsByAdmin_CollectionsByAdmin) GetIsPublished() bool {
 	return t.IsPublished
 }
 
-type Countries_Locations struct {
+type CouponCode_CouponCode_Customers struct {
+	Email              string  "json:\"email\" graphql:\"email\""
+	FirstName          string  "json:\"firstName\" graphql:\"firstName\""
+	LastName           string  "json:\"lastName\" graphql:\"lastName\""
+	ProfilePictureFull *string "json:\"profilePictureFull,omitempty\" graphql:\"profilePictureFull\""
+	ProfilePicture     *string "json:\"profilePicture,omitempty\" graphql:\"profilePicture\""
+	Phone              *string "json:\"phone,omitempty\" graphql:\"phone\""
+}
+
+func (t *CouponCode_CouponCode_Customers) GetEmail() string {
+	if t == nil {
+		t = &CouponCode_CouponCode_Customers{}
+	}
+	return t.Email
+}
+func (t *CouponCode_CouponCode_Customers) GetFirstName() string {
+	if t == nil {
+		t = &CouponCode_CouponCode_Customers{}
+	}
+	return t.FirstName
+}
+func (t *CouponCode_CouponCode_Customers) GetLastName() string {
+	if t == nil {
+		t = &CouponCode_CouponCode_Customers{}
+	}
+	return t.LastName
+}
+func (t *CouponCode_CouponCode_Customers) GetProfilePictureFull() *string {
+	if t == nil {
+		t = &CouponCode_CouponCode_Customers{}
+	}
+	return t.ProfilePictureFull
+}
+func (t *CouponCode_CouponCode_Customers) GetProfilePicture() *string {
+	if t == nil {
+		t = &CouponCode_CouponCode_Customers{}
+	}
+	return t.ProfilePicture
+}
+func (t *CouponCode_CouponCode_Customers) GetPhone() *string {
+	if t == nil {
+		t = &CouponCode_CouponCode_Customers{}
+	}
+	return t.Phone
+}
+
+type CouponCode_CouponCode struct {
+	ID                string                             "json:\"id\" graphql:\"id\""
+	UpdatedAt         *string                            "json:\"updatedAt,omitempty\" graphql:\"updatedAt\""
+	CreatedAt         string                             "json:\"createdAt\" graphql:\"createdAt\""
+	Description       *string                            "json:\"description,omitempty\" graphql:\"description\""
+	Image             *string                            "json:\"image,omitempty\" graphql:\"image\""
+	Amount            int                                "json:\"amount\" graphql:\"amount\""
+	Code              string                             "json:\"code\" graphql:\"code\""
+	Customers         []*CouponCode_CouponCode_Customers "json:\"customers,omitempty\" graphql:\"customers\""
+	DiscountType      models.DiscountType                "json:\"discountType\" graphql:\"discountType\""
+	EndAt             *string                            "json:\"endAt,omitempty\" graphql:\"endAt\""
+	IsActive          bool                               "json:\"isActive\" graphql:\"isActive\""
+	IsFlatDiscount    bool                               "json:\"isFlatDiscount\" graphql:\"isFlatDiscount\""
+	IsForNewUsersOnly bool                               "json:\"isForNewUsersOnly\" graphql:\"isForNewUsersOnly\""
+	IsUserSpecific    bool                               "json:\"isUserSpecific\" graphql:\"isUserSpecific\""
+	MaxDiscountAmount *int                               "json:\"maxDiscountAmount,omitempty\" graphql:\"maxDiscountAmount\""
+	MaxUsage          *int                               "json:\"maxUsage,omitempty\" graphql:\"maxUsage\""
+	MaxUsagePerUser   *int                               "json:\"maxUsagePerUser,omitempty\" graphql:\"maxUsagePerUser\""
+	MinOrderAmount    *int                               "json:\"minOrderAmount,omitempty\" graphql:\"minOrderAmount\""
+	StartAt           *string                            "json:\"startAt,omitempty\" graphql:\"startAt\""
+}
+
+func (t *CouponCode_CouponCode) GetID() string {
+	if t == nil {
+		t = &CouponCode_CouponCode{}
+	}
+	return t.ID
+}
+func (t *CouponCode_CouponCode) GetUpdatedAt() *string {
+	if t == nil {
+		t = &CouponCode_CouponCode{}
+	}
+	return t.UpdatedAt
+}
+func (t *CouponCode_CouponCode) GetCreatedAt() string {
+	if t == nil {
+		t = &CouponCode_CouponCode{}
+	}
+	return t.CreatedAt
+}
+func (t *CouponCode_CouponCode) GetDescription() *string {
+	if t == nil {
+		t = &CouponCode_CouponCode{}
+	}
+	return t.Description
+}
+func (t *CouponCode_CouponCode) GetImage() *string {
+	if t == nil {
+		t = &CouponCode_CouponCode{}
+	}
+	return t.Image
+}
+func (t *CouponCode_CouponCode) GetAmount() int {
+	if t == nil {
+		t = &CouponCode_CouponCode{}
+	}
+	return t.Amount
+}
+func (t *CouponCode_CouponCode) GetCode() string {
+	if t == nil {
+		t = &CouponCode_CouponCode{}
+	}
+	return t.Code
+}
+func (t *CouponCode_CouponCode) GetCustomers() []*CouponCode_CouponCode_Customers {
+	if t == nil {
+		t = &CouponCode_CouponCode{}
+	}
+	return t.Customers
+}
+func (t *CouponCode_CouponCode) GetDiscountType() *models.DiscountType {
+	if t == nil {
+		t = &CouponCode_CouponCode{}
+	}
+	return &t.DiscountType
+}
+func (t *CouponCode_CouponCode) GetEndAt() *string {
+	if t == nil {
+		t = &CouponCode_CouponCode{}
+	}
+	return t.EndAt
+}
+func (t *CouponCode_CouponCode) GetIsActive() bool {
+	if t == nil {
+		t = &CouponCode_CouponCode{}
+	}
+	return t.IsActive
+}
+func (t *CouponCode_CouponCode) GetIsFlatDiscount() bool {
+	if t == nil {
+		t = &CouponCode_CouponCode{}
+	}
+	return t.IsFlatDiscount
+}
+func (t *CouponCode_CouponCode) GetIsForNewUsersOnly() bool {
+	if t == nil {
+		t = &CouponCode_CouponCode{}
+	}
+	return t.IsForNewUsersOnly
+}
+func (t *CouponCode_CouponCode) GetIsUserSpecific() bool {
+	if t == nil {
+		t = &CouponCode_CouponCode{}
+	}
+	return t.IsUserSpecific
+}
+func (t *CouponCode_CouponCode) GetMaxDiscountAmount() *int {
+	if t == nil {
+		t = &CouponCode_CouponCode{}
+	}
+	return t.MaxDiscountAmount
+}
+func (t *CouponCode_CouponCode) GetMaxUsage() *int {
+	if t == nil {
+		t = &CouponCode_CouponCode{}
+	}
+	return t.MaxUsage
+}
+func (t *CouponCode_CouponCode) GetMaxUsagePerUser() *int {
+	if t == nil {
+		t = &CouponCode_CouponCode{}
+	}
+	return t.MaxUsagePerUser
+}
+func (t *CouponCode_CouponCode) GetMinOrderAmount() *int {
+	if t == nil {
+		t = &CouponCode_CouponCode{}
+	}
+	return t.MinOrderAmount
+}
+func (t *CouponCode_CouponCode) GetStartAt() *string {
+	if t == nil {
+		t = &CouponCode_CouponCode{}
+	}
+	return t.StartAt
+}
+
+type CouponCodes_CouponCodes_Customers struct {
+	Email              string  "json:\"email\" graphql:\"email\""
+	FirstName          string  "json:\"firstName\" graphql:\"firstName\""
+	LastName           string  "json:\"lastName\" graphql:\"lastName\""
+	ProfilePictureFull *string "json:\"profilePictureFull,omitempty\" graphql:\"profilePictureFull\""
+	ProfilePicture     *string "json:\"profilePicture,omitempty\" graphql:\"profilePicture\""
+	Phone              *string "json:\"phone,omitempty\" graphql:\"phone\""
+}
+
+func (t *CouponCodes_CouponCodes_Customers) GetEmail() string {
+	if t == nil {
+		t = &CouponCodes_CouponCodes_Customers{}
+	}
+	return t.Email
+}
+func (t *CouponCodes_CouponCodes_Customers) GetFirstName() string {
+	if t == nil {
+		t = &CouponCodes_CouponCodes_Customers{}
+	}
+	return t.FirstName
+}
+func (t *CouponCodes_CouponCodes_Customers) GetLastName() string {
+	if t == nil {
+		t = &CouponCodes_CouponCodes_Customers{}
+	}
+	return t.LastName
+}
+func (t *CouponCodes_CouponCodes_Customers) GetProfilePictureFull() *string {
+	if t == nil {
+		t = &CouponCodes_CouponCodes_Customers{}
+	}
+	return t.ProfilePictureFull
+}
+func (t *CouponCodes_CouponCodes_Customers) GetProfilePicture() *string {
+	if t == nil {
+		t = &CouponCodes_CouponCodes_Customers{}
+	}
+	return t.ProfilePicture
+}
+func (t *CouponCodes_CouponCodes_Customers) GetPhone() *string {
+	if t == nil {
+		t = &CouponCodes_CouponCodes_Customers{}
+	}
+	return t.Phone
+}
+
+type CouponCodes_CouponCodes struct {
+	ID                string                               "json:\"id\" graphql:\"id\""
+	UpdatedAt         *string                              "json:\"updatedAt,omitempty\" graphql:\"updatedAt\""
+	CreatedAt         string                               "json:\"createdAt\" graphql:\"createdAt\""
+	Description       *string                              "json:\"description,omitempty\" graphql:\"description\""
+	Image             *string                              "json:\"image,omitempty\" graphql:\"image\""
+	Amount            int                                  "json:\"amount\" graphql:\"amount\""
+	Code              string                               "json:\"code\" graphql:\"code\""
+	Customers         []*CouponCodes_CouponCodes_Customers "json:\"customers,omitempty\" graphql:\"customers\""
+	DiscountType      models.DiscountType                  "json:\"discountType\" graphql:\"discountType\""
+	EndAt             *string                              "json:\"endAt,omitempty\" graphql:\"endAt\""
+	IsActive          bool                                 "json:\"isActive\" graphql:\"isActive\""
+	IsFlatDiscount    bool                                 "json:\"isFlatDiscount\" graphql:\"isFlatDiscount\""
+	IsForNewUsersOnly bool                                 "json:\"isForNewUsersOnly\" graphql:\"isForNewUsersOnly\""
+	IsUserSpecific    bool                                 "json:\"isUserSpecific\" graphql:\"isUserSpecific\""
+	MaxDiscountAmount *int                                 "json:\"maxDiscountAmount,omitempty\" graphql:\"maxDiscountAmount\""
+	MaxUsage          *int                                 "json:\"maxUsage,omitempty\" graphql:\"maxUsage\""
+	MaxUsagePerUser   *int                                 "json:\"maxUsagePerUser,omitempty\" graphql:\"maxUsagePerUser\""
+	MinOrderAmount    *int                                 "json:\"minOrderAmount,omitempty\" graphql:\"minOrderAmount\""
+	StartAt           *string                              "json:\"startAt,omitempty\" graphql:\"startAt\""
+}
+
+func (t *CouponCodes_CouponCodes) GetID() string {
+	if t == nil {
+		t = &CouponCodes_CouponCodes{}
+	}
+	return t.ID
+}
+func (t *CouponCodes_CouponCodes) GetUpdatedAt() *string {
+	if t == nil {
+		t = &CouponCodes_CouponCodes{}
+	}
+	return t.UpdatedAt
+}
+func (t *CouponCodes_CouponCodes) GetCreatedAt() string {
+	if t == nil {
+		t = &CouponCodes_CouponCodes{}
+	}
+	return t.CreatedAt
+}
+func (t *CouponCodes_CouponCodes) GetDescription() *string {
+	if t == nil {
+		t = &CouponCodes_CouponCodes{}
+	}
+	return t.Description
+}
+func (t *CouponCodes_CouponCodes) GetImage() *string {
+	if t == nil {
+		t = &CouponCodes_CouponCodes{}
+	}
+	return t.Image
+}
+func (t *CouponCodes_CouponCodes) GetAmount() int {
+	if t == nil {
+		t = &CouponCodes_CouponCodes{}
+	}
+	return t.Amount
+}
+func (t *CouponCodes_CouponCodes) GetCode() string {
+	if t == nil {
+		t = &CouponCodes_CouponCodes{}
+	}
+	return t.Code
+}
+func (t *CouponCodes_CouponCodes) GetCustomers() []*CouponCodes_CouponCodes_Customers {
+	if t == nil {
+		t = &CouponCodes_CouponCodes{}
+	}
+	return t.Customers
+}
+func (t *CouponCodes_CouponCodes) GetDiscountType() *models.DiscountType {
+	if t == nil {
+		t = &CouponCodes_CouponCodes{}
+	}
+	return &t.DiscountType
+}
+func (t *CouponCodes_CouponCodes) GetEndAt() *string {
+	if t == nil {
+		t = &CouponCodes_CouponCodes{}
+	}
+	return t.EndAt
+}
+func (t *CouponCodes_CouponCodes) GetIsActive() bool {
+	if t == nil {
+		t = &CouponCodes_CouponCodes{}
+	}
+	return t.IsActive
+}
+func (t *CouponCodes_CouponCodes) GetIsFlatDiscount() bool {
+	if t == nil {
+		t = &CouponCodes_CouponCodes{}
+	}
+	return t.IsFlatDiscount
+}
+func (t *CouponCodes_CouponCodes) GetIsForNewUsersOnly() bool {
+	if t == nil {
+		t = &CouponCodes_CouponCodes{}
+	}
+	return t.IsForNewUsersOnly
+}
+func (t *CouponCodes_CouponCodes) GetIsUserSpecific() bool {
+	if t == nil {
+		t = &CouponCodes_CouponCodes{}
+	}
+	return t.IsUserSpecific
+}
+func (t *CouponCodes_CouponCodes) GetMaxDiscountAmount() *int {
+	if t == nil {
+		t = &CouponCodes_CouponCodes{}
+	}
+	return t.MaxDiscountAmount
+}
+func (t *CouponCodes_CouponCodes) GetMaxUsage() *int {
+	if t == nil {
+		t = &CouponCodes_CouponCodes{}
+	}
+	return t.MaxUsage
+}
+func (t *CouponCodes_CouponCodes) GetMaxUsagePerUser() *int {
+	if t == nil {
+		t = &CouponCodes_CouponCodes{}
+	}
+	return t.MaxUsagePerUser
+}
+func (t *CouponCodes_CouponCodes) GetMinOrderAmount() *int {
+	if t == nil {
+		t = &CouponCodes_CouponCodes{}
+	}
+	return t.MinOrderAmount
+}
+func (t *CouponCodes_CouponCodes) GetStartAt() *string {
+	if t == nil {
+		t = &CouponCodes_CouponCodes{}
+	}
+	return t.StartAt
+}
+
+type CustomerProfile_CustomerProfile struct {
+	Phone              *string "json:\"phone,omitempty\" graphql:\"phone\""
+	ProfilePicture     *string "json:\"profilePicture,omitempty\" graphql:\"profilePicture\""
+	ProfilePictureFull *string "json:\"profilePictureFull,omitempty\" graphql:\"profilePictureFull\""
+	LastName           string  "json:\"lastName\" graphql:\"lastName\""
+	FirstName          string  "json:\"firstName\" graphql:\"firstName\""
+	Email              string  "json:\"email\" graphql:\"email\""
+}
+
+func (t *CustomerProfile_CustomerProfile) GetPhone() *string {
+	if t == nil {
+		t = &CustomerProfile_CustomerProfile{}
+	}
+	return t.Phone
+}
+func (t *CustomerProfile_CustomerProfile) GetProfilePicture() *string {
+	if t == nil {
+		t = &CustomerProfile_CustomerProfile{}
+	}
+	return t.ProfilePicture
+}
+func (t *CustomerProfile_CustomerProfile) GetProfilePictureFull() *string {
+	if t == nil {
+		t = &CustomerProfile_CustomerProfile{}
+	}
+	return t.ProfilePictureFull
+}
+func (t *CustomerProfile_CustomerProfile) GetLastName() string {
+	if t == nil {
+		t = &CustomerProfile_CustomerProfile{}
+	}
+	return t.LastName
+}
+func (t *CustomerProfile_CustomerProfile) GetFirstName() string {
+	if t == nil {
+		t = &CustomerProfile_CustomerProfile{}
+	}
+	return t.FirstName
+}
+func (t *CustomerProfile_CustomerProfile) GetEmail() string {
+	if t == nil {
+		t = &CustomerProfile_CustomerProfile{}
+	}
+	return t.Email
+}
+
+type CustomersByAdmin_CustomersByAdmin struct {
+	Phone              *string "json:\"phone,omitempty\" graphql:\"phone\""
+	ProfilePicture     *string "json:\"profilePicture,omitempty\" graphql:\"profilePicture\""
+	ProfilePictureFull *string "json:\"profilePictureFull,omitempty\" graphql:\"profilePictureFull\""
+	LastName           string  "json:\"lastName\" graphql:\"lastName\""
+	FirstName          string  "json:\"firstName\" graphql:\"firstName\""
+	Email              string  "json:\"email\" graphql:\"email\""
+}
+
+func (t *CustomersByAdmin_CustomersByAdmin) GetPhone() *string {
+	if t == nil {
+		t = &CustomersByAdmin_CustomersByAdmin{}
+	}
+	return t.Phone
+}
+func (t *CustomersByAdmin_CustomersByAdmin) GetProfilePicture() *string {
+	if t == nil {
+		t = &CustomersByAdmin_CustomersByAdmin{}
+	}
+	return t.ProfilePicture
+}
+func (t *CustomersByAdmin_CustomersByAdmin) GetProfilePictureFull() *string {
+	if t == nil {
+		t = &CustomersByAdmin_CustomersByAdmin{}
+	}
+	return t.ProfilePictureFull
+}
+func (t *CustomersByAdmin_CustomersByAdmin) GetLastName() string {
+	if t == nil {
+		t = &CustomersByAdmin_CustomersByAdmin{}
+	}
+	return t.LastName
+}
+func (t *CustomersByAdmin_CustomersByAdmin) GetFirstName() string {
+	if t == nil {
+		t = &CustomersByAdmin_CustomersByAdmin{}
+	}
+	return t.FirstName
+}
+func (t *CustomersByAdmin_CustomersByAdmin) GetEmail() string {
+	if t == nil {
+		t = &CustomersByAdmin_CustomersByAdmin{}
+	}
+	return t.Email
+}
+
+type LocationById_LocationByID struct {
 	ID        string "json:\"id\" graphql:\"id\""
 	Name      string "json:\"name\" graphql:\"name\""
 	ShortCode string "json:\"shortCode\" graphql:\"shortCode\""
 }
 
-func (t *Countries_Locations) GetID() string {
+func (t *LocationById_LocationByID) GetID() string {
 	if t == nil {
-		t = &Countries_Locations{}
+		t = &LocationById_LocationByID{}
 	}
 	return t.ID
 }
-func (t *Countries_Locations) GetName() string {
+func (t *LocationById_LocationByID) GetName() string {
 	if t == nil {
-		t = &Countries_Locations{}
+		t = &LocationById_LocationByID{}
 	}
 	return t.Name
 }
-func (t *Countries_Locations) GetShortCode() string {
+func (t *LocationById_LocationByID) GetShortCode() string {
 	if t == nil {
-		t = &Countries_Locations{}
+		t = &LocationById_LocationByID{}
 	}
 	return t.ShortCode
+}
+
+type Locations_Locations struct {
+	ID        string "json:\"id\" graphql:\"id\""
+	Name      string "json:\"name\" graphql:\"name\""
+	ShortCode string "json:\"shortCode\" graphql:\"shortCode\""
+}
+
+func (t *Locations_Locations) GetID() string {
+	if t == nil {
+		t = &Locations_Locations{}
+	}
+	return t.ID
+}
+func (t *Locations_Locations) GetName() string {
+	if t == nil {
+		t = &Locations_Locations{}
+	}
+	return t.Name
+}
+func (t *Locations_Locations) GetShortCode() string {
+	if t == nil {
+		t = &Locations_Locations{}
+	}
+	return t.ShortCode
+}
+
+type MediaByAdmin_MediaByAdmin struct {
+	Path         string "json:\"path\" graphql:\"path\""
+	PermanentURL string "json:\"permanentUrl\" graphql:\"permanentUrl\""
+	URL          string "json:\"url\" graphql:\"url\""
+}
+
+func (t *MediaByAdmin_MediaByAdmin) GetPath() string {
+	if t == nil {
+		t = &MediaByAdmin_MediaByAdmin{}
+	}
+	return t.Path
+}
+func (t *MediaByAdmin_MediaByAdmin) GetPermanentURL() string {
+	if t == nil {
+		t = &MediaByAdmin_MediaByAdmin{}
+	}
+	return t.PermanentURL
+}
+func (t *MediaByAdmin_MediaByAdmin) GetURL() string {
+	if t == nil {
+		t = &MediaByAdmin_MediaByAdmin{}
+	}
+	return t.URL
+}
+
+type Order_Order_BillingAddress_Location struct {
+	ID        string "json:\"id\" graphql:\"id\""
+	Name      string "json:\"name\" graphql:\"name\""
+	ShortCode string "json:\"shortCode\" graphql:\"shortCode\""
+}
+
+func (t *Order_Order_BillingAddress_Location) GetID() string {
+	if t == nil {
+		t = &Order_Order_BillingAddress_Location{}
+	}
+	return t.ID
+}
+func (t *Order_Order_BillingAddress_Location) GetName() string {
+	if t == nil {
+		t = &Order_Order_BillingAddress_Location{}
+	}
+	return t.Name
+}
+func (t *Order_Order_BillingAddress_Location) GetShortCode() string {
+	if t == nil {
+		t = &Order_Order_BillingAddress_Location{}
+	}
+	return t.ShortCode
+}
+
+type Order_Order_BillingAddress struct {
+	ID        string                              "json:\"id\" graphql:\"id\""
+	Street    string                              "json:\"street\" graphql:\"street\""
+	StreetTwo *string                             "json:\"streetTwo,omitempty\" graphql:\"streetTwo\""
+	City      string                              "json:\"city\" graphql:\"city\""
+	State     *string                             "json:\"state,omitempty\" graphql:\"state\""
+	Postcode  string                              "json:\"postcode\" graphql:\"postcode\""
+	Email     *string                             "json:\"email,omitempty\" graphql:\"email\""
+	Phone     *string                             "json:\"phone,omitempty\" graphql:\"phone\""
+	Location  Order_Order_BillingAddress_Location "json:\"location\" graphql:\"location\""
+}
+
+func (t *Order_Order_BillingAddress) GetID() string {
+	if t == nil {
+		t = &Order_Order_BillingAddress{}
+	}
+	return t.ID
+}
+func (t *Order_Order_BillingAddress) GetStreet() string {
+	if t == nil {
+		t = &Order_Order_BillingAddress{}
+	}
+	return t.Street
+}
+func (t *Order_Order_BillingAddress) GetStreetTwo() *string {
+	if t == nil {
+		t = &Order_Order_BillingAddress{}
+	}
+	return t.StreetTwo
+}
+func (t *Order_Order_BillingAddress) GetCity() string {
+	if t == nil {
+		t = &Order_Order_BillingAddress{}
+	}
+	return t.City
+}
+func (t *Order_Order_BillingAddress) GetState() *string {
+	if t == nil {
+		t = &Order_Order_BillingAddress{}
+	}
+	return t.State
+}
+func (t *Order_Order_BillingAddress) GetPostcode() string {
+	if t == nil {
+		t = &Order_Order_BillingAddress{}
+	}
+	return t.Postcode
+}
+func (t *Order_Order_BillingAddress) GetEmail() *string {
+	if t == nil {
+		t = &Order_Order_BillingAddress{}
+	}
+	return t.Email
+}
+func (t *Order_Order_BillingAddress) GetPhone() *string {
+	if t == nil {
+		t = &Order_Order_BillingAddress{}
+	}
+	return t.Phone
+}
+func (t *Order_Order_BillingAddress) GetLocation() *Order_Order_BillingAddress_Location {
+	if t == nil {
+		t = &Order_Order_BillingAddress{}
+	}
+	return &t.Location
+}
+
+type Order_Order_ShippingAddress_Location struct {
+	ID        string "json:\"id\" graphql:\"id\""
+	Name      string "json:\"name\" graphql:\"name\""
+	ShortCode string "json:\"shortCode\" graphql:\"shortCode\""
+}
+
+func (t *Order_Order_ShippingAddress_Location) GetID() string {
+	if t == nil {
+		t = &Order_Order_ShippingAddress_Location{}
+	}
+	return t.ID
+}
+func (t *Order_Order_ShippingAddress_Location) GetName() string {
+	if t == nil {
+		t = &Order_Order_ShippingAddress_Location{}
+	}
+	return t.Name
+}
+func (t *Order_Order_ShippingAddress_Location) GetShortCode() string {
+	if t == nil {
+		t = &Order_Order_ShippingAddress_Location{}
+	}
+	return t.ShortCode
+}
+
+type Order_Order_ShippingAddress struct {
+	ID        string                               "json:\"id\" graphql:\"id\""
+	Street    string                               "json:\"street\" graphql:\"street\""
+	StreetTwo *string                              "json:\"streetTwo,omitempty\" graphql:\"streetTwo\""
+	City      string                               "json:\"city\" graphql:\"city\""
+	State     *string                              "json:\"state,omitempty\" graphql:\"state\""
+	Postcode  string                               "json:\"postcode\" graphql:\"postcode\""
+	Email     *string                              "json:\"email,omitempty\" graphql:\"email\""
+	Phone     *string                              "json:\"phone,omitempty\" graphql:\"phone\""
+	Location  Order_Order_ShippingAddress_Location "json:\"location\" graphql:\"location\""
+}
+
+func (t *Order_Order_ShippingAddress) GetID() string {
+	if t == nil {
+		t = &Order_Order_ShippingAddress{}
+	}
+	return t.ID
+}
+func (t *Order_Order_ShippingAddress) GetStreet() string {
+	if t == nil {
+		t = &Order_Order_ShippingAddress{}
+	}
+	return t.Street
+}
+func (t *Order_Order_ShippingAddress) GetStreetTwo() *string {
+	if t == nil {
+		t = &Order_Order_ShippingAddress{}
+	}
+	return t.StreetTwo
+}
+func (t *Order_Order_ShippingAddress) GetCity() string {
+	if t == nil {
+		t = &Order_Order_ShippingAddress{}
+	}
+	return t.City
+}
+func (t *Order_Order_ShippingAddress) GetState() *string {
+	if t == nil {
+		t = &Order_Order_ShippingAddress{}
+	}
+	return t.State
+}
+func (t *Order_Order_ShippingAddress) GetPostcode() string {
+	if t == nil {
+		t = &Order_Order_ShippingAddress{}
+	}
+	return t.Postcode
+}
+func (t *Order_Order_ShippingAddress) GetEmail() *string {
+	if t == nil {
+		t = &Order_Order_ShippingAddress{}
+	}
+	return t.Email
+}
+func (t *Order_Order_ShippingAddress) GetPhone() *string {
+	if t == nil {
+		t = &Order_Order_ShippingAddress{}
+	}
+	return t.Phone
+}
+func (t *Order_Order_ShippingAddress) GetLocation() *Order_Order_ShippingAddress_Location {
+	if t == nil {
+		t = &Order_Order_ShippingAddress{}
+	}
+	return &t.Location
+}
+
+type Order_Order_Cart_CartItems_Product struct {
+	ID         string   "json:\"id\" graphql:\"id\""
+	Name       string   "json:\"name\" graphql:\"name\""
+	Slug       string   "json:\"slug\" graphql:\"slug\""
+	FullImages []string "json:\"fullImages\" graphql:\"fullImages\""
+}
+
+func (t *Order_Order_Cart_CartItems_Product) GetID() string {
+	if t == nil {
+		t = &Order_Order_Cart_CartItems_Product{}
+	}
+	return t.ID
+}
+func (t *Order_Order_Cart_CartItems_Product) GetName() string {
+	if t == nil {
+		t = &Order_Order_Cart_CartItems_Product{}
+	}
+	return t.Name
+}
+func (t *Order_Order_Cart_CartItems_Product) GetSlug() string {
+	if t == nil {
+		t = &Order_Order_Cart_CartItems_Product{}
+	}
+	return t.Slug
+}
+func (t *Order_Order_Cart_CartItems_Product) GetFullImages() []string {
+	if t == nil {
+		t = &Order_Order_Cart_CartItems_Product{}
+	}
+	return t.FullImages
+}
+
+type Order_Order_Cart_CartItems_Attributes struct {
+	Name          string "json:\"name\" graphql:\"name\""
+	SelectedValue string "json:\"selectedValue\" graphql:\"selectedValue\""
+}
+
+func (t *Order_Order_Cart_CartItems_Attributes) GetName() string {
+	if t == nil {
+		t = &Order_Order_Cart_CartItems_Attributes{}
+	}
+	return t.Name
+}
+func (t *Order_Order_Cart_CartItems_Attributes) GetSelectedValue() string {
+	if t == nil {
+		t = &Order_Order_Cart_CartItems_Attributes{}
+	}
+	return t.SelectedValue
+}
+
+type Order_Order_Cart_CartItems_Variation struct {
+	ID    string  "json:\"id\" graphql:\"id\""
+	Name  string  "json:\"name\" graphql:\"name\""
+	Price int     "json:\"price\" graphql:\"price\""
+	Sku   *string "json:\"sku,omitempty\" graphql:\"sku\""
+	Stock *int    "json:\"stock,omitempty\" graphql:\"stock\""
+}
+
+func (t *Order_Order_Cart_CartItems_Variation) GetID() string {
+	if t == nil {
+		t = &Order_Order_Cart_CartItems_Variation{}
+	}
+	return t.ID
+}
+func (t *Order_Order_Cart_CartItems_Variation) GetName() string {
+	if t == nil {
+		t = &Order_Order_Cart_CartItems_Variation{}
+	}
+	return t.Name
+}
+func (t *Order_Order_Cart_CartItems_Variation) GetPrice() int {
+	if t == nil {
+		t = &Order_Order_Cart_CartItems_Variation{}
+	}
+	return t.Price
+}
+func (t *Order_Order_Cart_CartItems_Variation) GetSku() *string {
+	if t == nil {
+		t = &Order_Order_Cart_CartItems_Variation{}
+	}
+	return t.Sku
+}
+func (t *Order_Order_Cart_CartItems_Variation) GetStock() *int {
+	if t == nil {
+		t = &Order_Order_Cart_CartItems_Variation{}
+	}
+	return t.Stock
+}
+
+type Order_Order_Cart_CartItems struct {
+	ID            int                                      "json:\"id\" graphql:\"id\""
+	Product       Order_Order_Cart_CartItems_Product       "json:\"product\" graphql:\"product\""
+	Quantity      int                                      "json:\"quantity\" graphql:\"quantity\""
+	PurchasePrice int                                      "json:\"purchasePrice\" graphql:\"purchasePrice\""
+	Attributes    []*Order_Order_Cart_CartItems_Attributes "json:\"attributes\" graphql:\"attributes\""
+	Variation     *Order_Order_Cart_CartItems_Variation    "json:\"variation,omitempty\" graphql:\"variation\""
+}
+
+func (t *Order_Order_Cart_CartItems) GetID() int {
+	if t == nil {
+		t = &Order_Order_Cart_CartItems{}
+	}
+	return t.ID
+}
+func (t *Order_Order_Cart_CartItems) GetProduct() *Order_Order_Cart_CartItems_Product {
+	if t == nil {
+		t = &Order_Order_Cart_CartItems{}
+	}
+	return &t.Product
+}
+func (t *Order_Order_Cart_CartItems) GetQuantity() int {
+	if t == nil {
+		t = &Order_Order_Cart_CartItems{}
+	}
+	return t.Quantity
+}
+func (t *Order_Order_Cart_CartItems) GetPurchasePrice() int {
+	if t == nil {
+		t = &Order_Order_Cart_CartItems{}
+	}
+	return t.PurchasePrice
+}
+func (t *Order_Order_Cart_CartItems) GetAttributes() []*Order_Order_Cart_CartItems_Attributes {
+	if t == nil {
+		t = &Order_Order_Cart_CartItems{}
+	}
+	return t.Attributes
+}
+func (t *Order_Order_Cart_CartItems) GetVariation() *Order_Order_Cart_CartItems_Variation {
+	if t == nil {
+		t = &Order_Order_Cart_CartItems{}
+	}
+	return t.Variation
+}
+
+type Order_Order_Cart struct {
+	ID                 string                        "json:\"id\" graphql:\"id\""
+	IsShippingRequired bool                          "json:\"isShippingRequired\" graphql:\"isShippingRequired\""
+	CartItems          []*Order_Order_Cart_CartItems "json:\"cartItems\" graphql:\"cartItems\""
+}
+
+func (t *Order_Order_Cart) GetID() string {
+	if t == nil {
+		t = &Order_Order_Cart{}
+	}
+	return t.ID
+}
+func (t *Order_Order_Cart) GetIsShippingRequired() bool {
+	if t == nil {
+		t = &Order_Order_Cart{}
+	}
+	return t.IsShippingRequired
+}
+func (t *Order_Order_Cart) GetCartItems() []*Order_Order_Cart_CartItems {
+	if t == nil {
+		t = &Order_Order_Cart{}
+	}
+	return t.CartItems
+}
+
+type Order_Order_Customer struct {
+	Email          string  "json:\"email\" graphql:\"email\""
+	Phone          *string "json:\"phone,omitempty\" graphql:\"phone\""
+	FirstName      string  "json:\"firstName\" graphql:\"firstName\""
+	LastName       string  "json:\"lastName\" graphql:\"lastName\""
+	ProfilePicture *string "json:\"profilePicture,omitempty\" graphql:\"profilePicture\""
+}
+
+func (t *Order_Order_Customer) GetEmail() string {
+	if t == nil {
+		t = &Order_Order_Customer{}
+	}
+	return t.Email
+}
+func (t *Order_Order_Customer) GetPhone() *string {
+	if t == nil {
+		t = &Order_Order_Customer{}
+	}
+	return t.Phone
+}
+func (t *Order_Order_Customer) GetFirstName() string {
+	if t == nil {
+		t = &Order_Order_Customer{}
+	}
+	return t.FirstName
+}
+func (t *Order_Order_Customer) GetLastName() string {
+	if t == nil {
+		t = &Order_Order_Customer{}
+	}
+	return t.LastName
+}
+func (t *Order_Order_Customer) GetProfilePicture() *string {
+	if t == nil {
+		t = &Order_Order_Customer{}
+	}
+	return t.ProfilePicture
+}
+
+type Order_Order_PaymentMethod struct {
+	ID               string "json:\"id\" graphql:\"id\""
+	DisplayName      string "json:\"displayName\" graphql:\"displayName\""
+	CurrencyName     string "json:\"currencyName\" graphql:\"currencyName\""
+	CurrencySymbol   string "json:\"currencySymbol\" graphql:\"currencySymbol\""
+	IsDigitalPayment bool   "json:\"isDigitalPayment\" graphql:\"isDigitalPayment\""
+}
+
+func (t *Order_Order_PaymentMethod) GetID() string {
+	if t == nil {
+		t = &Order_Order_PaymentMethod{}
+	}
+	return t.ID
+}
+func (t *Order_Order_PaymentMethod) GetDisplayName() string {
+	if t == nil {
+		t = &Order_Order_PaymentMethod{}
+	}
+	return t.DisplayName
+}
+func (t *Order_Order_PaymentMethod) GetCurrencyName() string {
+	if t == nil {
+		t = &Order_Order_PaymentMethod{}
+	}
+	return t.CurrencyName
+}
+func (t *Order_Order_PaymentMethod) GetCurrencySymbol() string {
+	if t == nil {
+		t = &Order_Order_PaymentMethod{}
+	}
+	return t.CurrencySymbol
+}
+func (t *Order_Order_PaymentMethod) GetIsDigitalPayment() bool {
+	if t == nil {
+		t = &Order_Order_PaymentMethod{}
+	}
+	return t.IsDigitalPayment
+}
+
+type Order_Order_ShippingMethod struct {
+	ID                 string            "json:\"id\" graphql:\"id\""
+	DisplayName        string            "json:\"displayName\" graphql:\"displayName\""
+	DeliveryCharge     int               "json:\"deliveryCharge\" graphql:\"deliveryCharge\""
+	DeliveryTimeInDays int               "json:\"deliveryTimeInDays\" graphql:\"deliveryTimeInDays\""
+	WeightUnit         models.WeightUnit "json:\"WeightUnit\" graphql:\"WeightUnit\""
+	IsFlat             bool              "json:\"isFlat\" graphql:\"isFlat\""
+	IsActive           bool              "json:\"isActive\" graphql:\"isActive\""
+}
+
+func (t *Order_Order_ShippingMethod) GetID() string {
+	if t == nil {
+		t = &Order_Order_ShippingMethod{}
+	}
+	return t.ID
+}
+func (t *Order_Order_ShippingMethod) GetDisplayName() string {
+	if t == nil {
+		t = &Order_Order_ShippingMethod{}
+	}
+	return t.DisplayName
+}
+func (t *Order_Order_ShippingMethod) GetDeliveryCharge() int {
+	if t == nil {
+		t = &Order_Order_ShippingMethod{}
+	}
+	return t.DeliveryCharge
+}
+func (t *Order_Order_ShippingMethod) GetDeliveryTimeInDays() int {
+	if t == nil {
+		t = &Order_Order_ShippingMethod{}
+	}
+	return t.DeliveryTimeInDays
+}
+func (t *Order_Order_ShippingMethod) GetWeightUnit() *models.WeightUnit {
+	if t == nil {
+		t = &Order_Order_ShippingMethod{}
+	}
+	return &t.WeightUnit
+}
+func (t *Order_Order_ShippingMethod) GetIsFlat() bool {
+	if t == nil {
+		t = &Order_Order_ShippingMethod{}
+	}
+	return t.IsFlat
+}
+func (t *Order_Order_ShippingMethod) GetIsActive() bool {
+	if t == nil {
+		t = &Order_Order_ShippingMethod{}
+	}
+	return t.IsActive
+}
+
+type Order_Order_CouponCode struct {
+	Code         string              "json:\"code\" graphql:\"code\""
+	DiscountType models.DiscountType "json:\"discountType\" graphql:\"discountType\""
+}
+
+func (t *Order_Order_CouponCode) GetCode() string {
+	if t == nil {
+		t = &Order_Order_CouponCode{}
+	}
+	return t.Code
+}
+func (t *Order_Order_CouponCode) GetDiscountType() *models.DiscountType {
+	if t == nil {
+		t = &Order_Order_CouponCode{}
+	}
+	return &t.DiscountType
+}
+
+type Order_Order_Payments struct {
+	IsPaid        bool   "json:\"isPaid\" graphql:\"isPaid\""
+	PayableAmount int    "json:\"payableAmount\" graphql:\"payableAmount\""
+	GatewayName   string "json:\"gatewayName\" graphql:\"gatewayName\""
+}
+
+func (t *Order_Order_Payments) GetIsPaid() bool {
+	if t == nil {
+		t = &Order_Order_Payments{}
+	}
+	return t.IsPaid
+}
+func (t *Order_Order_Payments) GetPayableAmount() int {
+	if t == nil {
+		t = &Order_Order_Payments{}
+	}
+	return t.PayableAmount
+}
+func (t *Order_Order_Payments) GetGatewayName() string {
+	if t == nil {
+		t = &Order_Order_Payments{}
+	}
+	return t.GatewayName
+}
+
+type Order_Order struct {
+	ID                   string                       "json:\"id\" graphql:\"id\""
+	Hash                 string                       "json:\"hash\" graphql:\"hash\""
+	ShippingCharge       int                          "json:\"shippingCharge\" graphql:\"shippingCharge\""
+	PaymentProcessingFee int                          "json:\"paymentProcessingFee\" graphql:\"paymentProcessingFee\""
+	Subtotal             int                          "json:\"subtotal\" graphql:\"subtotal\""
+	GrandTotal           int                          "json:\"grandTotal\" graphql:\"grandTotal\""
+	DiscountedAmount     int                          "json:\"discountedAmount\" graphql:\"discountedAmount\""
+	Status               models.OrderStatus           "json:\"status\" graphql:\"status\""
+	PaymentStatus        models.OrderPaymentStatus    "json:\"paymentStatus\" graphql:\"paymentStatus\""
+	CreatedAt            string                       "json:\"createdAt\" graphql:\"createdAt\""
+	UpdatedAt            *string                      "json:\"updatedAt,omitempty\" graphql:\"updatedAt\""
+	BillingAddress       Order_Order_BillingAddress   "json:\"billingAddress\" graphql:\"billingAddress\""
+	ShippingAddress      *Order_Order_ShippingAddress "json:\"shippingAddress,omitempty\" graphql:\"shippingAddress\""
+	Cart                 Order_Order_Cart             "json:\"cart\" graphql:\"cart\""
+	Customer             Order_Order_Customer         "json:\"customer\" graphql:\"customer\""
+	PaymentMethod        *Order_Order_PaymentMethod   "json:\"paymentMethod,omitempty\" graphql:\"paymentMethod\""
+	ShippingMethod       *Order_Order_ShippingMethod  "json:\"shippingMethod,omitempty\" graphql:\"shippingMethod\""
+	CouponCode           *Order_Order_CouponCode      "json:\"couponCode,omitempty\" graphql:\"couponCode\""
+	Payments             []*Order_Order_Payments      "json:\"payments\" graphql:\"payments\""
+}
+
+func (t *Order_Order) GetID() string {
+	if t == nil {
+		t = &Order_Order{}
+	}
+	return t.ID
+}
+func (t *Order_Order) GetHash() string {
+	if t == nil {
+		t = &Order_Order{}
+	}
+	return t.Hash
+}
+func (t *Order_Order) GetShippingCharge() int {
+	if t == nil {
+		t = &Order_Order{}
+	}
+	return t.ShippingCharge
+}
+func (t *Order_Order) GetPaymentProcessingFee() int {
+	if t == nil {
+		t = &Order_Order{}
+	}
+	return t.PaymentProcessingFee
+}
+func (t *Order_Order) GetSubtotal() int {
+	if t == nil {
+		t = &Order_Order{}
+	}
+	return t.Subtotal
+}
+func (t *Order_Order) GetGrandTotal() int {
+	if t == nil {
+		t = &Order_Order{}
+	}
+	return t.GrandTotal
+}
+func (t *Order_Order) GetDiscountedAmount() int {
+	if t == nil {
+		t = &Order_Order{}
+	}
+	return t.DiscountedAmount
+}
+func (t *Order_Order) GetStatus() *models.OrderStatus {
+	if t == nil {
+		t = &Order_Order{}
+	}
+	return &t.Status
+}
+func (t *Order_Order) GetPaymentStatus() *models.OrderPaymentStatus {
+	if t == nil {
+		t = &Order_Order{}
+	}
+	return &t.PaymentStatus
+}
+func (t *Order_Order) GetCreatedAt() string {
+	if t == nil {
+		t = &Order_Order{}
+	}
+	return t.CreatedAt
+}
+func (t *Order_Order) GetUpdatedAt() *string {
+	if t == nil {
+		t = &Order_Order{}
+	}
+	return t.UpdatedAt
+}
+func (t *Order_Order) GetBillingAddress() *Order_Order_BillingAddress {
+	if t == nil {
+		t = &Order_Order{}
+	}
+	return &t.BillingAddress
+}
+func (t *Order_Order) GetShippingAddress() *Order_Order_ShippingAddress {
+	if t == nil {
+		t = &Order_Order{}
+	}
+	return t.ShippingAddress
+}
+func (t *Order_Order) GetCart() *Order_Order_Cart {
+	if t == nil {
+		t = &Order_Order{}
+	}
+	return &t.Cart
+}
+func (t *Order_Order) GetCustomer() *Order_Order_Customer {
+	if t == nil {
+		t = &Order_Order{}
+	}
+	return &t.Customer
+}
+func (t *Order_Order) GetPaymentMethod() *Order_Order_PaymentMethod {
+	if t == nil {
+		t = &Order_Order{}
+	}
+	return t.PaymentMethod
+}
+func (t *Order_Order) GetShippingMethod() *Order_Order_ShippingMethod {
+	if t == nil {
+		t = &Order_Order{}
+	}
+	return t.ShippingMethod
+}
+func (t *Order_Order) GetCouponCode() *Order_Order_CouponCode {
+	if t == nil {
+		t = &Order_Order{}
+	}
+	return t.CouponCode
+}
+func (t *Order_Order) GetPayments() []*Order_Order_Payments {
+	if t == nil {
+		t = &Order_Order{}
+	}
+	return t.Payments
+}
+
+type OrderByAdmin_OrderByAdmin_BillingAddress_Location struct {
+	ID        string "json:\"id\" graphql:\"id\""
+	Name      string "json:\"name\" graphql:\"name\""
+	ShortCode string "json:\"shortCode\" graphql:\"shortCode\""
+}
+
+func (t *OrderByAdmin_OrderByAdmin_BillingAddress_Location) GetID() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_BillingAddress_Location{}
+	}
+	return t.ID
+}
+func (t *OrderByAdmin_OrderByAdmin_BillingAddress_Location) GetName() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_BillingAddress_Location{}
+	}
+	return t.Name
+}
+func (t *OrderByAdmin_OrderByAdmin_BillingAddress_Location) GetShortCode() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_BillingAddress_Location{}
+	}
+	return t.ShortCode
+}
+
+type OrderByAdmin_OrderByAdmin_BillingAddress struct {
+	ID        string                                            "json:\"id\" graphql:\"id\""
+	Street    string                                            "json:\"street\" graphql:\"street\""
+	StreetTwo *string                                           "json:\"streetTwo,omitempty\" graphql:\"streetTwo\""
+	City      string                                            "json:\"city\" graphql:\"city\""
+	State     *string                                           "json:\"state,omitempty\" graphql:\"state\""
+	Postcode  string                                            "json:\"postcode\" graphql:\"postcode\""
+	Email     *string                                           "json:\"email,omitempty\" graphql:\"email\""
+	Phone     *string                                           "json:\"phone,omitempty\" graphql:\"phone\""
+	Location  OrderByAdmin_OrderByAdmin_BillingAddress_Location "json:\"location\" graphql:\"location\""
+}
+
+func (t *OrderByAdmin_OrderByAdmin_BillingAddress) GetID() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_BillingAddress{}
+	}
+	return t.ID
+}
+func (t *OrderByAdmin_OrderByAdmin_BillingAddress) GetStreet() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_BillingAddress{}
+	}
+	return t.Street
+}
+func (t *OrderByAdmin_OrderByAdmin_BillingAddress) GetStreetTwo() *string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_BillingAddress{}
+	}
+	return t.StreetTwo
+}
+func (t *OrderByAdmin_OrderByAdmin_BillingAddress) GetCity() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_BillingAddress{}
+	}
+	return t.City
+}
+func (t *OrderByAdmin_OrderByAdmin_BillingAddress) GetState() *string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_BillingAddress{}
+	}
+	return t.State
+}
+func (t *OrderByAdmin_OrderByAdmin_BillingAddress) GetPostcode() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_BillingAddress{}
+	}
+	return t.Postcode
+}
+func (t *OrderByAdmin_OrderByAdmin_BillingAddress) GetEmail() *string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_BillingAddress{}
+	}
+	return t.Email
+}
+func (t *OrderByAdmin_OrderByAdmin_BillingAddress) GetPhone() *string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_BillingAddress{}
+	}
+	return t.Phone
+}
+func (t *OrderByAdmin_OrderByAdmin_BillingAddress) GetLocation() *OrderByAdmin_OrderByAdmin_BillingAddress_Location {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_BillingAddress{}
+	}
+	return &t.Location
+}
+
+type OrderByAdmin_OrderByAdmin_ShippingAddress_Location struct {
+	ID        string "json:\"id\" graphql:\"id\""
+	Name      string "json:\"name\" graphql:\"name\""
+	ShortCode string "json:\"shortCode\" graphql:\"shortCode\""
+}
+
+func (t *OrderByAdmin_OrderByAdmin_ShippingAddress_Location) GetID() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_ShippingAddress_Location{}
+	}
+	return t.ID
+}
+func (t *OrderByAdmin_OrderByAdmin_ShippingAddress_Location) GetName() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_ShippingAddress_Location{}
+	}
+	return t.Name
+}
+func (t *OrderByAdmin_OrderByAdmin_ShippingAddress_Location) GetShortCode() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_ShippingAddress_Location{}
+	}
+	return t.ShortCode
+}
+
+type OrderByAdmin_OrderByAdmin_ShippingAddress struct {
+	ID        string                                             "json:\"id\" graphql:\"id\""
+	Street    string                                             "json:\"street\" graphql:\"street\""
+	StreetTwo *string                                            "json:\"streetTwo,omitempty\" graphql:\"streetTwo\""
+	City      string                                             "json:\"city\" graphql:\"city\""
+	State     *string                                            "json:\"state,omitempty\" graphql:\"state\""
+	Postcode  string                                             "json:\"postcode\" graphql:\"postcode\""
+	Email     *string                                            "json:\"email,omitempty\" graphql:\"email\""
+	Phone     *string                                            "json:\"phone,omitempty\" graphql:\"phone\""
+	Location  OrderByAdmin_OrderByAdmin_ShippingAddress_Location "json:\"location\" graphql:\"location\""
+}
+
+func (t *OrderByAdmin_OrderByAdmin_ShippingAddress) GetID() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_ShippingAddress{}
+	}
+	return t.ID
+}
+func (t *OrderByAdmin_OrderByAdmin_ShippingAddress) GetStreet() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_ShippingAddress{}
+	}
+	return t.Street
+}
+func (t *OrderByAdmin_OrderByAdmin_ShippingAddress) GetStreetTwo() *string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_ShippingAddress{}
+	}
+	return t.StreetTwo
+}
+func (t *OrderByAdmin_OrderByAdmin_ShippingAddress) GetCity() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_ShippingAddress{}
+	}
+	return t.City
+}
+func (t *OrderByAdmin_OrderByAdmin_ShippingAddress) GetState() *string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_ShippingAddress{}
+	}
+	return t.State
+}
+func (t *OrderByAdmin_OrderByAdmin_ShippingAddress) GetPostcode() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_ShippingAddress{}
+	}
+	return t.Postcode
+}
+func (t *OrderByAdmin_OrderByAdmin_ShippingAddress) GetEmail() *string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_ShippingAddress{}
+	}
+	return t.Email
+}
+func (t *OrderByAdmin_OrderByAdmin_ShippingAddress) GetPhone() *string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_ShippingAddress{}
+	}
+	return t.Phone
+}
+func (t *OrderByAdmin_OrderByAdmin_ShippingAddress) GetLocation() *OrderByAdmin_OrderByAdmin_ShippingAddress_Location {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_ShippingAddress{}
+	}
+	return &t.Location
+}
+
+type OrderByAdmin_OrderByAdmin_Cart_CartItems_Product struct {
+	ID         string   "json:\"id\" graphql:\"id\""
+	Name       string   "json:\"name\" graphql:\"name\""
+	Slug       string   "json:\"slug\" graphql:\"slug\""
+	FullImages []string "json:\"fullImages\" graphql:\"fullImages\""
+}
+
+func (t *OrderByAdmin_OrderByAdmin_Cart_CartItems_Product) GetID() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Cart_CartItems_Product{}
+	}
+	return t.ID
+}
+func (t *OrderByAdmin_OrderByAdmin_Cart_CartItems_Product) GetName() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Cart_CartItems_Product{}
+	}
+	return t.Name
+}
+func (t *OrderByAdmin_OrderByAdmin_Cart_CartItems_Product) GetSlug() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Cart_CartItems_Product{}
+	}
+	return t.Slug
+}
+func (t *OrderByAdmin_OrderByAdmin_Cart_CartItems_Product) GetFullImages() []string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Cart_CartItems_Product{}
+	}
+	return t.FullImages
+}
+
+type OrderByAdmin_OrderByAdmin_Cart_CartItems_Attributes struct {
+	Name          string "json:\"name\" graphql:\"name\""
+	SelectedValue string "json:\"selectedValue\" graphql:\"selectedValue\""
+}
+
+func (t *OrderByAdmin_OrderByAdmin_Cart_CartItems_Attributes) GetName() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Cart_CartItems_Attributes{}
+	}
+	return t.Name
+}
+func (t *OrderByAdmin_OrderByAdmin_Cart_CartItems_Attributes) GetSelectedValue() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Cart_CartItems_Attributes{}
+	}
+	return t.SelectedValue
+}
+
+type OrderByAdmin_OrderByAdmin_Cart_CartItems_Variation struct {
+	ID    string  "json:\"id\" graphql:\"id\""
+	Name  string  "json:\"name\" graphql:\"name\""
+	Price int     "json:\"price\" graphql:\"price\""
+	Sku   *string "json:\"sku,omitempty\" graphql:\"sku\""
+	Stock *int    "json:\"stock,omitempty\" graphql:\"stock\""
+}
+
+func (t *OrderByAdmin_OrderByAdmin_Cart_CartItems_Variation) GetID() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Cart_CartItems_Variation{}
+	}
+	return t.ID
+}
+func (t *OrderByAdmin_OrderByAdmin_Cart_CartItems_Variation) GetName() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Cart_CartItems_Variation{}
+	}
+	return t.Name
+}
+func (t *OrderByAdmin_OrderByAdmin_Cart_CartItems_Variation) GetPrice() int {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Cart_CartItems_Variation{}
+	}
+	return t.Price
+}
+func (t *OrderByAdmin_OrderByAdmin_Cart_CartItems_Variation) GetSku() *string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Cart_CartItems_Variation{}
+	}
+	return t.Sku
+}
+func (t *OrderByAdmin_OrderByAdmin_Cart_CartItems_Variation) GetStock() *int {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Cart_CartItems_Variation{}
+	}
+	return t.Stock
+}
+
+type OrderByAdmin_OrderByAdmin_Cart_CartItems struct {
+	ID            int                                                    "json:\"id\" graphql:\"id\""
+	Product       OrderByAdmin_OrderByAdmin_Cart_CartItems_Product       "json:\"product\" graphql:\"product\""
+	Quantity      int                                                    "json:\"quantity\" graphql:\"quantity\""
+	PurchasePrice int                                                    "json:\"purchasePrice\" graphql:\"purchasePrice\""
+	Attributes    []*OrderByAdmin_OrderByAdmin_Cart_CartItems_Attributes "json:\"attributes\" graphql:\"attributes\""
+	Variation     *OrderByAdmin_OrderByAdmin_Cart_CartItems_Variation    "json:\"variation,omitempty\" graphql:\"variation\""
+}
+
+func (t *OrderByAdmin_OrderByAdmin_Cart_CartItems) GetID() int {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Cart_CartItems{}
+	}
+	return t.ID
+}
+func (t *OrderByAdmin_OrderByAdmin_Cart_CartItems) GetProduct() *OrderByAdmin_OrderByAdmin_Cart_CartItems_Product {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Cart_CartItems{}
+	}
+	return &t.Product
+}
+func (t *OrderByAdmin_OrderByAdmin_Cart_CartItems) GetQuantity() int {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Cart_CartItems{}
+	}
+	return t.Quantity
+}
+func (t *OrderByAdmin_OrderByAdmin_Cart_CartItems) GetPurchasePrice() int {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Cart_CartItems{}
+	}
+	return t.PurchasePrice
+}
+func (t *OrderByAdmin_OrderByAdmin_Cart_CartItems) GetAttributes() []*OrderByAdmin_OrderByAdmin_Cart_CartItems_Attributes {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Cart_CartItems{}
+	}
+	return t.Attributes
+}
+func (t *OrderByAdmin_OrderByAdmin_Cart_CartItems) GetVariation() *OrderByAdmin_OrderByAdmin_Cart_CartItems_Variation {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Cart_CartItems{}
+	}
+	return t.Variation
+}
+
+type OrderByAdmin_OrderByAdmin_Cart struct {
+	ID                 string                                      "json:\"id\" graphql:\"id\""
+	IsShippingRequired bool                                        "json:\"isShippingRequired\" graphql:\"isShippingRequired\""
+	CartItems          []*OrderByAdmin_OrderByAdmin_Cart_CartItems "json:\"cartItems\" graphql:\"cartItems\""
+}
+
+func (t *OrderByAdmin_OrderByAdmin_Cart) GetID() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Cart{}
+	}
+	return t.ID
+}
+func (t *OrderByAdmin_OrderByAdmin_Cart) GetIsShippingRequired() bool {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Cart{}
+	}
+	return t.IsShippingRequired
+}
+func (t *OrderByAdmin_OrderByAdmin_Cart) GetCartItems() []*OrderByAdmin_OrderByAdmin_Cart_CartItems {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Cart{}
+	}
+	return t.CartItems
+}
+
+type OrderByAdmin_OrderByAdmin_Customer struct {
+	Email          string  "json:\"email\" graphql:\"email\""
+	Phone          *string "json:\"phone,omitempty\" graphql:\"phone\""
+	FirstName      string  "json:\"firstName\" graphql:\"firstName\""
+	LastName       string  "json:\"lastName\" graphql:\"lastName\""
+	ProfilePicture *string "json:\"profilePicture,omitempty\" graphql:\"profilePicture\""
+}
+
+func (t *OrderByAdmin_OrderByAdmin_Customer) GetEmail() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Customer{}
+	}
+	return t.Email
+}
+func (t *OrderByAdmin_OrderByAdmin_Customer) GetPhone() *string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Customer{}
+	}
+	return t.Phone
+}
+func (t *OrderByAdmin_OrderByAdmin_Customer) GetFirstName() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Customer{}
+	}
+	return t.FirstName
+}
+func (t *OrderByAdmin_OrderByAdmin_Customer) GetLastName() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Customer{}
+	}
+	return t.LastName
+}
+func (t *OrderByAdmin_OrderByAdmin_Customer) GetProfilePicture() *string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Customer{}
+	}
+	return t.ProfilePicture
+}
+
+type OrderByAdmin_OrderByAdmin_PaymentMethod struct {
+	ID               string "json:\"id\" graphql:\"id\""
+	DisplayName      string "json:\"displayName\" graphql:\"displayName\""
+	CurrencyName     string "json:\"currencyName\" graphql:\"currencyName\""
+	CurrencySymbol   string "json:\"currencySymbol\" graphql:\"currencySymbol\""
+	IsDigitalPayment bool   "json:\"isDigitalPayment\" graphql:\"isDigitalPayment\""
+}
+
+func (t *OrderByAdmin_OrderByAdmin_PaymentMethod) GetID() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_PaymentMethod{}
+	}
+	return t.ID
+}
+func (t *OrderByAdmin_OrderByAdmin_PaymentMethod) GetDisplayName() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_PaymentMethod{}
+	}
+	return t.DisplayName
+}
+func (t *OrderByAdmin_OrderByAdmin_PaymentMethod) GetCurrencyName() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_PaymentMethod{}
+	}
+	return t.CurrencyName
+}
+func (t *OrderByAdmin_OrderByAdmin_PaymentMethod) GetCurrencySymbol() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_PaymentMethod{}
+	}
+	return t.CurrencySymbol
+}
+func (t *OrderByAdmin_OrderByAdmin_PaymentMethod) GetIsDigitalPayment() bool {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_PaymentMethod{}
+	}
+	return t.IsDigitalPayment
+}
+
+type OrderByAdmin_OrderByAdmin_ShippingMethod struct {
+	ID                 string            "json:\"id\" graphql:\"id\""
+	DisplayName        string            "json:\"displayName\" graphql:\"displayName\""
+	DeliveryCharge     int               "json:\"deliveryCharge\" graphql:\"deliveryCharge\""
+	DeliveryTimeInDays int               "json:\"deliveryTimeInDays\" graphql:\"deliveryTimeInDays\""
+	WeightUnit         models.WeightUnit "json:\"WeightUnit\" graphql:\"WeightUnit\""
+	IsFlat             bool              "json:\"isFlat\" graphql:\"isFlat\""
+	IsActive           bool              "json:\"isActive\" graphql:\"isActive\""
+}
+
+func (t *OrderByAdmin_OrderByAdmin_ShippingMethod) GetID() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_ShippingMethod{}
+	}
+	return t.ID
+}
+func (t *OrderByAdmin_OrderByAdmin_ShippingMethod) GetDisplayName() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_ShippingMethod{}
+	}
+	return t.DisplayName
+}
+func (t *OrderByAdmin_OrderByAdmin_ShippingMethod) GetDeliveryCharge() int {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_ShippingMethod{}
+	}
+	return t.DeliveryCharge
+}
+func (t *OrderByAdmin_OrderByAdmin_ShippingMethod) GetDeliveryTimeInDays() int {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_ShippingMethod{}
+	}
+	return t.DeliveryTimeInDays
+}
+func (t *OrderByAdmin_OrderByAdmin_ShippingMethod) GetWeightUnit() *models.WeightUnit {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_ShippingMethod{}
+	}
+	return &t.WeightUnit
+}
+func (t *OrderByAdmin_OrderByAdmin_ShippingMethod) GetIsFlat() bool {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_ShippingMethod{}
+	}
+	return t.IsFlat
+}
+func (t *OrderByAdmin_OrderByAdmin_ShippingMethod) GetIsActive() bool {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_ShippingMethod{}
+	}
+	return t.IsActive
+}
+
+type OrderByAdmin_OrderByAdmin_CouponCode struct {
+	Code         string              "json:\"code\" graphql:\"code\""
+	DiscountType models.DiscountType "json:\"discountType\" graphql:\"discountType\""
+}
+
+func (t *OrderByAdmin_OrderByAdmin_CouponCode) GetCode() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_CouponCode{}
+	}
+	return t.Code
+}
+func (t *OrderByAdmin_OrderByAdmin_CouponCode) GetDiscountType() *models.DiscountType {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_CouponCode{}
+	}
+	return &t.DiscountType
+}
+
+type OrderByAdmin_OrderByAdmin_Payments struct {
+	IsPaid        bool   "json:\"isPaid\" graphql:\"isPaid\""
+	PayableAmount int    "json:\"payableAmount\" graphql:\"payableAmount\""
+	GatewayName   string "json:\"gatewayName\" graphql:\"gatewayName\""
+}
+
+func (t *OrderByAdmin_OrderByAdmin_Payments) GetIsPaid() bool {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Payments{}
+	}
+	return t.IsPaid
+}
+func (t *OrderByAdmin_OrderByAdmin_Payments) GetPayableAmount() int {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Payments{}
+	}
+	return t.PayableAmount
+}
+func (t *OrderByAdmin_OrderByAdmin_Payments) GetGatewayName() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin_Payments{}
+	}
+	return t.GatewayName
+}
+
+type OrderByAdmin_OrderByAdmin struct {
+	ID                   string                                     "json:\"id\" graphql:\"id\""
+	Hash                 string                                     "json:\"hash\" graphql:\"hash\""
+	ShippingCharge       int                                        "json:\"shippingCharge\" graphql:\"shippingCharge\""
+	PaymentProcessingFee int                                        "json:\"paymentProcessingFee\" graphql:\"paymentProcessingFee\""
+	Subtotal             int                                        "json:\"subtotal\" graphql:\"subtotal\""
+	GrandTotal           int                                        "json:\"grandTotal\" graphql:\"grandTotal\""
+	DiscountedAmount     int                                        "json:\"discountedAmount\" graphql:\"discountedAmount\""
+	Status               models.OrderStatus                         "json:\"status\" graphql:\"status\""
+	PaymentStatus        models.OrderPaymentStatus                  "json:\"paymentStatus\" graphql:\"paymentStatus\""
+	CreatedAt            string                                     "json:\"createdAt\" graphql:\"createdAt\""
+	UpdatedAt            *string                                    "json:\"updatedAt,omitempty\" graphql:\"updatedAt\""
+	BillingAddress       OrderByAdmin_OrderByAdmin_BillingAddress   "json:\"billingAddress\" graphql:\"billingAddress\""
+	ShippingAddress      *OrderByAdmin_OrderByAdmin_ShippingAddress "json:\"shippingAddress,omitempty\" graphql:\"shippingAddress\""
+	Cart                 OrderByAdmin_OrderByAdmin_Cart             "json:\"cart\" graphql:\"cart\""
+	Customer             OrderByAdmin_OrderByAdmin_Customer         "json:\"customer\" graphql:\"customer\""
+	PaymentMethod        *OrderByAdmin_OrderByAdmin_PaymentMethod   "json:\"paymentMethod,omitempty\" graphql:\"paymentMethod\""
+	ShippingMethod       *OrderByAdmin_OrderByAdmin_ShippingMethod  "json:\"shippingMethod,omitempty\" graphql:\"shippingMethod\""
+	CouponCode           *OrderByAdmin_OrderByAdmin_CouponCode      "json:\"couponCode,omitempty\" graphql:\"couponCode\""
+	Payments             []*OrderByAdmin_OrderByAdmin_Payments      "json:\"payments\" graphql:\"payments\""
+}
+
+func (t *OrderByAdmin_OrderByAdmin) GetID() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin{}
+	}
+	return t.ID
+}
+func (t *OrderByAdmin_OrderByAdmin) GetHash() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin{}
+	}
+	return t.Hash
+}
+func (t *OrderByAdmin_OrderByAdmin) GetShippingCharge() int {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin{}
+	}
+	return t.ShippingCharge
+}
+func (t *OrderByAdmin_OrderByAdmin) GetPaymentProcessingFee() int {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin{}
+	}
+	return t.PaymentProcessingFee
+}
+func (t *OrderByAdmin_OrderByAdmin) GetSubtotal() int {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin{}
+	}
+	return t.Subtotal
+}
+func (t *OrderByAdmin_OrderByAdmin) GetGrandTotal() int {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin{}
+	}
+	return t.GrandTotal
+}
+func (t *OrderByAdmin_OrderByAdmin) GetDiscountedAmount() int {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin{}
+	}
+	return t.DiscountedAmount
+}
+func (t *OrderByAdmin_OrderByAdmin) GetStatus() *models.OrderStatus {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin{}
+	}
+	return &t.Status
+}
+func (t *OrderByAdmin_OrderByAdmin) GetPaymentStatus() *models.OrderPaymentStatus {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin{}
+	}
+	return &t.PaymentStatus
+}
+func (t *OrderByAdmin_OrderByAdmin) GetCreatedAt() string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin{}
+	}
+	return t.CreatedAt
+}
+func (t *OrderByAdmin_OrderByAdmin) GetUpdatedAt() *string {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin{}
+	}
+	return t.UpdatedAt
+}
+func (t *OrderByAdmin_OrderByAdmin) GetBillingAddress() *OrderByAdmin_OrderByAdmin_BillingAddress {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin{}
+	}
+	return &t.BillingAddress
+}
+func (t *OrderByAdmin_OrderByAdmin) GetShippingAddress() *OrderByAdmin_OrderByAdmin_ShippingAddress {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin{}
+	}
+	return t.ShippingAddress
+}
+func (t *OrderByAdmin_OrderByAdmin) GetCart() *OrderByAdmin_OrderByAdmin_Cart {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin{}
+	}
+	return &t.Cart
+}
+func (t *OrderByAdmin_OrderByAdmin) GetCustomer() *OrderByAdmin_OrderByAdmin_Customer {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin{}
+	}
+	return &t.Customer
+}
+func (t *OrderByAdmin_OrderByAdmin) GetPaymentMethod() *OrderByAdmin_OrderByAdmin_PaymentMethod {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin{}
+	}
+	return t.PaymentMethod
+}
+func (t *OrderByAdmin_OrderByAdmin) GetShippingMethod() *OrderByAdmin_OrderByAdmin_ShippingMethod {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin{}
+	}
+	return t.ShippingMethod
+}
+func (t *OrderByAdmin_OrderByAdmin) GetCouponCode() *OrderByAdmin_OrderByAdmin_CouponCode {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin{}
+	}
+	return t.CouponCode
+}
+func (t *OrderByAdmin_OrderByAdmin) GetPayments() []*OrderByAdmin_OrderByAdmin_Payments {
+	if t == nil {
+		t = &OrderByAdmin_OrderByAdmin{}
+	}
+	return t.Payments
 }
 
 type OrderByCustomerEmail_OrderByCustomerEmail_BillingAddress_Location struct {
@@ -2524,6 +4360,1316 @@ func (t *OrderByCustomerEmail_OrderByCustomerEmail) GetPayments() []*OrderByCust
 	return t.Payments
 }
 
+type Orders_Orders_BillingAddress_Location struct {
+	ID        string "json:\"id\" graphql:\"id\""
+	Name      string "json:\"name\" graphql:\"name\""
+	ShortCode string "json:\"shortCode\" graphql:\"shortCode\""
+}
+
+func (t *Orders_Orders_BillingAddress_Location) GetID() string {
+	if t == nil {
+		t = &Orders_Orders_BillingAddress_Location{}
+	}
+	return t.ID
+}
+func (t *Orders_Orders_BillingAddress_Location) GetName() string {
+	if t == nil {
+		t = &Orders_Orders_BillingAddress_Location{}
+	}
+	return t.Name
+}
+func (t *Orders_Orders_BillingAddress_Location) GetShortCode() string {
+	if t == nil {
+		t = &Orders_Orders_BillingAddress_Location{}
+	}
+	return t.ShortCode
+}
+
+type Orders_Orders_BillingAddress struct {
+	ID        string                                "json:\"id\" graphql:\"id\""
+	Street    string                                "json:\"street\" graphql:\"street\""
+	StreetTwo *string                               "json:\"streetTwo,omitempty\" graphql:\"streetTwo\""
+	City      string                                "json:\"city\" graphql:\"city\""
+	State     *string                               "json:\"state,omitempty\" graphql:\"state\""
+	Postcode  string                                "json:\"postcode\" graphql:\"postcode\""
+	Email     *string                               "json:\"email,omitempty\" graphql:\"email\""
+	Phone     *string                               "json:\"phone,omitempty\" graphql:\"phone\""
+	Location  Orders_Orders_BillingAddress_Location "json:\"location\" graphql:\"location\""
+}
+
+func (t *Orders_Orders_BillingAddress) GetID() string {
+	if t == nil {
+		t = &Orders_Orders_BillingAddress{}
+	}
+	return t.ID
+}
+func (t *Orders_Orders_BillingAddress) GetStreet() string {
+	if t == nil {
+		t = &Orders_Orders_BillingAddress{}
+	}
+	return t.Street
+}
+func (t *Orders_Orders_BillingAddress) GetStreetTwo() *string {
+	if t == nil {
+		t = &Orders_Orders_BillingAddress{}
+	}
+	return t.StreetTwo
+}
+func (t *Orders_Orders_BillingAddress) GetCity() string {
+	if t == nil {
+		t = &Orders_Orders_BillingAddress{}
+	}
+	return t.City
+}
+func (t *Orders_Orders_BillingAddress) GetState() *string {
+	if t == nil {
+		t = &Orders_Orders_BillingAddress{}
+	}
+	return t.State
+}
+func (t *Orders_Orders_BillingAddress) GetPostcode() string {
+	if t == nil {
+		t = &Orders_Orders_BillingAddress{}
+	}
+	return t.Postcode
+}
+func (t *Orders_Orders_BillingAddress) GetEmail() *string {
+	if t == nil {
+		t = &Orders_Orders_BillingAddress{}
+	}
+	return t.Email
+}
+func (t *Orders_Orders_BillingAddress) GetPhone() *string {
+	if t == nil {
+		t = &Orders_Orders_BillingAddress{}
+	}
+	return t.Phone
+}
+func (t *Orders_Orders_BillingAddress) GetLocation() *Orders_Orders_BillingAddress_Location {
+	if t == nil {
+		t = &Orders_Orders_BillingAddress{}
+	}
+	return &t.Location
+}
+
+type Orders_Orders_ShippingAddress_Location struct {
+	ID        string "json:\"id\" graphql:\"id\""
+	Name      string "json:\"name\" graphql:\"name\""
+	ShortCode string "json:\"shortCode\" graphql:\"shortCode\""
+}
+
+func (t *Orders_Orders_ShippingAddress_Location) GetID() string {
+	if t == nil {
+		t = &Orders_Orders_ShippingAddress_Location{}
+	}
+	return t.ID
+}
+func (t *Orders_Orders_ShippingAddress_Location) GetName() string {
+	if t == nil {
+		t = &Orders_Orders_ShippingAddress_Location{}
+	}
+	return t.Name
+}
+func (t *Orders_Orders_ShippingAddress_Location) GetShortCode() string {
+	if t == nil {
+		t = &Orders_Orders_ShippingAddress_Location{}
+	}
+	return t.ShortCode
+}
+
+type Orders_Orders_ShippingAddress struct {
+	ID        string                                 "json:\"id\" graphql:\"id\""
+	Street    string                                 "json:\"street\" graphql:\"street\""
+	StreetTwo *string                                "json:\"streetTwo,omitempty\" graphql:\"streetTwo\""
+	City      string                                 "json:\"city\" graphql:\"city\""
+	State     *string                                "json:\"state,omitempty\" graphql:\"state\""
+	Postcode  string                                 "json:\"postcode\" graphql:\"postcode\""
+	Email     *string                                "json:\"email,omitempty\" graphql:\"email\""
+	Phone     *string                                "json:\"phone,omitempty\" graphql:\"phone\""
+	Location  Orders_Orders_ShippingAddress_Location "json:\"location\" graphql:\"location\""
+}
+
+func (t *Orders_Orders_ShippingAddress) GetID() string {
+	if t == nil {
+		t = &Orders_Orders_ShippingAddress{}
+	}
+	return t.ID
+}
+func (t *Orders_Orders_ShippingAddress) GetStreet() string {
+	if t == nil {
+		t = &Orders_Orders_ShippingAddress{}
+	}
+	return t.Street
+}
+func (t *Orders_Orders_ShippingAddress) GetStreetTwo() *string {
+	if t == nil {
+		t = &Orders_Orders_ShippingAddress{}
+	}
+	return t.StreetTwo
+}
+func (t *Orders_Orders_ShippingAddress) GetCity() string {
+	if t == nil {
+		t = &Orders_Orders_ShippingAddress{}
+	}
+	return t.City
+}
+func (t *Orders_Orders_ShippingAddress) GetState() *string {
+	if t == nil {
+		t = &Orders_Orders_ShippingAddress{}
+	}
+	return t.State
+}
+func (t *Orders_Orders_ShippingAddress) GetPostcode() string {
+	if t == nil {
+		t = &Orders_Orders_ShippingAddress{}
+	}
+	return t.Postcode
+}
+func (t *Orders_Orders_ShippingAddress) GetEmail() *string {
+	if t == nil {
+		t = &Orders_Orders_ShippingAddress{}
+	}
+	return t.Email
+}
+func (t *Orders_Orders_ShippingAddress) GetPhone() *string {
+	if t == nil {
+		t = &Orders_Orders_ShippingAddress{}
+	}
+	return t.Phone
+}
+func (t *Orders_Orders_ShippingAddress) GetLocation() *Orders_Orders_ShippingAddress_Location {
+	if t == nil {
+		t = &Orders_Orders_ShippingAddress{}
+	}
+	return &t.Location
+}
+
+type Orders_Orders_Cart_CartItems_Product struct {
+	ID         string   "json:\"id\" graphql:\"id\""
+	Name       string   "json:\"name\" graphql:\"name\""
+	Slug       string   "json:\"slug\" graphql:\"slug\""
+	FullImages []string "json:\"fullImages\" graphql:\"fullImages\""
+}
+
+func (t *Orders_Orders_Cart_CartItems_Product) GetID() string {
+	if t == nil {
+		t = &Orders_Orders_Cart_CartItems_Product{}
+	}
+	return t.ID
+}
+func (t *Orders_Orders_Cart_CartItems_Product) GetName() string {
+	if t == nil {
+		t = &Orders_Orders_Cart_CartItems_Product{}
+	}
+	return t.Name
+}
+func (t *Orders_Orders_Cart_CartItems_Product) GetSlug() string {
+	if t == nil {
+		t = &Orders_Orders_Cart_CartItems_Product{}
+	}
+	return t.Slug
+}
+func (t *Orders_Orders_Cart_CartItems_Product) GetFullImages() []string {
+	if t == nil {
+		t = &Orders_Orders_Cart_CartItems_Product{}
+	}
+	return t.FullImages
+}
+
+type Orders_Orders_Cart_CartItems_Attributes struct {
+	Name          string "json:\"name\" graphql:\"name\""
+	SelectedValue string "json:\"selectedValue\" graphql:\"selectedValue\""
+}
+
+func (t *Orders_Orders_Cart_CartItems_Attributes) GetName() string {
+	if t == nil {
+		t = &Orders_Orders_Cart_CartItems_Attributes{}
+	}
+	return t.Name
+}
+func (t *Orders_Orders_Cart_CartItems_Attributes) GetSelectedValue() string {
+	if t == nil {
+		t = &Orders_Orders_Cart_CartItems_Attributes{}
+	}
+	return t.SelectedValue
+}
+
+type Orders_Orders_Cart_CartItems_Variation struct {
+	ID    string  "json:\"id\" graphql:\"id\""
+	Name  string  "json:\"name\" graphql:\"name\""
+	Price int     "json:\"price\" graphql:\"price\""
+	Sku   *string "json:\"sku,omitempty\" graphql:\"sku\""
+	Stock *int    "json:\"stock,omitempty\" graphql:\"stock\""
+}
+
+func (t *Orders_Orders_Cart_CartItems_Variation) GetID() string {
+	if t == nil {
+		t = &Orders_Orders_Cart_CartItems_Variation{}
+	}
+	return t.ID
+}
+func (t *Orders_Orders_Cart_CartItems_Variation) GetName() string {
+	if t == nil {
+		t = &Orders_Orders_Cart_CartItems_Variation{}
+	}
+	return t.Name
+}
+func (t *Orders_Orders_Cart_CartItems_Variation) GetPrice() int {
+	if t == nil {
+		t = &Orders_Orders_Cart_CartItems_Variation{}
+	}
+	return t.Price
+}
+func (t *Orders_Orders_Cart_CartItems_Variation) GetSku() *string {
+	if t == nil {
+		t = &Orders_Orders_Cart_CartItems_Variation{}
+	}
+	return t.Sku
+}
+func (t *Orders_Orders_Cart_CartItems_Variation) GetStock() *int {
+	if t == nil {
+		t = &Orders_Orders_Cart_CartItems_Variation{}
+	}
+	return t.Stock
+}
+
+type Orders_Orders_Cart_CartItems struct {
+	ID            int                                        "json:\"id\" graphql:\"id\""
+	Product       Orders_Orders_Cart_CartItems_Product       "json:\"product\" graphql:\"product\""
+	Quantity      int                                        "json:\"quantity\" graphql:\"quantity\""
+	PurchasePrice int                                        "json:\"purchasePrice\" graphql:\"purchasePrice\""
+	Attributes    []*Orders_Orders_Cart_CartItems_Attributes "json:\"attributes\" graphql:\"attributes\""
+	Variation     *Orders_Orders_Cart_CartItems_Variation    "json:\"variation,omitempty\" graphql:\"variation\""
+}
+
+func (t *Orders_Orders_Cart_CartItems) GetID() int {
+	if t == nil {
+		t = &Orders_Orders_Cart_CartItems{}
+	}
+	return t.ID
+}
+func (t *Orders_Orders_Cart_CartItems) GetProduct() *Orders_Orders_Cart_CartItems_Product {
+	if t == nil {
+		t = &Orders_Orders_Cart_CartItems{}
+	}
+	return &t.Product
+}
+func (t *Orders_Orders_Cart_CartItems) GetQuantity() int {
+	if t == nil {
+		t = &Orders_Orders_Cart_CartItems{}
+	}
+	return t.Quantity
+}
+func (t *Orders_Orders_Cart_CartItems) GetPurchasePrice() int {
+	if t == nil {
+		t = &Orders_Orders_Cart_CartItems{}
+	}
+	return t.PurchasePrice
+}
+func (t *Orders_Orders_Cart_CartItems) GetAttributes() []*Orders_Orders_Cart_CartItems_Attributes {
+	if t == nil {
+		t = &Orders_Orders_Cart_CartItems{}
+	}
+	return t.Attributes
+}
+func (t *Orders_Orders_Cart_CartItems) GetVariation() *Orders_Orders_Cart_CartItems_Variation {
+	if t == nil {
+		t = &Orders_Orders_Cart_CartItems{}
+	}
+	return t.Variation
+}
+
+type Orders_Orders_Cart struct {
+	ID                 string                          "json:\"id\" graphql:\"id\""
+	IsShippingRequired bool                            "json:\"isShippingRequired\" graphql:\"isShippingRequired\""
+	CartItems          []*Orders_Orders_Cart_CartItems "json:\"cartItems\" graphql:\"cartItems\""
+}
+
+func (t *Orders_Orders_Cart) GetID() string {
+	if t == nil {
+		t = &Orders_Orders_Cart{}
+	}
+	return t.ID
+}
+func (t *Orders_Orders_Cart) GetIsShippingRequired() bool {
+	if t == nil {
+		t = &Orders_Orders_Cart{}
+	}
+	return t.IsShippingRequired
+}
+func (t *Orders_Orders_Cart) GetCartItems() []*Orders_Orders_Cart_CartItems {
+	if t == nil {
+		t = &Orders_Orders_Cart{}
+	}
+	return t.CartItems
+}
+
+type Orders_Orders_Customer struct {
+	Email          string  "json:\"email\" graphql:\"email\""
+	Phone          *string "json:\"phone,omitempty\" graphql:\"phone\""
+	FirstName      string  "json:\"firstName\" graphql:\"firstName\""
+	LastName       string  "json:\"lastName\" graphql:\"lastName\""
+	ProfilePicture *string "json:\"profilePicture,omitempty\" graphql:\"profilePicture\""
+}
+
+func (t *Orders_Orders_Customer) GetEmail() string {
+	if t == nil {
+		t = &Orders_Orders_Customer{}
+	}
+	return t.Email
+}
+func (t *Orders_Orders_Customer) GetPhone() *string {
+	if t == nil {
+		t = &Orders_Orders_Customer{}
+	}
+	return t.Phone
+}
+func (t *Orders_Orders_Customer) GetFirstName() string {
+	if t == nil {
+		t = &Orders_Orders_Customer{}
+	}
+	return t.FirstName
+}
+func (t *Orders_Orders_Customer) GetLastName() string {
+	if t == nil {
+		t = &Orders_Orders_Customer{}
+	}
+	return t.LastName
+}
+func (t *Orders_Orders_Customer) GetProfilePicture() *string {
+	if t == nil {
+		t = &Orders_Orders_Customer{}
+	}
+	return t.ProfilePicture
+}
+
+type Orders_Orders_PaymentMethod struct {
+	ID               string "json:\"id\" graphql:\"id\""
+	DisplayName      string "json:\"displayName\" graphql:\"displayName\""
+	CurrencyName     string "json:\"currencyName\" graphql:\"currencyName\""
+	CurrencySymbol   string "json:\"currencySymbol\" graphql:\"currencySymbol\""
+	IsDigitalPayment bool   "json:\"isDigitalPayment\" graphql:\"isDigitalPayment\""
+}
+
+func (t *Orders_Orders_PaymentMethod) GetID() string {
+	if t == nil {
+		t = &Orders_Orders_PaymentMethod{}
+	}
+	return t.ID
+}
+func (t *Orders_Orders_PaymentMethod) GetDisplayName() string {
+	if t == nil {
+		t = &Orders_Orders_PaymentMethod{}
+	}
+	return t.DisplayName
+}
+func (t *Orders_Orders_PaymentMethod) GetCurrencyName() string {
+	if t == nil {
+		t = &Orders_Orders_PaymentMethod{}
+	}
+	return t.CurrencyName
+}
+func (t *Orders_Orders_PaymentMethod) GetCurrencySymbol() string {
+	if t == nil {
+		t = &Orders_Orders_PaymentMethod{}
+	}
+	return t.CurrencySymbol
+}
+func (t *Orders_Orders_PaymentMethod) GetIsDigitalPayment() bool {
+	if t == nil {
+		t = &Orders_Orders_PaymentMethod{}
+	}
+	return t.IsDigitalPayment
+}
+
+type Orders_Orders_ShippingMethod struct {
+	ID                 string            "json:\"id\" graphql:\"id\""
+	DisplayName        string            "json:\"displayName\" graphql:\"displayName\""
+	DeliveryCharge     int               "json:\"deliveryCharge\" graphql:\"deliveryCharge\""
+	DeliveryTimeInDays int               "json:\"deliveryTimeInDays\" graphql:\"deliveryTimeInDays\""
+	WeightUnit         models.WeightUnit "json:\"WeightUnit\" graphql:\"WeightUnit\""
+	IsFlat             bool              "json:\"isFlat\" graphql:\"isFlat\""
+	IsActive           bool              "json:\"isActive\" graphql:\"isActive\""
+}
+
+func (t *Orders_Orders_ShippingMethod) GetID() string {
+	if t == nil {
+		t = &Orders_Orders_ShippingMethod{}
+	}
+	return t.ID
+}
+func (t *Orders_Orders_ShippingMethod) GetDisplayName() string {
+	if t == nil {
+		t = &Orders_Orders_ShippingMethod{}
+	}
+	return t.DisplayName
+}
+func (t *Orders_Orders_ShippingMethod) GetDeliveryCharge() int {
+	if t == nil {
+		t = &Orders_Orders_ShippingMethod{}
+	}
+	return t.DeliveryCharge
+}
+func (t *Orders_Orders_ShippingMethod) GetDeliveryTimeInDays() int {
+	if t == nil {
+		t = &Orders_Orders_ShippingMethod{}
+	}
+	return t.DeliveryTimeInDays
+}
+func (t *Orders_Orders_ShippingMethod) GetWeightUnit() *models.WeightUnit {
+	if t == nil {
+		t = &Orders_Orders_ShippingMethod{}
+	}
+	return &t.WeightUnit
+}
+func (t *Orders_Orders_ShippingMethod) GetIsFlat() bool {
+	if t == nil {
+		t = &Orders_Orders_ShippingMethod{}
+	}
+	return t.IsFlat
+}
+func (t *Orders_Orders_ShippingMethod) GetIsActive() bool {
+	if t == nil {
+		t = &Orders_Orders_ShippingMethod{}
+	}
+	return t.IsActive
+}
+
+type Orders_Orders_CouponCode struct {
+	Code         string              "json:\"code\" graphql:\"code\""
+	DiscountType models.DiscountType "json:\"discountType\" graphql:\"discountType\""
+}
+
+func (t *Orders_Orders_CouponCode) GetCode() string {
+	if t == nil {
+		t = &Orders_Orders_CouponCode{}
+	}
+	return t.Code
+}
+func (t *Orders_Orders_CouponCode) GetDiscountType() *models.DiscountType {
+	if t == nil {
+		t = &Orders_Orders_CouponCode{}
+	}
+	return &t.DiscountType
+}
+
+type Orders_Orders_Payments struct {
+	IsPaid        bool   "json:\"isPaid\" graphql:\"isPaid\""
+	PayableAmount int    "json:\"payableAmount\" graphql:\"payableAmount\""
+	GatewayName   string "json:\"gatewayName\" graphql:\"gatewayName\""
+}
+
+func (t *Orders_Orders_Payments) GetIsPaid() bool {
+	if t == nil {
+		t = &Orders_Orders_Payments{}
+	}
+	return t.IsPaid
+}
+func (t *Orders_Orders_Payments) GetPayableAmount() int {
+	if t == nil {
+		t = &Orders_Orders_Payments{}
+	}
+	return t.PayableAmount
+}
+func (t *Orders_Orders_Payments) GetGatewayName() string {
+	if t == nil {
+		t = &Orders_Orders_Payments{}
+	}
+	return t.GatewayName
+}
+
+type Orders_Orders struct {
+	ID                   string                         "json:\"id\" graphql:\"id\""
+	Hash                 string                         "json:\"hash\" graphql:\"hash\""
+	ShippingCharge       int                            "json:\"shippingCharge\" graphql:\"shippingCharge\""
+	PaymentProcessingFee int                            "json:\"paymentProcessingFee\" graphql:\"paymentProcessingFee\""
+	Subtotal             int                            "json:\"subtotal\" graphql:\"subtotal\""
+	GrandTotal           int                            "json:\"grandTotal\" graphql:\"grandTotal\""
+	DiscountedAmount     int                            "json:\"discountedAmount\" graphql:\"discountedAmount\""
+	Status               models.OrderStatus             "json:\"status\" graphql:\"status\""
+	PaymentStatus        models.OrderPaymentStatus      "json:\"paymentStatus\" graphql:\"paymentStatus\""
+	CreatedAt            string                         "json:\"createdAt\" graphql:\"createdAt\""
+	UpdatedAt            *string                        "json:\"updatedAt,omitempty\" graphql:\"updatedAt\""
+	BillingAddress       Orders_Orders_BillingAddress   "json:\"billingAddress\" graphql:\"billingAddress\""
+	ShippingAddress      *Orders_Orders_ShippingAddress "json:\"shippingAddress,omitempty\" graphql:\"shippingAddress\""
+	Cart                 Orders_Orders_Cart             "json:\"cart\" graphql:\"cart\""
+	Customer             Orders_Orders_Customer         "json:\"customer\" graphql:\"customer\""
+	PaymentMethod        *Orders_Orders_PaymentMethod   "json:\"paymentMethod,omitempty\" graphql:\"paymentMethod\""
+	ShippingMethod       *Orders_Orders_ShippingMethod  "json:\"shippingMethod,omitempty\" graphql:\"shippingMethod\""
+	CouponCode           *Orders_Orders_CouponCode      "json:\"couponCode,omitempty\" graphql:\"couponCode\""
+	Payments             []*Orders_Orders_Payments      "json:\"payments\" graphql:\"payments\""
+}
+
+func (t *Orders_Orders) GetID() string {
+	if t == nil {
+		t = &Orders_Orders{}
+	}
+	return t.ID
+}
+func (t *Orders_Orders) GetHash() string {
+	if t == nil {
+		t = &Orders_Orders{}
+	}
+	return t.Hash
+}
+func (t *Orders_Orders) GetShippingCharge() int {
+	if t == nil {
+		t = &Orders_Orders{}
+	}
+	return t.ShippingCharge
+}
+func (t *Orders_Orders) GetPaymentProcessingFee() int {
+	if t == nil {
+		t = &Orders_Orders{}
+	}
+	return t.PaymentProcessingFee
+}
+func (t *Orders_Orders) GetSubtotal() int {
+	if t == nil {
+		t = &Orders_Orders{}
+	}
+	return t.Subtotal
+}
+func (t *Orders_Orders) GetGrandTotal() int {
+	if t == nil {
+		t = &Orders_Orders{}
+	}
+	return t.GrandTotal
+}
+func (t *Orders_Orders) GetDiscountedAmount() int {
+	if t == nil {
+		t = &Orders_Orders{}
+	}
+	return t.DiscountedAmount
+}
+func (t *Orders_Orders) GetStatus() *models.OrderStatus {
+	if t == nil {
+		t = &Orders_Orders{}
+	}
+	return &t.Status
+}
+func (t *Orders_Orders) GetPaymentStatus() *models.OrderPaymentStatus {
+	if t == nil {
+		t = &Orders_Orders{}
+	}
+	return &t.PaymentStatus
+}
+func (t *Orders_Orders) GetCreatedAt() string {
+	if t == nil {
+		t = &Orders_Orders{}
+	}
+	return t.CreatedAt
+}
+func (t *Orders_Orders) GetUpdatedAt() *string {
+	if t == nil {
+		t = &Orders_Orders{}
+	}
+	return t.UpdatedAt
+}
+func (t *Orders_Orders) GetBillingAddress() *Orders_Orders_BillingAddress {
+	if t == nil {
+		t = &Orders_Orders{}
+	}
+	return &t.BillingAddress
+}
+func (t *Orders_Orders) GetShippingAddress() *Orders_Orders_ShippingAddress {
+	if t == nil {
+		t = &Orders_Orders{}
+	}
+	return t.ShippingAddress
+}
+func (t *Orders_Orders) GetCart() *Orders_Orders_Cart {
+	if t == nil {
+		t = &Orders_Orders{}
+	}
+	return &t.Cart
+}
+func (t *Orders_Orders) GetCustomer() *Orders_Orders_Customer {
+	if t == nil {
+		t = &Orders_Orders{}
+	}
+	return &t.Customer
+}
+func (t *Orders_Orders) GetPaymentMethod() *Orders_Orders_PaymentMethod {
+	if t == nil {
+		t = &Orders_Orders{}
+	}
+	return t.PaymentMethod
+}
+func (t *Orders_Orders) GetShippingMethod() *Orders_Orders_ShippingMethod {
+	if t == nil {
+		t = &Orders_Orders{}
+	}
+	return t.ShippingMethod
+}
+func (t *Orders_Orders) GetCouponCode() *Orders_Orders_CouponCode {
+	if t == nil {
+		t = &Orders_Orders{}
+	}
+	return t.CouponCode
+}
+func (t *Orders_Orders) GetPayments() []*Orders_Orders_Payments {
+	if t == nil {
+		t = &Orders_Orders{}
+	}
+	return t.Payments
+}
+
+type OrdersByAdmin_OrdersByAdmin_BillingAddress_Location struct {
+	ID        string "json:\"id\" graphql:\"id\""
+	Name      string "json:\"name\" graphql:\"name\""
+	ShortCode string "json:\"shortCode\" graphql:\"shortCode\""
+}
+
+func (t *OrdersByAdmin_OrdersByAdmin_BillingAddress_Location) GetID() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_BillingAddress_Location{}
+	}
+	return t.ID
+}
+func (t *OrdersByAdmin_OrdersByAdmin_BillingAddress_Location) GetName() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_BillingAddress_Location{}
+	}
+	return t.Name
+}
+func (t *OrdersByAdmin_OrdersByAdmin_BillingAddress_Location) GetShortCode() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_BillingAddress_Location{}
+	}
+	return t.ShortCode
+}
+
+type OrdersByAdmin_OrdersByAdmin_BillingAddress struct {
+	ID        string                                              "json:\"id\" graphql:\"id\""
+	Street    string                                              "json:\"street\" graphql:\"street\""
+	StreetTwo *string                                             "json:\"streetTwo,omitempty\" graphql:\"streetTwo\""
+	City      string                                              "json:\"city\" graphql:\"city\""
+	State     *string                                             "json:\"state,omitempty\" graphql:\"state\""
+	Postcode  string                                              "json:\"postcode\" graphql:\"postcode\""
+	Email     *string                                             "json:\"email,omitempty\" graphql:\"email\""
+	Phone     *string                                             "json:\"phone,omitempty\" graphql:\"phone\""
+	Location  OrdersByAdmin_OrdersByAdmin_BillingAddress_Location "json:\"location\" graphql:\"location\""
+}
+
+func (t *OrdersByAdmin_OrdersByAdmin_BillingAddress) GetID() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_BillingAddress{}
+	}
+	return t.ID
+}
+func (t *OrdersByAdmin_OrdersByAdmin_BillingAddress) GetStreet() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_BillingAddress{}
+	}
+	return t.Street
+}
+func (t *OrdersByAdmin_OrdersByAdmin_BillingAddress) GetStreetTwo() *string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_BillingAddress{}
+	}
+	return t.StreetTwo
+}
+func (t *OrdersByAdmin_OrdersByAdmin_BillingAddress) GetCity() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_BillingAddress{}
+	}
+	return t.City
+}
+func (t *OrdersByAdmin_OrdersByAdmin_BillingAddress) GetState() *string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_BillingAddress{}
+	}
+	return t.State
+}
+func (t *OrdersByAdmin_OrdersByAdmin_BillingAddress) GetPostcode() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_BillingAddress{}
+	}
+	return t.Postcode
+}
+func (t *OrdersByAdmin_OrdersByAdmin_BillingAddress) GetEmail() *string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_BillingAddress{}
+	}
+	return t.Email
+}
+func (t *OrdersByAdmin_OrdersByAdmin_BillingAddress) GetPhone() *string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_BillingAddress{}
+	}
+	return t.Phone
+}
+func (t *OrdersByAdmin_OrdersByAdmin_BillingAddress) GetLocation() *OrdersByAdmin_OrdersByAdmin_BillingAddress_Location {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_BillingAddress{}
+	}
+	return &t.Location
+}
+
+type OrdersByAdmin_OrdersByAdmin_ShippingAddress_Location struct {
+	ID        string "json:\"id\" graphql:\"id\""
+	Name      string "json:\"name\" graphql:\"name\""
+	ShortCode string "json:\"shortCode\" graphql:\"shortCode\""
+}
+
+func (t *OrdersByAdmin_OrdersByAdmin_ShippingAddress_Location) GetID() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_ShippingAddress_Location{}
+	}
+	return t.ID
+}
+func (t *OrdersByAdmin_OrdersByAdmin_ShippingAddress_Location) GetName() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_ShippingAddress_Location{}
+	}
+	return t.Name
+}
+func (t *OrdersByAdmin_OrdersByAdmin_ShippingAddress_Location) GetShortCode() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_ShippingAddress_Location{}
+	}
+	return t.ShortCode
+}
+
+type OrdersByAdmin_OrdersByAdmin_ShippingAddress struct {
+	ID        string                                               "json:\"id\" graphql:\"id\""
+	Street    string                                               "json:\"street\" graphql:\"street\""
+	StreetTwo *string                                              "json:\"streetTwo,omitempty\" graphql:\"streetTwo\""
+	City      string                                               "json:\"city\" graphql:\"city\""
+	State     *string                                              "json:\"state,omitempty\" graphql:\"state\""
+	Postcode  string                                               "json:\"postcode\" graphql:\"postcode\""
+	Email     *string                                              "json:\"email,omitempty\" graphql:\"email\""
+	Phone     *string                                              "json:\"phone,omitempty\" graphql:\"phone\""
+	Location  OrdersByAdmin_OrdersByAdmin_ShippingAddress_Location "json:\"location\" graphql:\"location\""
+}
+
+func (t *OrdersByAdmin_OrdersByAdmin_ShippingAddress) GetID() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_ShippingAddress{}
+	}
+	return t.ID
+}
+func (t *OrdersByAdmin_OrdersByAdmin_ShippingAddress) GetStreet() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_ShippingAddress{}
+	}
+	return t.Street
+}
+func (t *OrdersByAdmin_OrdersByAdmin_ShippingAddress) GetStreetTwo() *string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_ShippingAddress{}
+	}
+	return t.StreetTwo
+}
+func (t *OrdersByAdmin_OrdersByAdmin_ShippingAddress) GetCity() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_ShippingAddress{}
+	}
+	return t.City
+}
+func (t *OrdersByAdmin_OrdersByAdmin_ShippingAddress) GetState() *string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_ShippingAddress{}
+	}
+	return t.State
+}
+func (t *OrdersByAdmin_OrdersByAdmin_ShippingAddress) GetPostcode() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_ShippingAddress{}
+	}
+	return t.Postcode
+}
+func (t *OrdersByAdmin_OrdersByAdmin_ShippingAddress) GetEmail() *string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_ShippingAddress{}
+	}
+	return t.Email
+}
+func (t *OrdersByAdmin_OrdersByAdmin_ShippingAddress) GetPhone() *string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_ShippingAddress{}
+	}
+	return t.Phone
+}
+func (t *OrdersByAdmin_OrdersByAdmin_ShippingAddress) GetLocation() *OrdersByAdmin_OrdersByAdmin_ShippingAddress_Location {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_ShippingAddress{}
+	}
+	return &t.Location
+}
+
+type OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Product struct {
+	ID         string   "json:\"id\" graphql:\"id\""
+	Name       string   "json:\"name\" graphql:\"name\""
+	Slug       string   "json:\"slug\" graphql:\"slug\""
+	FullImages []string "json:\"fullImages\" graphql:\"fullImages\""
+}
+
+func (t *OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Product) GetID() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Product{}
+	}
+	return t.ID
+}
+func (t *OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Product) GetName() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Product{}
+	}
+	return t.Name
+}
+func (t *OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Product) GetSlug() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Product{}
+	}
+	return t.Slug
+}
+func (t *OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Product) GetFullImages() []string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Product{}
+	}
+	return t.FullImages
+}
+
+type OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Attributes struct {
+	Name          string "json:\"name\" graphql:\"name\""
+	SelectedValue string "json:\"selectedValue\" graphql:\"selectedValue\""
+}
+
+func (t *OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Attributes) GetName() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Attributes{}
+	}
+	return t.Name
+}
+func (t *OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Attributes) GetSelectedValue() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Attributes{}
+	}
+	return t.SelectedValue
+}
+
+type OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Variation struct {
+	ID    string  "json:\"id\" graphql:\"id\""
+	Name  string  "json:\"name\" graphql:\"name\""
+	Price int     "json:\"price\" graphql:\"price\""
+	Sku   *string "json:\"sku,omitempty\" graphql:\"sku\""
+	Stock *int    "json:\"stock,omitempty\" graphql:\"stock\""
+}
+
+func (t *OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Variation) GetID() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Variation{}
+	}
+	return t.ID
+}
+func (t *OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Variation) GetName() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Variation{}
+	}
+	return t.Name
+}
+func (t *OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Variation) GetPrice() int {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Variation{}
+	}
+	return t.Price
+}
+func (t *OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Variation) GetSku() *string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Variation{}
+	}
+	return t.Sku
+}
+func (t *OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Variation) GetStock() *int {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Variation{}
+	}
+	return t.Stock
+}
+
+type OrdersByAdmin_OrdersByAdmin_Cart_CartItems struct {
+	ID            int                                                      "json:\"id\" graphql:\"id\""
+	Product       OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Product       "json:\"product\" graphql:\"product\""
+	Quantity      int                                                      "json:\"quantity\" graphql:\"quantity\""
+	PurchasePrice int                                                      "json:\"purchasePrice\" graphql:\"purchasePrice\""
+	Attributes    []*OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Attributes "json:\"attributes\" graphql:\"attributes\""
+	Variation     *OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Variation    "json:\"variation,omitempty\" graphql:\"variation\""
+}
+
+func (t *OrdersByAdmin_OrdersByAdmin_Cart_CartItems) GetID() int {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Cart_CartItems{}
+	}
+	return t.ID
+}
+func (t *OrdersByAdmin_OrdersByAdmin_Cart_CartItems) GetProduct() *OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Product {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Cart_CartItems{}
+	}
+	return &t.Product
+}
+func (t *OrdersByAdmin_OrdersByAdmin_Cart_CartItems) GetQuantity() int {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Cart_CartItems{}
+	}
+	return t.Quantity
+}
+func (t *OrdersByAdmin_OrdersByAdmin_Cart_CartItems) GetPurchasePrice() int {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Cart_CartItems{}
+	}
+	return t.PurchasePrice
+}
+func (t *OrdersByAdmin_OrdersByAdmin_Cart_CartItems) GetAttributes() []*OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Attributes {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Cart_CartItems{}
+	}
+	return t.Attributes
+}
+func (t *OrdersByAdmin_OrdersByAdmin_Cart_CartItems) GetVariation() *OrdersByAdmin_OrdersByAdmin_Cart_CartItems_Variation {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Cart_CartItems{}
+	}
+	return t.Variation
+}
+
+type OrdersByAdmin_OrdersByAdmin_Cart struct {
+	ID                 string                                        "json:\"id\" graphql:\"id\""
+	IsShippingRequired bool                                          "json:\"isShippingRequired\" graphql:\"isShippingRequired\""
+	CartItems          []*OrdersByAdmin_OrdersByAdmin_Cart_CartItems "json:\"cartItems\" graphql:\"cartItems\""
+}
+
+func (t *OrdersByAdmin_OrdersByAdmin_Cart) GetID() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Cart{}
+	}
+	return t.ID
+}
+func (t *OrdersByAdmin_OrdersByAdmin_Cart) GetIsShippingRequired() bool {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Cart{}
+	}
+	return t.IsShippingRequired
+}
+func (t *OrdersByAdmin_OrdersByAdmin_Cart) GetCartItems() []*OrdersByAdmin_OrdersByAdmin_Cart_CartItems {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Cart{}
+	}
+	return t.CartItems
+}
+
+type OrdersByAdmin_OrdersByAdmin_Customer struct {
+	Email          string  "json:\"email\" graphql:\"email\""
+	Phone          *string "json:\"phone,omitempty\" graphql:\"phone\""
+	FirstName      string  "json:\"firstName\" graphql:\"firstName\""
+	LastName       string  "json:\"lastName\" graphql:\"lastName\""
+	ProfilePicture *string "json:\"profilePicture,omitempty\" graphql:\"profilePicture\""
+}
+
+func (t *OrdersByAdmin_OrdersByAdmin_Customer) GetEmail() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Customer{}
+	}
+	return t.Email
+}
+func (t *OrdersByAdmin_OrdersByAdmin_Customer) GetPhone() *string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Customer{}
+	}
+	return t.Phone
+}
+func (t *OrdersByAdmin_OrdersByAdmin_Customer) GetFirstName() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Customer{}
+	}
+	return t.FirstName
+}
+func (t *OrdersByAdmin_OrdersByAdmin_Customer) GetLastName() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Customer{}
+	}
+	return t.LastName
+}
+func (t *OrdersByAdmin_OrdersByAdmin_Customer) GetProfilePicture() *string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Customer{}
+	}
+	return t.ProfilePicture
+}
+
+type OrdersByAdmin_OrdersByAdmin_PaymentMethod struct {
+	ID               string "json:\"id\" graphql:\"id\""
+	DisplayName      string "json:\"displayName\" graphql:\"displayName\""
+	CurrencyName     string "json:\"currencyName\" graphql:\"currencyName\""
+	CurrencySymbol   string "json:\"currencySymbol\" graphql:\"currencySymbol\""
+	IsDigitalPayment bool   "json:\"isDigitalPayment\" graphql:\"isDigitalPayment\""
+}
+
+func (t *OrdersByAdmin_OrdersByAdmin_PaymentMethod) GetID() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_PaymentMethod{}
+	}
+	return t.ID
+}
+func (t *OrdersByAdmin_OrdersByAdmin_PaymentMethod) GetDisplayName() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_PaymentMethod{}
+	}
+	return t.DisplayName
+}
+func (t *OrdersByAdmin_OrdersByAdmin_PaymentMethod) GetCurrencyName() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_PaymentMethod{}
+	}
+	return t.CurrencyName
+}
+func (t *OrdersByAdmin_OrdersByAdmin_PaymentMethod) GetCurrencySymbol() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_PaymentMethod{}
+	}
+	return t.CurrencySymbol
+}
+func (t *OrdersByAdmin_OrdersByAdmin_PaymentMethod) GetIsDigitalPayment() bool {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_PaymentMethod{}
+	}
+	return t.IsDigitalPayment
+}
+
+type OrdersByAdmin_OrdersByAdmin_ShippingMethod struct {
+	ID                 string            "json:\"id\" graphql:\"id\""
+	DisplayName        string            "json:\"displayName\" graphql:\"displayName\""
+	DeliveryCharge     int               "json:\"deliveryCharge\" graphql:\"deliveryCharge\""
+	DeliveryTimeInDays int               "json:\"deliveryTimeInDays\" graphql:\"deliveryTimeInDays\""
+	WeightUnit         models.WeightUnit "json:\"WeightUnit\" graphql:\"WeightUnit\""
+	IsFlat             bool              "json:\"isFlat\" graphql:\"isFlat\""
+	IsActive           bool              "json:\"isActive\" graphql:\"isActive\""
+}
+
+func (t *OrdersByAdmin_OrdersByAdmin_ShippingMethod) GetID() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_ShippingMethod{}
+	}
+	return t.ID
+}
+func (t *OrdersByAdmin_OrdersByAdmin_ShippingMethod) GetDisplayName() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_ShippingMethod{}
+	}
+	return t.DisplayName
+}
+func (t *OrdersByAdmin_OrdersByAdmin_ShippingMethod) GetDeliveryCharge() int {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_ShippingMethod{}
+	}
+	return t.DeliveryCharge
+}
+func (t *OrdersByAdmin_OrdersByAdmin_ShippingMethod) GetDeliveryTimeInDays() int {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_ShippingMethod{}
+	}
+	return t.DeliveryTimeInDays
+}
+func (t *OrdersByAdmin_OrdersByAdmin_ShippingMethod) GetWeightUnit() *models.WeightUnit {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_ShippingMethod{}
+	}
+	return &t.WeightUnit
+}
+func (t *OrdersByAdmin_OrdersByAdmin_ShippingMethod) GetIsFlat() bool {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_ShippingMethod{}
+	}
+	return t.IsFlat
+}
+func (t *OrdersByAdmin_OrdersByAdmin_ShippingMethod) GetIsActive() bool {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_ShippingMethod{}
+	}
+	return t.IsActive
+}
+
+type OrdersByAdmin_OrdersByAdmin_CouponCode struct {
+	Code         string              "json:\"code\" graphql:\"code\""
+	DiscountType models.DiscountType "json:\"discountType\" graphql:\"discountType\""
+}
+
+func (t *OrdersByAdmin_OrdersByAdmin_CouponCode) GetCode() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_CouponCode{}
+	}
+	return t.Code
+}
+func (t *OrdersByAdmin_OrdersByAdmin_CouponCode) GetDiscountType() *models.DiscountType {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_CouponCode{}
+	}
+	return &t.DiscountType
+}
+
+type OrdersByAdmin_OrdersByAdmin_Payments struct {
+	IsPaid        bool   "json:\"isPaid\" graphql:\"isPaid\""
+	PayableAmount int    "json:\"payableAmount\" graphql:\"payableAmount\""
+	GatewayName   string "json:\"gatewayName\" graphql:\"gatewayName\""
+}
+
+func (t *OrdersByAdmin_OrdersByAdmin_Payments) GetIsPaid() bool {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Payments{}
+	}
+	return t.IsPaid
+}
+func (t *OrdersByAdmin_OrdersByAdmin_Payments) GetPayableAmount() int {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Payments{}
+	}
+	return t.PayableAmount
+}
+func (t *OrdersByAdmin_OrdersByAdmin_Payments) GetGatewayName() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin_Payments{}
+	}
+	return t.GatewayName
+}
+
+type OrdersByAdmin_OrdersByAdmin struct {
+	ID                   string                                       "json:\"id\" graphql:\"id\""
+	Hash                 string                                       "json:\"hash\" graphql:\"hash\""
+	ShippingCharge       int                                          "json:\"shippingCharge\" graphql:\"shippingCharge\""
+	PaymentProcessingFee int                                          "json:\"paymentProcessingFee\" graphql:\"paymentProcessingFee\""
+	Subtotal             int                                          "json:\"subtotal\" graphql:\"subtotal\""
+	GrandTotal           int                                          "json:\"grandTotal\" graphql:\"grandTotal\""
+	DiscountedAmount     int                                          "json:\"discountedAmount\" graphql:\"discountedAmount\""
+	Status               models.OrderStatus                           "json:\"status\" graphql:\"status\""
+	PaymentStatus        models.OrderPaymentStatus                    "json:\"paymentStatus\" graphql:\"paymentStatus\""
+	CreatedAt            string                                       "json:\"createdAt\" graphql:\"createdAt\""
+	UpdatedAt            *string                                      "json:\"updatedAt,omitempty\" graphql:\"updatedAt\""
+	BillingAddress       OrdersByAdmin_OrdersByAdmin_BillingAddress   "json:\"billingAddress\" graphql:\"billingAddress\""
+	ShippingAddress      *OrdersByAdmin_OrdersByAdmin_ShippingAddress "json:\"shippingAddress,omitempty\" graphql:\"shippingAddress\""
+	Cart                 OrdersByAdmin_OrdersByAdmin_Cart             "json:\"cart\" graphql:\"cart\""
+	Customer             OrdersByAdmin_OrdersByAdmin_Customer         "json:\"customer\" graphql:\"customer\""
+	PaymentMethod        *OrdersByAdmin_OrdersByAdmin_PaymentMethod   "json:\"paymentMethod,omitempty\" graphql:\"paymentMethod\""
+	ShippingMethod       *OrdersByAdmin_OrdersByAdmin_ShippingMethod  "json:\"shippingMethod,omitempty\" graphql:\"shippingMethod\""
+	CouponCode           *OrdersByAdmin_OrdersByAdmin_CouponCode      "json:\"couponCode,omitempty\" graphql:\"couponCode\""
+	Payments             []*OrdersByAdmin_OrdersByAdmin_Payments      "json:\"payments\" graphql:\"payments\""
+}
+
+func (t *OrdersByAdmin_OrdersByAdmin) GetID() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin{}
+	}
+	return t.ID
+}
+func (t *OrdersByAdmin_OrdersByAdmin) GetHash() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin{}
+	}
+	return t.Hash
+}
+func (t *OrdersByAdmin_OrdersByAdmin) GetShippingCharge() int {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin{}
+	}
+	return t.ShippingCharge
+}
+func (t *OrdersByAdmin_OrdersByAdmin) GetPaymentProcessingFee() int {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin{}
+	}
+	return t.PaymentProcessingFee
+}
+func (t *OrdersByAdmin_OrdersByAdmin) GetSubtotal() int {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin{}
+	}
+	return t.Subtotal
+}
+func (t *OrdersByAdmin_OrdersByAdmin) GetGrandTotal() int {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin{}
+	}
+	return t.GrandTotal
+}
+func (t *OrdersByAdmin_OrdersByAdmin) GetDiscountedAmount() int {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin{}
+	}
+	return t.DiscountedAmount
+}
+func (t *OrdersByAdmin_OrdersByAdmin) GetStatus() *models.OrderStatus {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin{}
+	}
+	return &t.Status
+}
+func (t *OrdersByAdmin_OrdersByAdmin) GetPaymentStatus() *models.OrderPaymentStatus {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin{}
+	}
+	return &t.PaymentStatus
+}
+func (t *OrdersByAdmin_OrdersByAdmin) GetCreatedAt() string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin{}
+	}
+	return t.CreatedAt
+}
+func (t *OrdersByAdmin_OrdersByAdmin) GetUpdatedAt() *string {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin{}
+	}
+	return t.UpdatedAt
+}
+func (t *OrdersByAdmin_OrdersByAdmin) GetBillingAddress() *OrdersByAdmin_OrdersByAdmin_BillingAddress {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin{}
+	}
+	return &t.BillingAddress
+}
+func (t *OrdersByAdmin_OrdersByAdmin) GetShippingAddress() *OrdersByAdmin_OrdersByAdmin_ShippingAddress {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin{}
+	}
+	return t.ShippingAddress
+}
+func (t *OrdersByAdmin_OrdersByAdmin) GetCart() *OrdersByAdmin_OrdersByAdmin_Cart {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin{}
+	}
+	return &t.Cart
+}
+func (t *OrdersByAdmin_OrdersByAdmin) GetCustomer() *OrdersByAdmin_OrdersByAdmin_Customer {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin{}
+	}
+	return &t.Customer
+}
+func (t *OrdersByAdmin_OrdersByAdmin) GetPaymentMethod() *OrdersByAdmin_OrdersByAdmin_PaymentMethod {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin{}
+	}
+	return t.PaymentMethod
+}
+func (t *OrdersByAdmin_OrdersByAdmin) GetShippingMethod() *OrdersByAdmin_OrdersByAdmin_ShippingMethod {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin{}
+	}
+	return t.ShippingMethod
+}
+func (t *OrdersByAdmin_OrdersByAdmin) GetCouponCode() *OrdersByAdmin_OrdersByAdmin_CouponCode {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin{}
+	}
+	return t.CouponCode
+}
+func (t *OrdersByAdmin_OrdersByAdmin) GetPayments() []*OrdersByAdmin_OrdersByAdmin_Payments {
+	if t == nil {
+		t = &OrdersByAdmin_OrdersByAdmin{}
+	}
+	return t.Payments
+}
+
 type PaymentMethods_PaymentMethods struct {
 	ID               string "json:\"id\" graphql:\"id\""
 	DisplayName      string "json:\"displayName\" graphql:\"displayName\""
@@ -2563,7 +5709,7 @@ func (t *PaymentMethods_PaymentMethods) GetIsDigitalPayment() bool {
 	return t.IsDigitalPayment
 }
 
-type Products_ProductSearch_Category struct {
+type Product_Product_Category struct {
 	ID          string  "json:\"id\" graphql:\"id\""
 	Name        string  "json:\"name\" graphql:\"name\""
 	Slug        string  "json:\"slug\" graphql:\"slug\""
@@ -2571,190 +5717,2418 @@ type Products_ProductSearch_Category struct {
 	FullImage   *string "json:\"fullImage,omitempty\" graphql:\"fullImage\""
 }
 
-func (t *Products_ProductSearch_Category) GetID() string {
+func (t *Product_Product_Category) GetID() string {
 	if t == nil {
-		t = &Products_ProductSearch_Category{}
+		t = &Product_Product_Category{}
 	}
 	return t.ID
 }
-func (t *Products_ProductSearch_Category) GetName() string {
+func (t *Product_Product_Category) GetName() string {
 	if t == nil {
-		t = &Products_ProductSearch_Category{}
+		t = &Product_Product_Category{}
 	}
 	return t.Name
 }
-func (t *Products_ProductSearch_Category) GetSlug() string {
+func (t *Product_Product_Category) GetSlug() string {
 	if t == nil {
-		t = &Products_ProductSearch_Category{}
+		t = &Product_Product_Category{}
 	}
 	return t.Slug
 }
-func (t *Products_ProductSearch_Category) GetDescription() *string {
+func (t *Product_Product_Category) GetDescription() *string {
 	if t == nil {
-		t = &Products_ProductSearch_Category{}
+		t = &Product_Product_Category{}
 	}
 	return t.Description
 }
-func (t *Products_ProductSearch_Category) GetFullImage() *string {
+func (t *Product_Product_Category) GetFullImage() *string {
 	if t == nil {
-		t = &Products_ProductSearch_Category{}
+		t = &Product_Product_Category{}
 	}
 	return t.FullImage
 }
 
-type Products_ProductSearch_Attributes struct {
+type Product_Product_Attributes struct {
 	ID         string   "json:\"id\" graphql:\"id\""
 	Name       string   "json:\"name\" graphql:\"name\""
 	Values     []string "json:\"values\" graphql:\"values\""
 	IsRequired bool     "json:\"isRequired\" graphql:\"isRequired\""
 }
 
-func (t *Products_ProductSearch_Attributes) GetID() string {
+func (t *Product_Product_Attributes) GetID() string {
 	if t == nil {
-		t = &Products_ProductSearch_Attributes{}
+		t = &Product_Product_Attributes{}
 	}
 	return t.ID
 }
-func (t *Products_ProductSearch_Attributes) GetName() string {
+func (t *Product_Product_Attributes) GetName() string {
 	if t == nil {
-		t = &Products_ProductSearch_Attributes{}
+		t = &Product_Product_Attributes{}
 	}
 	return t.Name
 }
-func (t *Products_ProductSearch_Attributes) GetValues() []string {
+func (t *Product_Product_Attributes) GetValues() []string {
 	if t == nil {
-		t = &Products_ProductSearch_Attributes{}
+		t = &Product_Product_Attributes{}
 	}
 	return t.Values
 }
-func (t *Products_ProductSearch_Attributes) GetIsRequired() bool {
+func (t *Product_Product_Attributes) GetIsRequired() bool {
 	if t == nil {
-		t = &Products_ProductSearch_Attributes{}
+		t = &Product_Product_Attributes{}
 	}
 	return t.IsRequired
 }
 
-type Products_ProductSearch struct {
-	ID                      string                               "json:\"id\" graphql:\"id\""
-	Name                    string                               "json:\"name\" graphql:\"name\""
-	Slug                    string                               "json:\"slug\" graphql:\"slug\""
-	Description             string                               "json:\"description\" graphql:\"description\""
-	Sku                     *string                              "json:\"sku,omitempty\" graphql:\"sku\""
-	Stock                   *int                                 "json:\"stock,omitempty\" graphql:\"stock\""
-	MaxItemPerOrder         *int                                 "json:\"maxItemPerOrder,omitempty\" graphql:\"maxItemPerOrder\""
-	Price                   int                                  "json:\"price\" graphql:\"price\""
-	FullImages              []string                             "json:\"fullImages\" graphql:\"fullImages\""
-	IsDigitalProduct        bool                                 "json:\"isDigitalProduct\" graphql:\"isDigitalProduct\""
-	Views                   int                                  "json:\"views\" graphql:\"views\""
-	CreatedAt               string                               "json:\"createdAt\" graphql:\"createdAt\""
-	ProductUnit             *models.ProductUnit                  "json:\"productUnit,omitempty\" graphql:\"productUnit\""
-	UpdatedAt               *string                              "json:\"updatedAt,omitempty\" graphql:\"updatedAt\""
-	Category                *Products_ProductSearch_Category     "json:\"category,omitempty\" graphql:\"category\""
-	Attributes              []*Products_ProductSearch_Attributes "json:\"attributes\" graphql:\"attributes\""
-	ProductSpecificDiscount int                                  "json:\"productSpecificDiscount\" graphql:\"productSpecificDiscount\""
+type Product_Product_Variations struct {
+	ID    string  "json:\"id\" graphql:\"id\""
+	Stock *int    "json:\"stock,omitempty\" graphql:\"stock\""
+	Sku   *string "json:\"sku,omitempty\" graphql:\"sku\""
+	Price int     "json:\"price\" graphql:\"price\""
+	Name  string  "json:\"name\" graphql:\"name\""
 }
 
-func (t *Products_ProductSearch) GetID() string {
+func (t *Product_Product_Variations) GetID() string {
 	if t == nil {
-		t = &Products_ProductSearch{}
+		t = &Product_Product_Variations{}
 	}
 	return t.ID
 }
-func (t *Products_ProductSearch) GetName() string {
+func (t *Product_Product_Variations) GetStock() *int {
 	if t == nil {
-		t = &Products_ProductSearch{}
-	}
-	return t.Name
-}
-func (t *Products_ProductSearch) GetSlug() string {
-	if t == nil {
-		t = &Products_ProductSearch{}
-	}
-	return t.Slug
-}
-func (t *Products_ProductSearch) GetDescription() string {
-	if t == nil {
-		t = &Products_ProductSearch{}
-	}
-	return t.Description
-}
-func (t *Products_ProductSearch) GetSku() *string {
-	if t == nil {
-		t = &Products_ProductSearch{}
-	}
-	return t.Sku
-}
-func (t *Products_ProductSearch) GetStock() *int {
-	if t == nil {
-		t = &Products_ProductSearch{}
+		t = &Product_Product_Variations{}
 	}
 	return t.Stock
 }
-func (t *Products_ProductSearch) GetMaxItemPerOrder() *int {
+func (t *Product_Product_Variations) GetSku() *string {
 	if t == nil {
-		t = &Products_ProductSearch{}
+		t = &Product_Product_Variations{}
 	}
-	return t.MaxItemPerOrder
+	return t.Sku
 }
-func (t *Products_ProductSearch) GetPrice() int {
+func (t *Product_Product_Variations) GetPrice() int {
 	if t == nil {
-		t = &Products_ProductSearch{}
+		t = &Product_Product_Variations{}
 	}
 	return t.Price
 }
-func (t *Products_ProductSearch) GetFullImages() []string {
+func (t *Product_Product_Variations) GetName() string {
 	if t == nil {
-		t = &Products_ProductSearch{}
+		t = &Product_Product_Variations{}
 	}
-	return t.FullImages
+	return t.Name
 }
-func (t *Products_ProductSearch) GetIsDigitalProduct() bool {
+
+type Product_Product_DigitalItems_Contents struct {
+	Position       int                       "json:\"position\" graphql:\"position\""
+	Title          string                    "json:\"title\" graphql:\"title\""
+	ID             string                    "json:\"id\" graphql:\"id\""
+	UpdatedAt      string                    "json:\"updatedAt\" graphql:\"updatedAt\""
+	ContentText    *string                   "json:\"contentText,omitempty\" graphql:\"contentText\""
+	ContentType    models.DigitalContentType "json:\"contentType\" graphql:\"contentType\""
+	ContentURL     *string                   "json:\"contentUrl,omitempty\" graphql:\"contentUrl\""
+	IsTrialAllowed bool                      "json:\"isTrialAllowed\" graphql:\"isTrialAllowed\""
+}
+
+func (t *Product_Product_DigitalItems_Contents) GetPosition() int {
 	if t == nil {
-		t = &Products_ProductSearch{}
+		t = &Product_Product_DigitalItems_Contents{}
 	}
-	return t.IsDigitalProduct
+	return t.Position
 }
-func (t *Products_ProductSearch) GetViews() int {
+func (t *Product_Product_DigitalItems_Contents) GetTitle() string {
 	if t == nil {
-		t = &Products_ProductSearch{}
+		t = &Product_Product_DigitalItems_Contents{}
 	}
-	return t.Views
+	return t.Title
 }
-func (t *Products_ProductSearch) GetCreatedAt() string {
+func (t *Product_Product_DigitalItems_Contents) GetID() string {
 	if t == nil {
-		t = &Products_ProductSearch{}
+		t = &Product_Product_DigitalItems_Contents{}
 	}
-	return t.CreatedAt
+	return t.ID
 }
-func (t *Products_ProductSearch) GetProductUnit() *models.ProductUnit {
+func (t *Product_Product_DigitalItems_Contents) GetUpdatedAt() string {
 	if t == nil {
-		t = &Products_ProductSearch{}
-	}
-	return t.ProductUnit
-}
-func (t *Products_ProductSearch) GetUpdatedAt() *string {
-	if t == nil {
-		t = &Products_ProductSearch{}
+		t = &Product_Product_DigitalItems_Contents{}
 	}
 	return t.UpdatedAt
 }
-func (t *Products_ProductSearch) GetCategory() *Products_ProductSearch_Category {
+func (t *Product_Product_DigitalItems_Contents) GetContentText() *string {
 	if t == nil {
-		t = &Products_ProductSearch{}
+		t = &Product_Product_DigitalItems_Contents{}
+	}
+	return t.ContentText
+}
+func (t *Product_Product_DigitalItems_Contents) GetContentType() *models.DigitalContentType {
+	if t == nil {
+		t = &Product_Product_DigitalItems_Contents{}
+	}
+	return &t.ContentType
+}
+func (t *Product_Product_DigitalItems_Contents) GetContentURL() *string {
+	if t == nil {
+		t = &Product_Product_DigitalItems_Contents{}
+	}
+	return t.ContentURL
+}
+func (t *Product_Product_DigitalItems_Contents) GetIsTrialAllowed() bool {
+	if t == nil {
+		t = &Product_Product_DigitalItems_Contents{}
+	}
+	return t.IsTrialAllowed
+}
+
+type Product_Product_DigitalItems struct {
+	ID          string                                   "json:\"id\" graphql:\"id\""
+	Description *string                                  "json:\"description,omitempty\" graphql:\"description\""
+	Title       string                                   "json:\"title\" graphql:\"title\""
+	Position    int                                      "json:\"position\" graphql:\"position\""
+	Contents    []*Product_Product_DigitalItems_Contents "json:\"contents\" graphql:\"contents\""
+}
+
+func (t *Product_Product_DigitalItems) GetID() string {
+	if t == nil {
+		t = &Product_Product_DigitalItems{}
+	}
+	return t.ID
+}
+func (t *Product_Product_DigitalItems) GetDescription() *string {
+	if t == nil {
+		t = &Product_Product_DigitalItems{}
+	}
+	return t.Description
+}
+func (t *Product_Product_DigitalItems) GetTitle() string {
+	if t == nil {
+		t = &Product_Product_DigitalItems{}
+	}
+	return t.Title
+}
+func (t *Product_Product_DigitalItems) GetPosition() int {
+	if t == nil {
+		t = &Product_Product_DigitalItems{}
+	}
+	return t.Position
+}
+func (t *Product_Product_DigitalItems) GetContents() []*Product_Product_DigitalItems_Contents {
+	if t == nil {
+		t = &Product_Product_DigitalItems{}
+	}
+	return t.Contents
+}
+
+type Product_Product struct {
+	ID                      string                          "json:\"id\" graphql:\"id\""
+	Name                    string                          "json:\"name\" graphql:\"name\""
+	Slug                    string                          "json:\"slug\" graphql:\"slug\""
+	Description             string                          "json:\"description\" graphql:\"description\""
+	Sku                     *string                         "json:\"sku,omitempty\" graphql:\"sku\""
+	Stock                   *int                            "json:\"stock,omitempty\" graphql:\"stock\""
+	MaxItemPerOrder         *int                            "json:\"maxItemPerOrder,omitempty\" graphql:\"maxItemPerOrder\""
+	Price                   int                             "json:\"price\" graphql:\"price\""
+	FullImages              []string                        "json:\"fullImages\" graphql:\"fullImages\""
+	IsDigitalProduct        bool                            "json:\"isDigitalProduct\" graphql:\"isDigitalProduct\""
+	Views                   int                             "json:\"views\" graphql:\"views\""
+	CreatedAt               string                          "json:\"createdAt\" graphql:\"createdAt\""
+	ProductUnit             *models.ProductUnit             "json:\"productUnit,omitempty\" graphql:\"productUnit\""
+	UpdatedAt               *string                         "json:\"updatedAt,omitempty\" graphql:\"updatedAt\""
+	Category                *Product_Product_Category       "json:\"category,omitempty\" graphql:\"category\""
+	Attributes              []*Product_Product_Attributes   "json:\"attributes\" graphql:\"attributes\""
+	Variations              []*Product_Product_Variations   "json:\"variations\" graphql:\"variations\""
+	ProductSpecificDiscount int                             "json:\"productSpecificDiscount\" graphql:\"productSpecificDiscount\""
+	DigitalItems            []*Product_Product_DigitalItems "json:\"digitalItems\" graphql:\"digitalItems\""
+}
+
+func (t *Product_Product) GetID() string {
+	if t == nil {
+		t = &Product_Product{}
+	}
+	return t.ID
+}
+func (t *Product_Product) GetName() string {
+	if t == nil {
+		t = &Product_Product{}
+	}
+	return t.Name
+}
+func (t *Product_Product) GetSlug() string {
+	if t == nil {
+		t = &Product_Product{}
+	}
+	return t.Slug
+}
+func (t *Product_Product) GetDescription() string {
+	if t == nil {
+		t = &Product_Product{}
+	}
+	return t.Description
+}
+func (t *Product_Product) GetSku() *string {
+	if t == nil {
+		t = &Product_Product{}
+	}
+	return t.Sku
+}
+func (t *Product_Product) GetStock() *int {
+	if t == nil {
+		t = &Product_Product{}
+	}
+	return t.Stock
+}
+func (t *Product_Product) GetMaxItemPerOrder() *int {
+	if t == nil {
+		t = &Product_Product{}
+	}
+	return t.MaxItemPerOrder
+}
+func (t *Product_Product) GetPrice() int {
+	if t == nil {
+		t = &Product_Product{}
+	}
+	return t.Price
+}
+func (t *Product_Product) GetFullImages() []string {
+	if t == nil {
+		t = &Product_Product{}
+	}
+	return t.FullImages
+}
+func (t *Product_Product) GetIsDigitalProduct() bool {
+	if t == nil {
+		t = &Product_Product{}
+	}
+	return t.IsDigitalProduct
+}
+func (t *Product_Product) GetViews() int {
+	if t == nil {
+		t = &Product_Product{}
+	}
+	return t.Views
+}
+func (t *Product_Product) GetCreatedAt() string {
+	if t == nil {
+		t = &Product_Product{}
+	}
+	return t.CreatedAt
+}
+func (t *Product_Product) GetProductUnit() *models.ProductUnit {
+	if t == nil {
+		t = &Product_Product{}
+	}
+	return t.ProductUnit
+}
+func (t *Product_Product) GetUpdatedAt() *string {
+	if t == nil {
+		t = &Product_Product{}
+	}
+	return t.UpdatedAt
+}
+func (t *Product_Product) GetCategory() *Product_Product_Category {
+	if t == nil {
+		t = &Product_Product{}
 	}
 	return t.Category
 }
-func (t *Products_ProductSearch) GetAttributes() []*Products_ProductSearch_Attributes {
+func (t *Product_Product) GetAttributes() []*Product_Product_Attributes {
 	if t == nil {
-		t = &Products_ProductSearch{}
+		t = &Product_Product{}
 	}
 	return t.Attributes
 }
-func (t *Products_ProductSearch) GetProductSpecificDiscount() int {
+func (t *Product_Product) GetVariations() []*Product_Product_Variations {
 	if t == nil {
-		t = &Products_ProductSearch{}
+		t = &Product_Product{}
+	}
+	return t.Variations
+}
+func (t *Product_Product) GetProductSpecificDiscount() int {
+	if t == nil {
+		t = &Product_Product{}
 	}
 	return t.ProductSpecificDiscount
+}
+func (t *Product_Product) GetDigitalItems() []*Product_Product_DigitalItems {
+	if t == nil {
+		t = &Product_Product{}
+	}
+	return t.DigitalItems
+}
+
+type ProductByAdmin_ProductByAdmin_Category struct {
+	ID          string  "json:\"id\" graphql:\"id\""
+	Name        string  "json:\"name\" graphql:\"name\""
+	Slug        string  "json:\"slug\" graphql:\"slug\""
+	Description *string "json:\"description,omitempty\" graphql:\"description\""
+	FullImage   *string "json:\"fullImage,omitempty\" graphql:\"fullImage\""
+}
+
+func (t *ProductByAdmin_ProductByAdmin_Category) GetID() string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_Category{}
+	}
+	return t.ID
+}
+func (t *ProductByAdmin_ProductByAdmin_Category) GetName() string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_Category{}
+	}
+	return t.Name
+}
+func (t *ProductByAdmin_ProductByAdmin_Category) GetSlug() string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_Category{}
+	}
+	return t.Slug
+}
+func (t *ProductByAdmin_ProductByAdmin_Category) GetDescription() *string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_Category{}
+	}
+	return t.Description
+}
+func (t *ProductByAdmin_ProductByAdmin_Category) GetFullImage() *string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_Category{}
+	}
+	return t.FullImage
+}
+
+type ProductByAdmin_ProductByAdmin_Attributes struct {
+	ID         string   "json:\"id\" graphql:\"id\""
+	Name       string   "json:\"name\" graphql:\"name\""
+	Values     []string "json:\"values\" graphql:\"values\""
+	IsRequired bool     "json:\"isRequired\" graphql:\"isRequired\""
+}
+
+func (t *ProductByAdmin_ProductByAdmin_Attributes) GetID() string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_Attributes{}
+	}
+	return t.ID
+}
+func (t *ProductByAdmin_ProductByAdmin_Attributes) GetName() string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_Attributes{}
+	}
+	return t.Name
+}
+func (t *ProductByAdmin_ProductByAdmin_Attributes) GetValues() []string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_Attributes{}
+	}
+	return t.Values
+}
+func (t *ProductByAdmin_ProductByAdmin_Attributes) GetIsRequired() bool {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_Attributes{}
+	}
+	return t.IsRequired
+}
+
+type ProductByAdmin_ProductByAdmin_Variations struct {
+	ID    string  "json:\"id\" graphql:\"id\""
+	Stock *int    "json:\"stock,omitempty\" graphql:\"stock\""
+	Sku   *string "json:\"sku,omitempty\" graphql:\"sku\""
+	Price int     "json:\"price\" graphql:\"price\""
+	Name  string  "json:\"name\" graphql:\"name\""
+}
+
+func (t *ProductByAdmin_ProductByAdmin_Variations) GetID() string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_Variations{}
+	}
+	return t.ID
+}
+func (t *ProductByAdmin_ProductByAdmin_Variations) GetStock() *int {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_Variations{}
+	}
+	return t.Stock
+}
+func (t *ProductByAdmin_ProductByAdmin_Variations) GetSku() *string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_Variations{}
+	}
+	return t.Sku
+}
+func (t *ProductByAdmin_ProductByAdmin_Variations) GetPrice() int {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_Variations{}
+	}
+	return t.Price
+}
+func (t *ProductByAdmin_ProductByAdmin_Variations) GetName() string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_Variations{}
+	}
+	return t.Name
+}
+
+type ProductByAdmin_ProductByAdmin_DigitalItems_Contents struct {
+	Position       int                       "json:\"position\" graphql:\"position\""
+	Title          string                    "json:\"title\" graphql:\"title\""
+	ID             string                    "json:\"id\" graphql:\"id\""
+	UpdatedAt      string                    "json:\"updatedAt\" graphql:\"updatedAt\""
+	ContentText    *string                   "json:\"contentText,omitempty\" graphql:\"contentText\""
+	ContentType    models.DigitalContentType "json:\"contentType\" graphql:\"contentType\""
+	ContentURL     *string                   "json:\"contentUrl,omitempty\" graphql:\"contentUrl\""
+	IsTrialAllowed bool                      "json:\"isTrialAllowed\" graphql:\"isTrialAllowed\""
+}
+
+func (t *ProductByAdmin_ProductByAdmin_DigitalItems_Contents) GetPosition() int {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_DigitalItems_Contents{}
+	}
+	return t.Position
+}
+func (t *ProductByAdmin_ProductByAdmin_DigitalItems_Contents) GetTitle() string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_DigitalItems_Contents{}
+	}
+	return t.Title
+}
+func (t *ProductByAdmin_ProductByAdmin_DigitalItems_Contents) GetID() string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_DigitalItems_Contents{}
+	}
+	return t.ID
+}
+func (t *ProductByAdmin_ProductByAdmin_DigitalItems_Contents) GetUpdatedAt() string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_DigitalItems_Contents{}
+	}
+	return t.UpdatedAt
+}
+func (t *ProductByAdmin_ProductByAdmin_DigitalItems_Contents) GetContentText() *string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_DigitalItems_Contents{}
+	}
+	return t.ContentText
+}
+func (t *ProductByAdmin_ProductByAdmin_DigitalItems_Contents) GetContentType() *models.DigitalContentType {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_DigitalItems_Contents{}
+	}
+	return &t.ContentType
+}
+func (t *ProductByAdmin_ProductByAdmin_DigitalItems_Contents) GetContentURL() *string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_DigitalItems_Contents{}
+	}
+	return t.ContentURL
+}
+func (t *ProductByAdmin_ProductByAdmin_DigitalItems_Contents) GetIsTrialAllowed() bool {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_DigitalItems_Contents{}
+	}
+	return t.IsTrialAllowed
+}
+
+type ProductByAdmin_ProductByAdmin_DigitalItems struct {
+	ID          string                                                 "json:\"id\" graphql:\"id\""
+	Description *string                                                "json:\"description,omitempty\" graphql:\"description\""
+	Title       string                                                 "json:\"title\" graphql:\"title\""
+	Position    int                                                    "json:\"position\" graphql:\"position\""
+	Contents    []*ProductByAdmin_ProductByAdmin_DigitalItems_Contents "json:\"contents\" graphql:\"contents\""
+}
+
+func (t *ProductByAdmin_ProductByAdmin_DigitalItems) GetID() string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_DigitalItems{}
+	}
+	return t.ID
+}
+func (t *ProductByAdmin_ProductByAdmin_DigitalItems) GetDescription() *string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_DigitalItems{}
+	}
+	return t.Description
+}
+func (t *ProductByAdmin_ProductByAdmin_DigitalItems) GetTitle() string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_DigitalItems{}
+	}
+	return t.Title
+}
+func (t *ProductByAdmin_ProductByAdmin_DigitalItems) GetPosition() int {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_DigitalItems{}
+	}
+	return t.Position
+}
+func (t *ProductByAdmin_ProductByAdmin_DigitalItems) GetContents() []*ProductByAdmin_ProductByAdmin_DigitalItems_Contents {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin_DigitalItems{}
+	}
+	return t.Contents
+}
+
+type ProductByAdmin_ProductByAdmin struct {
+	ID                      string                                        "json:\"id\" graphql:\"id\""
+	Name                    string                                        "json:\"name\" graphql:\"name\""
+	Slug                    string                                        "json:\"slug\" graphql:\"slug\""
+	Description             string                                        "json:\"description\" graphql:\"description\""
+	Sku                     *string                                       "json:\"sku,omitempty\" graphql:\"sku\""
+	Stock                   *int                                          "json:\"stock,omitempty\" graphql:\"stock\""
+	MaxItemPerOrder         *int                                          "json:\"maxItemPerOrder,omitempty\" graphql:\"maxItemPerOrder\""
+	Price                   int                                           "json:\"price\" graphql:\"price\""
+	FullImages              []string                                      "json:\"fullImages\" graphql:\"fullImages\""
+	IsDigitalProduct        bool                                          "json:\"isDigitalProduct\" graphql:\"isDigitalProduct\""
+	Views                   int                                           "json:\"views\" graphql:\"views\""
+	CreatedAt               string                                        "json:\"createdAt\" graphql:\"createdAt\""
+	ProductUnit             *models.ProductUnit                           "json:\"productUnit,omitempty\" graphql:\"productUnit\""
+	UpdatedAt               *string                                       "json:\"updatedAt,omitempty\" graphql:\"updatedAt\""
+	Category                *ProductByAdmin_ProductByAdmin_Category       "json:\"category,omitempty\" graphql:\"category\""
+	Attributes              []*ProductByAdmin_ProductByAdmin_Attributes   "json:\"attributes\" graphql:\"attributes\""
+	Variations              []*ProductByAdmin_ProductByAdmin_Variations   "json:\"variations\" graphql:\"variations\""
+	ProductSpecificDiscount int                                           "json:\"productSpecificDiscount\" graphql:\"productSpecificDiscount\""
+	DigitalItems            []*ProductByAdmin_ProductByAdmin_DigitalItems "json:\"digitalItems\" graphql:\"digitalItems\""
+}
+
+func (t *ProductByAdmin_ProductByAdmin) GetID() string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin{}
+	}
+	return t.ID
+}
+func (t *ProductByAdmin_ProductByAdmin) GetName() string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin{}
+	}
+	return t.Name
+}
+func (t *ProductByAdmin_ProductByAdmin) GetSlug() string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin{}
+	}
+	return t.Slug
+}
+func (t *ProductByAdmin_ProductByAdmin) GetDescription() string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin{}
+	}
+	return t.Description
+}
+func (t *ProductByAdmin_ProductByAdmin) GetSku() *string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin{}
+	}
+	return t.Sku
+}
+func (t *ProductByAdmin_ProductByAdmin) GetStock() *int {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin{}
+	}
+	return t.Stock
+}
+func (t *ProductByAdmin_ProductByAdmin) GetMaxItemPerOrder() *int {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin{}
+	}
+	return t.MaxItemPerOrder
+}
+func (t *ProductByAdmin_ProductByAdmin) GetPrice() int {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin{}
+	}
+	return t.Price
+}
+func (t *ProductByAdmin_ProductByAdmin) GetFullImages() []string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin{}
+	}
+	return t.FullImages
+}
+func (t *ProductByAdmin_ProductByAdmin) GetIsDigitalProduct() bool {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin{}
+	}
+	return t.IsDigitalProduct
+}
+func (t *ProductByAdmin_ProductByAdmin) GetViews() int {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin{}
+	}
+	return t.Views
+}
+func (t *ProductByAdmin_ProductByAdmin) GetCreatedAt() string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin{}
+	}
+	return t.CreatedAt
+}
+func (t *ProductByAdmin_ProductByAdmin) GetProductUnit() *models.ProductUnit {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin{}
+	}
+	return t.ProductUnit
+}
+func (t *ProductByAdmin_ProductByAdmin) GetUpdatedAt() *string {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin{}
+	}
+	return t.UpdatedAt
+}
+func (t *ProductByAdmin_ProductByAdmin) GetCategory() *ProductByAdmin_ProductByAdmin_Category {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin{}
+	}
+	return t.Category
+}
+func (t *ProductByAdmin_ProductByAdmin) GetAttributes() []*ProductByAdmin_ProductByAdmin_Attributes {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin{}
+	}
+	return t.Attributes
+}
+func (t *ProductByAdmin_ProductByAdmin) GetVariations() []*ProductByAdmin_ProductByAdmin_Variations {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin{}
+	}
+	return t.Variations
+}
+func (t *ProductByAdmin_ProductByAdmin) GetProductSpecificDiscount() int {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin{}
+	}
+	return t.ProductSpecificDiscount
+}
+func (t *ProductByAdmin_ProductByAdmin) GetDigitalItems() []*ProductByAdmin_ProductByAdmin_DigitalItems {
+	if t == nil {
+		t = &ProductByAdmin_ProductByAdmin{}
+	}
+	return t.DigitalItems
+}
+
+type ProductBySlug_ProductBySlug_Category struct {
+	ID          string  "json:\"id\" graphql:\"id\""
+	Name        string  "json:\"name\" graphql:\"name\""
+	Slug        string  "json:\"slug\" graphql:\"slug\""
+	Description *string "json:\"description,omitempty\" graphql:\"description\""
+	FullImage   *string "json:\"fullImage,omitempty\" graphql:\"fullImage\""
+}
+
+func (t *ProductBySlug_ProductBySlug_Category) GetID() string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_Category{}
+	}
+	return t.ID
+}
+func (t *ProductBySlug_ProductBySlug_Category) GetName() string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_Category{}
+	}
+	return t.Name
+}
+func (t *ProductBySlug_ProductBySlug_Category) GetSlug() string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_Category{}
+	}
+	return t.Slug
+}
+func (t *ProductBySlug_ProductBySlug_Category) GetDescription() *string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_Category{}
+	}
+	return t.Description
+}
+func (t *ProductBySlug_ProductBySlug_Category) GetFullImage() *string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_Category{}
+	}
+	return t.FullImage
+}
+
+type ProductBySlug_ProductBySlug_Attributes struct {
+	ID         string   "json:\"id\" graphql:\"id\""
+	Name       string   "json:\"name\" graphql:\"name\""
+	Values     []string "json:\"values\" graphql:\"values\""
+	IsRequired bool     "json:\"isRequired\" graphql:\"isRequired\""
+}
+
+func (t *ProductBySlug_ProductBySlug_Attributes) GetID() string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_Attributes{}
+	}
+	return t.ID
+}
+func (t *ProductBySlug_ProductBySlug_Attributes) GetName() string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_Attributes{}
+	}
+	return t.Name
+}
+func (t *ProductBySlug_ProductBySlug_Attributes) GetValues() []string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_Attributes{}
+	}
+	return t.Values
+}
+func (t *ProductBySlug_ProductBySlug_Attributes) GetIsRequired() bool {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_Attributes{}
+	}
+	return t.IsRequired
+}
+
+type ProductBySlug_ProductBySlug_Variations struct {
+	ID    string  "json:\"id\" graphql:\"id\""
+	Stock *int    "json:\"stock,omitempty\" graphql:\"stock\""
+	Sku   *string "json:\"sku,omitempty\" graphql:\"sku\""
+	Price int     "json:\"price\" graphql:\"price\""
+	Name  string  "json:\"name\" graphql:\"name\""
+}
+
+func (t *ProductBySlug_ProductBySlug_Variations) GetID() string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_Variations{}
+	}
+	return t.ID
+}
+func (t *ProductBySlug_ProductBySlug_Variations) GetStock() *int {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_Variations{}
+	}
+	return t.Stock
+}
+func (t *ProductBySlug_ProductBySlug_Variations) GetSku() *string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_Variations{}
+	}
+	return t.Sku
+}
+func (t *ProductBySlug_ProductBySlug_Variations) GetPrice() int {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_Variations{}
+	}
+	return t.Price
+}
+func (t *ProductBySlug_ProductBySlug_Variations) GetName() string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_Variations{}
+	}
+	return t.Name
+}
+
+type ProductBySlug_ProductBySlug_DigitalItems_Contents struct {
+	Position       int                       "json:\"position\" graphql:\"position\""
+	Title          string                    "json:\"title\" graphql:\"title\""
+	ID             string                    "json:\"id\" graphql:\"id\""
+	UpdatedAt      string                    "json:\"updatedAt\" graphql:\"updatedAt\""
+	ContentText    *string                   "json:\"contentText,omitempty\" graphql:\"contentText\""
+	ContentType    models.DigitalContentType "json:\"contentType\" graphql:\"contentType\""
+	ContentURL     *string                   "json:\"contentUrl,omitempty\" graphql:\"contentUrl\""
+	IsTrialAllowed bool                      "json:\"isTrialAllowed\" graphql:\"isTrialAllowed\""
+}
+
+func (t *ProductBySlug_ProductBySlug_DigitalItems_Contents) GetPosition() int {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_DigitalItems_Contents{}
+	}
+	return t.Position
+}
+func (t *ProductBySlug_ProductBySlug_DigitalItems_Contents) GetTitle() string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_DigitalItems_Contents{}
+	}
+	return t.Title
+}
+func (t *ProductBySlug_ProductBySlug_DigitalItems_Contents) GetID() string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_DigitalItems_Contents{}
+	}
+	return t.ID
+}
+func (t *ProductBySlug_ProductBySlug_DigitalItems_Contents) GetUpdatedAt() string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_DigitalItems_Contents{}
+	}
+	return t.UpdatedAt
+}
+func (t *ProductBySlug_ProductBySlug_DigitalItems_Contents) GetContentText() *string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_DigitalItems_Contents{}
+	}
+	return t.ContentText
+}
+func (t *ProductBySlug_ProductBySlug_DigitalItems_Contents) GetContentType() *models.DigitalContentType {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_DigitalItems_Contents{}
+	}
+	return &t.ContentType
+}
+func (t *ProductBySlug_ProductBySlug_DigitalItems_Contents) GetContentURL() *string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_DigitalItems_Contents{}
+	}
+	return t.ContentURL
+}
+func (t *ProductBySlug_ProductBySlug_DigitalItems_Contents) GetIsTrialAllowed() bool {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_DigitalItems_Contents{}
+	}
+	return t.IsTrialAllowed
+}
+
+type ProductBySlug_ProductBySlug_DigitalItems struct {
+	ID          string                                               "json:\"id\" graphql:\"id\""
+	Description *string                                              "json:\"description,omitempty\" graphql:\"description\""
+	Title       string                                               "json:\"title\" graphql:\"title\""
+	Position    int                                                  "json:\"position\" graphql:\"position\""
+	Contents    []*ProductBySlug_ProductBySlug_DigitalItems_Contents "json:\"contents\" graphql:\"contents\""
+}
+
+func (t *ProductBySlug_ProductBySlug_DigitalItems) GetID() string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_DigitalItems{}
+	}
+	return t.ID
+}
+func (t *ProductBySlug_ProductBySlug_DigitalItems) GetDescription() *string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_DigitalItems{}
+	}
+	return t.Description
+}
+func (t *ProductBySlug_ProductBySlug_DigitalItems) GetTitle() string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_DigitalItems{}
+	}
+	return t.Title
+}
+func (t *ProductBySlug_ProductBySlug_DigitalItems) GetPosition() int {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_DigitalItems{}
+	}
+	return t.Position
+}
+func (t *ProductBySlug_ProductBySlug_DigitalItems) GetContents() []*ProductBySlug_ProductBySlug_DigitalItems_Contents {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug_DigitalItems{}
+	}
+	return t.Contents
+}
+
+type ProductBySlug_ProductBySlug struct {
+	ID                      string                                      "json:\"id\" graphql:\"id\""
+	Name                    string                                      "json:\"name\" graphql:\"name\""
+	Slug                    string                                      "json:\"slug\" graphql:\"slug\""
+	Description             string                                      "json:\"description\" graphql:\"description\""
+	Sku                     *string                                     "json:\"sku,omitempty\" graphql:\"sku\""
+	Stock                   *int                                        "json:\"stock,omitempty\" graphql:\"stock\""
+	MaxItemPerOrder         *int                                        "json:\"maxItemPerOrder,omitempty\" graphql:\"maxItemPerOrder\""
+	Price                   int                                         "json:\"price\" graphql:\"price\""
+	FullImages              []string                                    "json:\"fullImages\" graphql:\"fullImages\""
+	IsDigitalProduct        bool                                        "json:\"isDigitalProduct\" graphql:\"isDigitalProduct\""
+	Views                   int                                         "json:\"views\" graphql:\"views\""
+	CreatedAt               string                                      "json:\"createdAt\" graphql:\"createdAt\""
+	ProductUnit             *models.ProductUnit                         "json:\"productUnit,omitempty\" graphql:\"productUnit\""
+	UpdatedAt               *string                                     "json:\"updatedAt,omitempty\" graphql:\"updatedAt\""
+	Category                *ProductBySlug_ProductBySlug_Category       "json:\"category,omitempty\" graphql:\"category\""
+	Attributes              []*ProductBySlug_ProductBySlug_Attributes   "json:\"attributes\" graphql:\"attributes\""
+	Variations              []*ProductBySlug_ProductBySlug_Variations   "json:\"variations\" graphql:\"variations\""
+	ProductSpecificDiscount int                                         "json:\"productSpecificDiscount\" graphql:\"productSpecificDiscount\""
+	DigitalItems            []*ProductBySlug_ProductBySlug_DigitalItems "json:\"digitalItems\" graphql:\"digitalItems\""
+}
+
+func (t *ProductBySlug_ProductBySlug) GetID() string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug{}
+	}
+	return t.ID
+}
+func (t *ProductBySlug_ProductBySlug) GetName() string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug{}
+	}
+	return t.Name
+}
+func (t *ProductBySlug_ProductBySlug) GetSlug() string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug{}
+	}
+	return t.Slug
+}
+func (t *ProductBySlug_ProductBySlug) GetDescription() string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug{}
+	}
+	return t.Description
+}
+func (t *ProductBySlug_ProductBySlug) GetSku() *string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug{}
+	}
+	return t.Sku
+}
+func (t *ProductBySlug_ProductBySlug) GetStock() *int {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug{}
+	}
+	return t.Stock
+}
+func (t *ProductBySlug_ProductBySlug) GetMaxItemPerOrder() *int {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug{}
+	}
+	return t.MaxItemPerOrder
+}
+func (t *ProductBySlug_ProductBySlug) GetPrice() int {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug{}
+	}
+	return t.Price
+}
+func (t *ProductBySlug_ProductBySlug) GetFullImages() []string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug{}
+	}
+	return t.FullImages
+}
+func (t *ProductBySlug_ProductBySlug) GetIsDigitalProduct() bool {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug{}
+	}
+	return t.IsDigitalProduct
+}
+func (t *ProductBySlug_ProductBySlug) GetViews() int {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug{}
+	}
+	return t.Views
+}
+func (t *ProductBySlug_ProductBySlug) GetCreatedAt() string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug{}
+	}
+	return t.CreatedAt
+}
+func (t *ProductBySlug_ProductBySlug) GetProductUnit() *models.ProductUnit {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug{}
+	}
+	return t.ProductUnit
+}
+func (t *ProductBySlug_ProductBySlug) GetUpdatedAt() *string {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug{}
+	}
+	return t.UpdatedAt
+}
+func (t *ProductBySlug_ProductBySlug) GetCategory() *ProductBySlug_ProductBySlug_Category {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug{}
+	}
+	return t.Category
+}
+func (t *ProductBySlug_ProductBySlug) GetAttributes() []*ProductBySlug_ProductBySlug_Attributes {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug{}
+	}
+	return t.Attributes
+}
+func (t *ProductBySlug_ProductBySlug) GetVariations() []*ProductBySlug_ProductBySlug_Variations {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug{}
+	}
+	return t.Variations
+}
+func (t *ProductBySlug_ProductBySlug) GetProductSpecificDiscount() int {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug{}
+	}
+	return t.ProductSpecificDiscount
+}
+func (t *ProductBySlug_ProductBySlug) GetDigitalItems() []*ProductBySlug_ProductBySlug_DigitalItems {
+	if t == nil {
+		t = &ProductBySlug_ProductBySlug{}
+	}
+	return t.DigitalItems
+}
+
+type ProductSearch_ProductSearch_Category struct {
+	ID          string  "json:\"id\" graphql:\"id\""
+	Name        string  "json:\"name\" graphql:\"name\""
+	Slug        string  "json:\"slug\" graphql:\"slug\""
+	Description *string "json:\"description,omitempty\" graphql:\"description\""
+	FullImage   *string "json:\"fullImage,omitempty\" graphql:\"fullImage\""
+}
+
+func (t *ProductSearch_ProductSearch_Category) GetID() string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_Category{}
+	}
+	return t.ID
+}
+func (t *ProductSearch_ProductSearch_Category) GetName() string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_Category{}
+	}
+	return t.Name
+}
+func (t *ProductSearch_ProductSearch_Category) GetSlug() string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_Category{}
+	}
+	return t.Slug
+}
+func (t *ProductSearch_ProductSearch_Category) GetDescription() *string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_Category{}
+	}
+	return t.Description
+}
+func (t *ProductSearch_ProductSearch_Category) GetFullImage() *string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_Category{}
+	}
+	return t.FullImage
+}
+
+type ProductSearch_ProductSearch_Attributes struct {
+	ID         string   "json:\"id\" graphql:\"id\""
+	Name       string   "json:\"name\" graphql:\"name\""
+	Values     []string "json:\"values\" graphql:\"values\""
+	IsRequired bool     "json:\"isRequired\" graphql:\"isRequired\""
+}
+
+func (t *ProductSearch_ProductSearch_Attributes) GetID() string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_Attributes{}
+	}
+	return t.ID
+}
+func (t *ProductSearch_ProductSearch_Attributes) GetName() string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_Attributes{}
+	}
+	return t.Name
+}
+func (t *ProductSearch_ProductSearch_Attributes) GetValues() []string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_Attributes{}
+	}
+	return t.Values
+}
+func (t *ProductSearch_ProductSearch_Attributes) GetIsRequired() bool {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_Attributes{}
+	}
+	return t.IsRequired
+}
+
+type ProductSearch_ProductSearch_Variations struct {
+	ID    string  "json:\"id\" graphql:\"id\""
+	Stock *int    "json:\"stock,omitempty\" graphql:\"stock\""
+	Sku   *string "json:\"sku,omitempty\" graphql:\"sku\""
+	Price int     "json:\"price\" graphql:\"price\""
+	Name  string  "json:\"name\" graphql:\"name\""
+}
+
+func (t *ProductSearch_ProductSearch_Variations) GetID() string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_Variations{}
+	}
+	return t.ID
+}
+func (t *ProductSearch_ProductSearch_Variations) GetStock() *int {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_Variations{}
+	}
+	return t.Stock
+}
+func (t *ProductSearch_ProductSearch_Variations) GetSku() *string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_Variations{}
+	}
+	return t.Sku
+}
+func (t *ProductSearch_ProductSearch_Variations) GetPrice() int {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_Variations{}
+	}
+	return t.Price
+}
+func (t *ProductSearch_ProductSearch_Variations) GetName() string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_Variations{}
+	}
+	return t.Name
+}
+
+type ProductSearch_ProductSearch_DigitalItems_Contents struct {
+	Position       int                       "json:\"position\" graphql:\"position\""
+	Title          string                    "json:\"title\" graphql:\"title\""
+	ID             string                    "json:\"id\" graphql:\"id\""
+	UpdatedAt      string                    "json:\"updatedAt\" graphql:\"updatedAt\""
+	ContentText    *string                   "json:\"contentText,omitempty\" graphql:\"contentText\""
+	ContentType    models.DigitalContentType "json:\"contentType\" graphql:\"contentType\""
+	ContentURL     *string                   "json:\"contentUrl,omitempty\" graphql:\"contentUrl\""
+	IsTrialAllowed bool                      "json:\"isTrialAllowed\" graphql:\"isTrialAllowed\""
+}
+
+func (t *ProductSearch_ProductSearch_DigitalItems_Contents) GetPosition() int {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_DigitalItems_Contents{}
+	}
+	return t.Position
+}
+func (t *ProductSearch_ProductSearch_DigitalItems_Contents) GetTitle() string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_DigitalItems_Contents{}
+	}
+	return t.Title
+}
+func (t *ProductSearch_ProductSearch_DigitalItems_Contents) GetID() string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_DigitalItems_Contents{}
+	}
+	return t.ID
+}
+func (t *ProductSearch_ProductSearch_DigitalItems_Contents) GetUpdatedAt() string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_DigitalItems_Contents{}
+	}
+	return t.UpdatedAt
+}
+func (t *ProductSearch_ProductSearch_DigitalItems_Contents) GetContentText() *string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_DigitalItems_Contents{}
+	}
+	return t.ContentText
+}
+func (t *ProductSearch_ProductSearch_DigitalItems_Contents) GetContentType() *models.DigitalContentType {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_DigitalItems_Contents{}
+	}
+	return &t.ContentType
+}
+func (t *ProductSearch_ProductSearch_DigitalItems_Contents) GetContentURL() *string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_DigitalItems_Contents{}
+	}
+	return t.ContentURL
+}
+func (t *ProductSearch_ProductSearch_DigitalItems_Contents) GetIsTrialAllowed() bool {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_DigitalItems_Contents{}
+	}
+	return t.IsTrialAllowed
+}
+
+type ProductSearch_ProductSearch_DigitalItems struct {
+	ID          string                                               "json:\"id\" graphql:\"id\""
+	Description *string                                              "json:\"description,omitempty\" graphql:\"description\""
+	Title       string                                               "json:\"title\" graphql:\"title\""
+	Position    int                                                  "json:\"position\" graphql:\"position\""
+	Contents    []*ProductSearch_ProductSearch_DigitalItems_Contents "json:\"contents\" graphql:\"contents\""
+}
+
+func (t *ProductSearch_ProductSearch_DigitalItems) GetID() string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_DigitalItems{}
+	}
+	return t.ID
+}
+func (t *ProductSearch_ProductSearch_DigitalItems) GetDescription() *string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_DigitalItems{}
+	}
+	return t.Description
+}
+func (t *ProductSearch_ProductSearch_DigitalItems) GetTitle() string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_DigitalItems{}
+	}
+	return t.Title
+}
+func (t *ProductSearch_ProductSearch_DigitalItems) GetPosition() int {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_DigitalItems{}
+	}
+	return t.Position
+}
+func (t *ProductSearch_ProductSearch_DigitalItems) GetContents() []*ProductSearch_ProductSearch_DigitalItems_Contents {
+	if t == nil {
+		t = &ProductSearch_ProductSearch_DigitalItems{}
+	}
+	return t.Contents
+}
+
+type ProductSearch_ProductSearch struct {
+	ID                      string                                      "json:\"id\" graphql:\"id\""
+	Name                    string                                      "json:\"name\" graphql:\"name\""
+	Slug                    string                                      "json:\"slug\" graphql:\"slug\""
+	Description             string                                      "json:\"description\" graphql:\"description\""
+	Sku                     *string                                     "json:\"sku,omitempty\" graphql:\"sku\""
+	Stock                   *int                                        "json:\"stock,omitempty\" graphql:\"stock\""
+	MaxItemPerOrder         *int                                        "json:\"maxItemPerOrder,omitempty\" graphql:\"maxItemPerOrder\""
+	Price                   int                                         "json:\"price\" graphql:\"price\""
+	FullImages              []string                                    "json:\"fullImages\" graphql:\"fullImages\""
+	IsDigitalProduct        bool                                        "json:\"isDigitalProduct\" graphql:\"isDigitalProduct\""
+	Views                   int                                         "json:\"views\" graphql:\"views\""
+	CreatedAt               string                                      "json:\"createdAt\" graphql:\"createdAt\""
+	ProductUnit             *models.ProductUnit                         "json:\"productUnit,omitempty\" graphql:\"productUnit\""
+	UpdatedAt               *string                                     "json:\"updatedAt,omitempty\" graphql:\"updatedAt\""
+	Category                *ProductSearch_ProductSearch_Category       "json:\"category,omitempty\" graphql:\"category\""
+	Attributes              []*ProductSearch_ProductSearch_Attributes   "json:\"attributes\" graphql:\"attributes\""
+	Variations              []*ProductSearch_ProductSearch_Variations   "json:\"variations\" graphql:\"variations\""
+	ProductSpecificDiscount int                                         "json:\"productSpecificDiscount\" graphql:\"productSpecificDiscount\""
+	DigitalItems            []*ProductSearch_ProductSearch_DigitalItems "json:\"digitalItems\" graphql:\"digitalItems\""
+}
+
+func (t *ProductSearch_ProductSearch) GetID() string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch{}
+	}
+	return t.ID
+}
+func (t *ProductSearch_ProductSearch) GetName() string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch{}
+	}
+	return t.Name
+}
+func (t *ProductSearch_ProductSearch) GetSlug() string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch{}
+	}
+	return t.Slug
+}
+func (t *ProductSearch_ProductSearch) GetDescription() string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch{}
+	}
+	return t.Description
+}
+func (t *ProductSearch_ProductSearch) GetSku() *string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch{}
+	}
+	return t.Sku
+}
+func (t *ProductSearch_ProductSearch) GetStock() *int {
+	if t == nil {
+		t = &ProductSearch_ProductSearch{}
+	}
+	return t.Stock
+}
+func (t *ProductSearch_ProductSearch) GetMaxItemPerOrder() *int {
+	if t == nil {
+		t = &ProductSearch_ProductSearch{}
+	}
+	return t.MaxItemPerOrder
+}
+func (t *ProductSearch_ProductSearch) GetPrice() int {
+	if t == nil {
+		t = &ProductSearch_ProductSearch{}
+	}
+	return t.Price
+}
+func (t *ProductSearch_ProductSearch) GetFullImages() []string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch{}
+	}
+	return t.FullImages
+}
+func (t *ProductSearch_ProductSearch) GetIsDigitalProduct() bool {
+	if t == nil {
+		t = &ProductSearch_ProductSearch{}
+	}
+	return t.IsDigitalProduct
+}
+func (t *ProductSearch_ProductSearch) GetViews() int {
+	if t == nil {
+		t = &ProductSearch_ProductSearch{}
+	}
+	return t.Views
+}
+func (t *ProductSearch_ProductSearch) GetCreatedAt() string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch{}
+	}
+	return t.CreatedAt
+}
+func (t *ProductSearch_ProductSearch) GetProductUnit() *models.ProductUnit {
+	if t == nil {
+		t = &ProductSearch_ProductSearch{}
+	}
+	return t.ProductUnit
+}
+func (t *ProductSearch_ProductSearch) GetUpdatedAt() *string {
+	if t == nil {
+		t = &ProductSearch_ProductSearch{}
+	}
+	return t.UpdatedAt
+}
+func (t *ProductSearch_ProductSearch) GetCategory() *ProductSearch_ProductSearch_Category {
+	if t == nil {
+		t = &ProductSearch_ProductSearch{}
+	}
+	return t.Category
+}
+func (t *ProductSearch_ProductSearch) GetAttributes() []*ProductSearch_ProductSearch_Attributes {
+	if t == nil {
+		t = &ProductSearch_ProductSearch{}
+	}
+	return t.Attributes
+}
+func (t *ProductSearch_ProductSearch) GetVariations() []*ProductSearch_ProductSearch_Variations {
+	if t == nil {
+		t = &ProductSearch_ProductSearch{}
+	}
+	return t.Variations
+}
+func (t *ProductSearch_ProductSearch) GetProductSpecificDiscount() int {
+	if t == nil {
+		t = &ProductSearch_ProductSearch{}
+	}
+	return t.ProductSpecificDiscount
+}
+func (t *ProductSearch_ProductSearch) GetDigitalItems() []*ProductSearch_ProductSearch_DigitalItems {
+	if t == nil {
+		t = &ProductSearch_ProductSearch{}
+	}
+	return t.DigitalItems
+}
+
+type ProductSearchByAdmin_ProductSearchByAdmin_Category struct {
+	ID          string  "json:\"id\" graphql:\"id\""
+	Name        string  "json:\"name\" graphql:\"name\""
+	Slug        string  "json:\"slug\" graphql:\"slug\""
+	Description *string "json:\"description,omitempty\" graphql:\"description\""
+	FullImage   *string "json:\"fullImage,omitempty\" graphql:\"fullImage\""
+}
+
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_Category) GetID() string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_Category{}
+	}
+	return t.ID
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_Category) GetName() string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_Category{}
+	}
+	return t.Name
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_Category) GetSlug() string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_Category{}
+	}
+	return t.Slug
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_Category) GetDescription() *string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_Category{}
+	}
+	return t.Description
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_Category) GetFullImage() *string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_Category{}
+	}
+	return t.FullImage
+}
+
+type ProductSearchByAdmin_ProductSearchByAdmin_Attributes struct {
+	ID         string   "json:\"id\" graphql:\"id\""
+	Name       string   "json:\"name\" graphql:\"name\""
+	Values     []string "json:\"values\" graphql:\"values\""
+	IsRequired bool     "json:\"isRequired\" graphql:\"isRequired\""
+}
+
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_Attributes) GetID() string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_Attributes{}
+	}
+	return t.ID
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_Attributes) GetName() string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_Attributes{}
+	}
+	return t.Name
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_Attributes) GetValues() []string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_Attributes{}
+	}
+	return t.Values
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_Attributes) GetIsRequired() bool {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_Attributes{}
+	}
+	return t.IsRequired
+}
+
+type ProductSearchByAdmin_ProductSearchByAdmin_Variations struct {
+	ID    string  "json:\"id\" graphql:\"id\""
+	Stock *int    "json:\"stock,omitempty\" graphql:\"stock\""
+	Sku   *string "json:\"sku,omitempty\" graphql:\"sku\""
+	Price int     "json:\"price\" graphql:\"price\""
+	Name  string  "json:\"name\" graphql:\"name\""
+}
+
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_Variations) GetID() string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_Variations{}
+	}
+	return t.ID
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_Variations) GetStock() *int {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_Variations{}
+	}
+	return t.Stock
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_Variations) GetSku() *string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_Variations{}
+	}
+	return t.Sku
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_Variations) GetPrice() int {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_Variations{}
+	}
+	return t.Price
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_Variations) GetName() string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_Variations{}
+	}
+	return t.Name
+}
+
+type ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems_Contents struct {
+	Position       int                       "json:\"position\" graphql:\"position\""
+	Title          string                    "json:\"title\" graphql:\"title\""
+	ID             string                    "json:\"id\" graphql:\"id\""
+	UpdatedAt      string                    "json:\"updatedAt\" graphql:\"updatedAt\""
+	ContentText    *string                   "json:\"contentText,omitempty\" graphql:\"contentText\""
+	ContentType    models.DigitalContentType "json:\"contentType\" graphql:\"contentType\""
+	ContentURL     *string                   "json:\"contentUrl,omitempty\" graphql:\"contentUrl\""
+	IsTrialAllowed bool                      "json:\"isTrialAllowed\" graphql:\"isTrialAllowed\""
+}
+
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems_Contents) GetPosition() int {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems_Contents{}
+	}
+	return t.Position
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems_Contents) GetTitle() string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems_Contents{}
+	}
+	return t.Title
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems_Contents) GetID() string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems_Contents{}
+	}
+	return t.ID
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems_Contents) GetUpdatedAt() string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems_Contents{}
+	}
+	return t.UpdatedAt
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems_Contents) GetContentText() *string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems_Contents{}
+	}
+	return t.ContentText
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems_Contents) GetContentType() *models.DigitalContentType {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems_Contents{}
+	}
+	return &t.ContentType
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems_Contents) GetContentURL() *string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems_Contents{}
+	}
+	return t.ContentURL
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems_Contents) GetIsTrialAllowed() bool {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems_Contents{}
+	}
+	return t.IsTrialAllowed
+}
+
+type ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems struct {
+	ID          string                                                             "json:\"id\" graphql:\"id\""
+	Description *string                                                            "json:\"description,omitempty\" graphql:\"description\""
+	Title       string                                                             "json:\"title\" graphql:\"title\""
+	Position    int                                                                "json:\"position\" graphql:\"position\""
+	Contents    []*ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems_Contents "json:\"contents\" graphql:\"contents\""
+}
+
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems) GetID() string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems{}
+	}
+	return t.ID
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems) GetDescription() *string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems{}
+	}
+	return t.Description
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems) GetTitle() string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems{}
+	}
+	return t.Title
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems) GetPosition() int {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems{}
+	}
+	return t.Position
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems) GetContents() []*ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems_Contents {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems{}
+	}
+	return t.Contents
+}
+
+type ProductSearchByAdmin_ProductSearchByAdmin struct {
+	ID                      string                                                    "json:\"id\" graphql:\"id\""
+	Name                    string                                                    "json:\"name\" graphql:\"name\""
+	Slug                    string                                                    "json:\"slug\" graphql:\"slug\""
+	Description             string                                                    "json:\"description\" graphql:\"description\""
+	Sku                     *string                                                   "json:\"sku,omitempty\" graphql:\"sku\""
+	Stock                   *int                                                      "json:\"stock,omitempty\" graphql:\"stock\""
+	MaxItemPerOrder         *int                                                      "json:\"maxItemPerOrder,omitempty\" graphql:\"maxItemPerOrder\""
+	Price                   int                                                       "json:\"price\" graphql:\"price\""
+	FullImages              []string                                                  "json:\"fullImages\" graphql:\"fullImages\""
+	IsDigitalProduct        bool                                                      "json:\"isDigitalProduct\" graphql:\"isDigitalProduct\""
+	Views                   int                                                       "json:\"views\" graphql:\"views\""
+	CreatedAt               string                                                    "json:\"createdAt\" graphql:\"createdAt\""
+	ProductUnit             *models.ProductUnit                                       "json:\"productUnit,omitempty\" graphql:\"productUnit\""
+	UpdatedAt               *string                                                   "json:\"updatedAt,omitempty\" graphql:\"updatedAt\""
+	Category                *ProductSearchByAdmin_ProductSearchByAdmin_Category       "json:\"category,omitempty\" graphql:\"category\""
+	Attributes              []*ProductSearchByAdmin_ProductSearchByAdmin_Attributes   "json:\"attributes\" graphql:\"attributes\""
+	Variations              []*ProductSearchByAdmin_ProductSearchByAdmin_Variations   "json:\"variations\" graphql:\"variations\""
+	ProductSpecificDiscount int                                                       "json:\"productSpecificDiscount\" graphql:\"productSpecificDiscount\""
+	DigitalItems            []*ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems "json:\"digitalItems\" graphql:\"digitalItems\""
+}
+
+func (t *ProductSearchByAdmin_ProductSearchByAdmin) GetID() string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin{}
+	}
+	return t.ID
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin) GetName() string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin{}
+	}
+	return t.Name
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin) GetSlug() string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin{}
+	}
+	return t.Slug
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin) GetDescription() string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin{}
+	}
+	return t.Description
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin) GetSku() *string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin{}
+	}
+	return t.Sku
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin) GetStock() *int {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin{}
+	}
+	return t.Stock
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin) GetMaxItemPerOrder() *int {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin{}
+	}
+	return t.MaxItemPerOrder
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin) GetPrice() int {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin{}
+	}
+	return t.Price
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin) GetFullImages() []string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin{}
+	}
+	return t.FullImages
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin) GetIsDigitalProduct() bool {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin{}
+	}
+	return t.IsDigitalProduct
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin) GetViews() int {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin{}
+	}
+	return t.Views
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin) GetCreatedAt() string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin{}
+	}
+	return t.CreatedAt
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin) GetProductUnit() *models.ProductUnit {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin{}
+	}
+	return t.ProductUnit
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin) GetUpdatedAt() *string {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin{}
+	}
+	return t.UpdatedAt
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin) GetCategory() *ProductSearchByAdmin_ProductSearchByAdmin_Category {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin{}
+	}
+	return t.Category
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin) GetAttributes() []*ProductSearchByAdmin_ProductSearchByAdmin_Attributes {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin{}
+	}
+	return t.Attributes
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin) GetVariations() []*ProductSearchByAdmin_ProductSearchByAdmin_Variations {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin{}
+	}
+	return t.Variations
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin) GetProductSpecificDiscount() int {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin{}
+	}
+	return t.ProductSpecificDiscount
+}
+func (t *ProductSearchByAdmin_ProductSearchByAdmin) GetDigitalItems() []*ProductSearchByAdmin_ProductSearchByAdmin_DigitalItems {
+	if t == nil {
+		t = &ProductSearchByAdmin_ProductSearchByAdmin{}
+	}
+	return t.DigitalItems
+}
+
+type Products_Products_Category struct {
+	ID          string  "json:\"id\" graphql:\"id\""
+	Name        string  "json:\"name\" graphql:\"name\""
+	Slug        string  "json:\"slug\" graphql:\"slug\""
+	Description *string "json:\"description,omitempty\" graphql:\"description\""
+	FullImage   *string "json:\"fullImage,omitempty\" graphql:\"fullImage\""
+}
+
+func (t *Products_Products_Category) GetID() string {
+	if t == nil {
+		t = &Products_Products_Category{}
+	}
+	return t.ID
+}
+func (t *Products_Products_Category) GetName() string {
+	if t == nil {
+		t = &Products_Products_Category{}
+	}
+	return t.Name
+}
+func (t *Products_Products_Category) GetSlug() string {
+	if t == nil {
+		t = &Products_Products_Category{}
+	}
+	return t.Slug
+}
+func (t *Products_Products_Category) GetDescription() *string {
+	if t == nil {
+		t = &Products_Products_Category{}
+	}
+	return t.Description
+}
+func (t *Products_Products_Category) GetFullImage() *string {
+	if t == nil {
+		t = &Products_Products_Category{}
+	}
+	return t.FullImage
+}
+
+type Products_Products_Attributes struct {
+	ID         string   "json:\"id\" graphql:\"id\""
+	Name       string   "json:\"name\" graphql:\"name\""
+	Values     []string "json:\"values\" graphql:\"values\""
+	IsRequired bool     "json:\"isRequired\" graphql:\"isRequired\""
+}
+
+func (t *Products_Products_Attributes) GetID() string {
+	if t == nil {
+		t = &Products_Products_Attributes{}
+	}
+	return t.ID
+}
+func (t *Products_Products_Attributes) GetName() string {
+	if t == nil {
+		t = &Products_Products_Attributes{}
+	}
+	return t.Name
+}
+func (t *Products_Products_Attributes) GetValues() []string {
+	if t == nil {
+		t = &Products_Products_Attributes{}
+	}
+	return t.Values
+}
+func (t *Products_Products_Attributes) GetIsRequired() bool {
+	if t == nil {
+		t = &Products_Products_Attributes{}
+	}
+	return t.IsRequired
+}
+
+type Products_Products_Variations struct {
+	ID    string  "json:\"id\" graphql:\"id\""
+	Stock *int    "json:\"stock,omitempty\" graphql:\"stock\""
+	Sku   *string "json:\"sku,omitempty\" graphql:\"sku\""
+	Price int     "json:\"price\" graphql:\"price\""
+	Name  string  "json:\"name\" graphql:\"name\""
+}
+
+func (t *Products_Products_Variations) GetID() string {
+	if t == nil {
+		t = &Products_Products_Variations{}
+	}
+	return t.ID
+}
+func (t *Products_Products_Variations) GetStock() *int {
+	if t == nil {
+		t = &Products_Products_Variations{}
+	}
+	return t.Stock
+}
+func (t *Products_Products_Variations) GetSku() *string {
+	if t == nil {
+		t = &Products_Products_Variations{}
+	}
+	return t.Sku
+}
+func (t *Products_Products_Variations) GetPrice() int {
+	if t == nil {
+		t = &Products_Products_Variations{}
+	}
+	return t.Price
+}
+func (t *Products_Products_Variations) GetName() string {
+	if t == nil {
+		t = &Products_Products_Variations{}
+	}
+	return t.Name
+}
+
+type Products_Products_DigitalItems_Contents struct {
+	Position       int                       "json:\"position\" graphql:\"position\""
+	Title          string                    "json:\"title\" graphql:\"title\""
+	ID             string                    "json:\"id\" graphql:\"id\""
+	UpdatedAt      string                    "json:\"updatedAt\" graphql:\"updatedAt\""
+	ContentText    *string                   "json:\"contentText,omitempty\" graphql:\"contentText\""
+	ContentType    models.DigitalContentType "json:\"contentType\" graphql:\"contentType\""
+	ContentURL     *string                   "json:\"contentUrl,omitempty\" graphql:\"contentUrl\""
+	IsTrialAllowed bool                      "json:\"isTrialAllowed\" graphql:\"isTrialAllowed\""
+}
+
+func (t *Products_Products_DigitalItems_Contents) GetPosition() int {
+	if t == nil {
+		t = &Products_Products_DigitalItems_Contents{}
+	}
+	return t.Position
+}
+func (t *Products_Products_DigitalItems_Contents) GetTitle() string {
+	if t == nil {
+		t = &Products_Products_DigitalItems_Contents{}
+	}
+	return t.Title
+}
+func (t *Products_Products_DigitalItems_Contents) GetID() string {
+	if t == nil {
+		t = &Products_Products_DigitalItems_Contents{}
+	}
+	return t.ID
+}
+func (t *Products_Products_DigitalItems_Contents) GetUpdatedAt() string {
+	if t == nil {
+		t = &Products_Products_DigitalItems_Contents{}
+	}
+	return t.UpdatedAt
+}
+func (t *Products_Products_DigitalItems_Contents) GetContentText() *string {
+	if t == nil {
+		t = &Products_Products_DigitalItems_Contents{}
+	}
+	return t.ContentText
+}
+func (t *Products_Products_DigitalItems_Contents) GetContentType() *models.DigitalContentType {
+	if t == nil {
+		t = &Products_Products_DigitalItems_Contents{}
+	}
+	return &t.ContentType
+}
+func (t *Products_Products_DigitalItems_Contents) GetContentURL() *string {
+	if t == nil {
+		t = &Products_Products_DigitalItems_Contents{}
+	}
+	return t.ContentURL
+}
+func (t *Products_Products_DigitalItems_Contents) GetIsTrialAllowed() bool {
+	if t == nil {
+		t = &Products_Products_DigitalItems_Contents{}
+	}
+	return t.IsTrialAllowed
+}
+
+type Products_Products_DigitalItems struct {
+	ID          string                                     "json:\"id\" graphql:\"id\""
+	Description *string                                    "json:\"description,omitempty\" graphql:\"description\""
+	Title       string                                     "json:\"title\" graphql:\"title\""
+	Position    int                                        "json:\"position\" graphql:\"position\""
+	Contents    []*Products_Products_DigitalItems_Contents "json:\"contents\" graphql:\"contents\""
+}
+
+func (t *Products_Products_DigitalItems) GetID() string {
+	if t == nil {
+		t = &Products_Products_DigitalItems{}
+	}
+	return t.ID
+}
+func (t *Products_Products_DigitalItems) GetDescription() *string {
+	if t == nil {
+		t = &Products_Products_DigitalItems{}
+	}
+	return t.Description
+}
+func (t *Products_Products_DigitalItems) GetTitle() string {
+	if t == nil {
+		t = &Products_Products_DigitalItems{}
+	}
+	return t.Title
+}
+func (t *Products_Products_DigitalItems) GetPosition() int {
+	if t == nil {
+		t = &Products_Products_DigitalItems{}
+	}
+	return t.Position
+}
+func (t *Products_Products_DigitalItems) GetContents() []*Products_Products_DigitalItems_Contents {
+	if t == nil {
+		t = &Products_Products_DigitalItems{}
+	}
+	return t.Contents
+}
+
+type Products_Products struct {
+	ID                      string                            "json:\"id\" graphql:\"id\""
+	Name                    string                            "json:\"name\" graphql:\"name\""
+	Slug                    string                            "json:\"slug\" graphql:\"slug\""
+	Description             string                            "json:\"description\" graphql:\"description\""
+	Sku                     *string                           "json:\"sku,omitempty\" graphql:\"sku\""
+	Stock                   *int                              "json:\"stock,omitempty\" graphql:\"stock\""
+	MaxItemPerOrder         *int                              "json:\"maxItemPerOrder,omitempty\" graphql:\"maxItemPerOrder\""
+	Price                   int                               "json:\"price\" graphql:\"price\""
+	FullImages              []string                          "json:\"fullImages\" graphql:\"fullImages\""
+	IsDigitalProduct        bool                              "json:\"isDigitalProduct\" graphql:\"isDigitalProduct\""
+	Views                   int                               "json:\"views\" graphql:\"views\""
+	CreatedAt               string                            "json:\"createdAt\" graphql:\"createdAt\""
+	ProductUnit             *models.ProductUnit               "json:\"productUnit,omitempty\" graphql:\"productUnit\""
+	UpdatedAt               *string                           "json:\"updatedAt,omitempty\" graphql:\"updatedAt\""
+	Category                *Products_Products_Category       "json:\"category,omitempty\" graphql:\"category\""
+	Attributes              []*Products_Products_Attributes   "json:\"attributes\" graphql:\"attributes\""
+	Variations              []*Products_Products_Variations   "json:\"variations\" graphql:\"variations\""
+	ProductSpecificDiscount int                               "json:\"productSpecificDiscount\" graphql:\"productSpecificDiscount\""
+	DigitalItems            []*Products_Products_DigitalItems "json:\"digitalItems\" graphql:\"digitalItems\""
+}
+
+func (t *Products_Products) GetID() string {
+	if t == nil {
+		t = &Products_Products{}
+	}
+	return t.ID
+}
+func (t *Products_Products) GetName() string {
+	if t == nil {
+		t = &Products_Products{}
+	}
+	return t.Name
+}
+func (t *Products_Products) GetSlug() string {
+	if t == nil {
+		t = &Products_Products{}
+	}
+	return t.Slug
+}
+func (t *Products_Products) GetDescription() string {
+	if t == nil {
+		t = &Products_Products{}
+	}
+	return t.Description
+}
+func (t *Products_Products) GetSku() *string {
+	if t == nil {
+		t = &Products_Products{}
+	}
+	return t.Sku
+}
+func (t *Products_Products) GetStock() *int {
+	if t == nil {
+		t = &Products_Products{}
+	}
+	return t.Stock
+}
+func (t *Products_Products) GetMaxItemPerOrder() *int {
+	if t == nil {
+		t = &Products_Products{}
+	}
+	return t.MaxItemPerOrder
+}
+func (t *Products_Products) GetPrice() int {
+	if t == nil {
+		t = &Products_Products{}
+	}
+	return t.Price
+}
+func (t *Products_Products) GetFullImages() []string {
+	if t == nil {
+		t = &Products_Products{}
+	}
+	return t.FullImages
+}
+func (t *Products_Products) GetIsDigitalProduct() bool {
+	if t == nil {
+		t = &Products_Products{}
+	}
+	return t.IsDigitalProduct
+}
+func (t *Products_Products) GetViews() int {
+	if t == nil {
+		t = &Products_Products{}
+	}
+	return t.Views
+}
+func (t *Products_Products) GetCreatedAt() string {
+	if t == nil {
+		t = &Products_Products{}
+	}
+	return t.CreatedAt
+}
+func (t *Products_Products) GetProductUnit() *models.ProductUnit {
+	if t == nil {
+		t = &Products_Products{}
+	}
+	return t.ProductUnit
+}
+func (t *Products_Products) GetUpdatedAt() *string {
+	if t == nil {
+		t = &Products_Products{}
+	}
+	return t.UpdatedAt
+}
+func (t *Products_Products) GetCategory() *Products_Products_Category {
+	if t == nil {
+		t = &Products_Products{}
+	}
+	return t.Category
+}
+func (t *Products_Products) GetAttributes() []*Products_Products_Attributes {
+	if t == nil {
+		t = &Products_Products{}
+	}
+	return t.Attributes
+}
+func (t *Products_Products) GetVariations() []*Products_Products_Variations {
+	if t == nil {
+		t = &Products_Products{}
+	}
+	return t.Variations
+}
+func (t *Products_Products) GetProductSpecificDiscount() int {
+	if t == nil {
+		t = &Products_Products{}
+	}
+	return t.ProductSpecificDiscount
+}
+func (t *Products_Products) GetDigitalItems() []*Products_Products_DigitalItems {
+	if t == nil {
+		t = &Products_Products{}
+	}
+	return t.DigitalItems
+}
+
+type ProductsByAdmin_ProductsByAdmin_Category struct {
+	ID          string  "json:\"id\" graphql:\"id\""
+	Name        string  "json:\"name\" graphql:\"name\""
+	Slug        string  "json:\"slug\" graphql:\"slug\""
+	Description *string "json:\"description,omitempty\" graphql:\"description\""
+	FullImage   *string "json:\"fullImage,omitempty\" graphql:\"fullImage\""
+}
+
+func (t *ProductsByAdmin_ProductsByAdmin_Category) GetID() string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_Category{}
+	}
+	return t.ID
+}
+func (t *ProductsByAdmin_ProductsByAdmin_Category) GetName() string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_Category{}
+	}
+	return t.Name
+}
+func (t *ProductsByAdmin_ProductsByAdmin_Category) GetSlug() string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_Category{}
+	}
+	return t.Slug
+}
+func (t *ProductsByAdmin_ProductsByAdmin_Category) GetDescription() *string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_Category{}
+	}
+	return t.Description
+}
+func (t *ProductsByAdmin_ProductsByAdmin_Category) GetFullImage() *string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_Category{}
+	}
+	return t.FullImage
+}
+
+type ProductsByAdmin_ProductsByAdmin_Attributes struct {
+	ID         string   "json:\"id\" graphql:\"id\""
+	Name       string   "json:\"name\" graphql:\"name\""
+	Values     []string "json:\"values\" graphql:\"values\""
+	IsRequired bool     "json:\"isRequired\" graphql:\"isRequired\""
+}
+
+func (t *ProductsByAdmin_ProductsByAdmin_Attributes) GetID() string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_Attributes{}
+	}
+	return t.ID
+}
+func (t *ProductsByAdmin_ProductsByAdmin_Attributes) GetName() string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_Attributes{}
+	}
+	return t.Name
+}
+func (t *ProductsByAdmin_ProductsByAdmin_Attributes) GetValues() []string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_Attributes{}
+	}
+	return t.Values
+}
+func (t *ProductsByAdmin_ProductsByAdmin_Attributes) GetIsRequired() bool {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_Attributes{}
+	}
+	return t.IsRequired
+}
+
+type ProductsByAdmin_ProductsByAdmin_Variations struct {
+	ID    string  "json:\"id\" graphql:\"id\""
+	Stock *int    "json:\"stock,omitempty\" graphql:\"stock\""
+	Sku   *string "json:\"sku,omitempty\" graphql:\"sku\""
+	Price int     "json:\"price\" graphql:\"price\""
+	Name  string  "json:\"name\" graphql:\"name\""
+}
+
+func (t *ProductsByAdmin_ProductsByAdmin_Variations) GetID() string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_Variations{}
+	}
+	return t.ID
+}
+func (t *ProductsByAdmin_ProductsByAdmin_Variations) GetStock() *int {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_Variations{}
+	}
+	return t.Stock
+}
+func (t *ProductsByAdmin_ProductsByAdmin_Variations) GetSku() *string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_Variations{}
+	}
+	return t.Sku
+}
+func (t *ProductsByAdmin_ProductsByAdmin_Variations) GetPrice() int {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_Variations{}
+	}
+	return t.Price
+}
+func (t *ProductsByAdmin_ProductsByAdmin_Variations) GetName() string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_Variations{}
+	}
+	return t.Name
+}
+
+type ProductsByAdmin_ProductsByAdmin_DigitalItems_Contents struct {
+	Position       int                       "json:\"position\" graphql:\"position\""
+	Title          string                    "json:\"title\" graphql:\"title\""
+	ID             string                    "json:\"id\" graphql:\"id\""
+	UpdatedAt      string                    "json:\"updatedAt\" graphql:\"updatedAt\""
+	ContentText    *string                   "json:\"contentText,omitempty\" graphql:\"contentText\""
+	ContentType    models.DigitalContentType "json:\"contentType\" graphql:\"contentType\""
+	ContentURL     *string                   "json:\"contentUrl,omitempty\" graphql:\"contentUrl\""
+	IsTrialAllowed bool                      "json:\"isTrialAllowed\" graphql:\"isTrialAllowed\""
+}
+
+func (t *ProductsByAdmin_ProductsByAdmin_DigitalItems_Contents) GetPosition() int {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_DigitalItems_Contents{}
+	}
+	return t.Position
+}
+func (t *ProductsByAdmin_ProductsByAdmin_DigitalItems_Contents) GetTitle() string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_DigitalItems_Contents{}
+	}
+	return t.Title
+}
+func (t *ProductsByAdmin_ProductsByAdmin_DigitalItems_Contents) GetID() string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_DigitalItems_Contents{}
+	}
+	return t.ID
+}
+func (t *ProductsByAdmin_ProductsByAdmin_DigitalItems_Contents) GetUpdatedAt() string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_DigitalItems_Contents{}
+	}
+	return t.UpdatedAt
+}
+func (t *ProductsByAdmin_ProductsByAdmin_DigitalItems_Contents) GetContentText() *string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_DigitalItems_Contents{}
+	}
+	return t.ContentText
+}
+func (t *ProductsByAdmin_ProductsByAdmin_DigitalItems_Contents) GetContentType() *models.DigitalContentType {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_DigitalItems_Contents{}
+	}
+	return &t.ContentType
+}
+func (t *ProductsByAdmin_ProductsByAdmin_DigitalItems_Contents) GetContentURL() *string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_DigitalItems_Contents{}
+	}
+	return t.ContentURL
+}
+func (t *ProductsByAdmin_ProductsByAdmin_DigitalItems_Contents) GetIsTrialAllowed() bool {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_DigitalItems_Contents{}
+	}
+	return t.IsTrialAllowed
+}
+
+type ProductsByAdmin_ProductsByAdmin_DigitalItems struct {
+	ID          string                                                   "json:\"id\" graphql:\"id\""
+	Description *string                                                  "json:\"description,omitempty\" graphql:\"description\""
+	Title       string                                                   "json:\"title\" graphql:\"title\""
+	Position    int                                                      "json:\"position\" graphql:\"position\""
+	Contents    []*ProductsByAdmin_ProductsByAdmin_DigitalItems_Contents "json:\"contents\" graphql:\"contents\""
+}
+
+func (t *ProductsByAdmin_ProductsByAdmin_DigitalItems) GetID() string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_DigitalItems{}
+	}
+	return t.ID
+}
+func (t *ProductsByAdmin_ProductsByAdmin_DigitalItems) GetDescription() *string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_DigitalItems{}
+	}
+	return t.Description
+}
+func (t *ProductsByAdmin_ProductsByAdmin_DigitalItems) GetTitle() string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_DigitalItems{}
+	}
+	return t.Title
+}
+func (t *ProductsByAdmin_ProductsByAdmin_DigitalItems) GetPosition() int {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_DigitalItems{}
+	}
+	return t.Position
+}
+func (t *ProductsByAdmin_ProductsByAdmin_DigitalItems) GetContents() []*ProductsByAdmin_ProductsByAdmin_DigitalItems_Contents {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin_DigitalItems{}
+	}
+	return t.Contents
+}
+
+type ProductsByAdmin_ProductsByAdmin struct {
+	ID                      string                                          "json:\"id\" graphql:\"id\""
+	Name                    string                                          "json:\"name\" graphql:\"name\""
+	Slug                    string                                          "json:\"slug\" graphql:\"slug\""
+	Description             string                                          "json:\"description\" graphql:\"description\""
+	Sku                     *string                                         "json:\"sku,omitempty\" graphql:\"sku\""
+	Stock                   *int                                            "json:\"stock,omitempty\" graphql:\"stock\""
+	MaxItemPerOrder         *int                                            "json:\"maxItemPerOrder,omitempty\" graphql:\"maxItemPerOrder\""
+	Price                   int                                             "json:\"price\" graphql:\"price\""
+	FullImages              []string                                        "json:\"fullImages\" graphql:\"fullImages\""
+	IsDigitalProduct        bool                                            "json:\"isDigitalProduct\" graphql:\"isDigitalProduct\""
+	Views                   int                                             "json:\"views\" graphql:\"views\""
+	CreatedAt               string                                          "json:\"createdAt\" graphql:\"createdAt\""
+	ProductUnit             *models.ProductUnit                             "json:\"productUnit,omitempty\" graphql:\"productUnit\""
+	UpdatedAt               *string                                         "json:\"updatedAt,omitempty\" graphql:\"updatedAt\""
+	Category                *ProductsByAdmin_ProductsByAdmin_Category       "json:\"category,omitempty\" graphql:\"category\""
+	Attributes              []*ProductsByAdmin_ProductsByAdmin_Attributes   "json:\"attributes\" graphql:\"attributes\""
+	Variations              []*ProductsByAdmin_ProductsByAdmin_Variations   "json:\"variations\" graphql:\"variations\""
+	ProductSpecificDiscount int                                             "json:\"productSpecificDiscount\" graphql:\"productSpecificDiscount\""
+	DigitalItems            []*ProductsByAdmin_ProductsByAdmin_DigitalItems "json:\"digitalItems\" graphql:\"digitalItems\""
+}
+
+func (t *ProductsByAdmin_ProductsByAdmin) GetID() string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin{}
+	}
+	return t.ID
+}
+func (t *ProductsByAdmin_ProductsByAdmin) GetName() string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin{}
+	}
+	return t.Name
+}
+func (t *ProductsByAdmin_ProductsByAdmin) GetSlug() string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin{}
+	}
+	return t.Slug
+}
+func (t *ProductsByAdmin_ProductsByAdmin) GetDescription() string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin{}
+	}
+	return t.Description
+}
+func (t *ProductsByAdmin_ProductsByAdmin) GetSku() *string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin{}
+	}
+	return t.Sku
+}
+func (t *ProductsByAdmin_ProductsByAdmin) GetStock() *int {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin{}
+	}
+	return t.Stock
+}
+func (t *ProductsByAdmin_ProductsByAdmin) GetMaxItemPerOrder() *int {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin{}
+	}
+	return t.MaxItemPerOrder
+}
+func (t *ProductsByAdmin_ProductsByAdmin) GetPrice() int {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin{}
+	}
+	return t.Price
+}
+func (t *ProductsByAdmin_ProductsByAdmin) GetFullImages() []string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin{}
+	}
+	return t.FullImages
+}
+func (t *ProductsByAdmin_ProductsByAdmin) GetIsDigitalProduct() bool {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin{}
+	}
+	return t.IsDigitalProduct
+}
+func (t *ProductsByAdmin_ProductsByAdmin) GetViews() int {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin{}
+	}
+	return t.Views
+}
+func (t *ProductsByAdmin_ProductsByAdmin) GetCreatedAt() string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin{}
+	}
+	return t.CreatedAt
+}
+func (t *ProductsByAdmin_ProductsByAdmin) GetProductUnit() *models.ProductUnit {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin{}
+	}
+	return t.ProductUnit
+}
+func (t *ProductsByAdmin_ProductsByAdmin) GetUpdatedAt() *string {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin{}
+	}
+	return t.UpdatedAt
+}
+func (t *ProductsByAdmin_ProductsByAdmin) GetCategory() *ProductsByAdmin_ProductsByAdmin_Category {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin{}
+	}
+	return t.Category
+}
+func (t *ProductsByAdmin_ProductsByAdmin) GetAttributes() []*ProductsByAdmin_ProductsByAdmin_Attributes {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin{}
+	}
+	return t.Attributes
+}
+func (t *ProductsByAdmin_ProductsByAdmin) GetVariations() []*ProductsByAdmin_ProductsByAdmin_Variations {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin{}
+	}
+	return t.Variations
+}
+func (t *ProductsByAdmin_ProductsByAdmin) GetProductSpecificDiscount() int {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin{}
+	}
+	return t.ProductSpecificDiscount
+}
+func (t *ProductsByAdmin_ProductsByAdmin) GetDigitalItems() []*ProductsByAdmin_ProductsByAdmin_DigitalItems {
+	if t == nil {
+		t = &ProductsByAdmin_ProductsByAdmin{}
+	}
+	return t.DigitalItems
 }
 
 type ShippingMethods_ShippingMethods struct {
@@ -4370,15 +9744,26 @@ func (t *CategoryByAdmin) GetCategoryByAdmin() *CategoryByAdmin_CategoryByAdmin 
 	return &t.CategoryByAdmin
 }
 
-type CheckPaymentProcessingFee struct {
-	CheckPaymentProcessingFee int "json:\"checkPaymentProcessingFee\" graphql:\"checkPaymentProcessingFee\""
+type CheckDiscount struct {
+	CheckDiscount int "json:\"checkDiscount\" graphql:\"checkDiscount\""
 }
 
-func (t *CheckPaymentProcessingFee) GetCheckPaymentProcessingFee() int {
+func (t *CheckDiscount) GetCheckDiscount() int {
 	if t == nil {
-		t = &CheckPaymentProcessingFee{}
+		t = &CheckDiscount{}
 	}
-	return t.CheckPaymentProcessingFee
+	return t.CheckDiscount
+}
+
+type CheckDiscountByAdmin struct {
+	CheckDiscountByAdmin int "json:\"checkDiscountByAdmin\" graphql:\"checkDiscountByAdmin\""
+}
+
+func (t *CheckDiscountByAdmin) GetCheckDiscountByAdmin() int {
+	if t == nil {
+		t = &CheckDiscountByAdmin{}
+	}
+	return t.CheckDiscountByAdmin
 }
 
 type CheckDiscountForGuests struct {
@@ -4390,6 +9775,17 @@ func (t *CheckDiscountForGuests) GetCheckDiscountForGuests() int {
 		t = &CheckDiscountForGuests{}
 	}
 	return t.CheckDiscountForGuests
+}
+
+type CheckPaymentProcessingFee struct {
+	CheckPaymentProcessingFee int "json:\"checkPaymentProcessingFee\" graphql:\"checkPaymentProcessingFee\""
+}
+
+func (t *CheckPaymentProcessingFee) GetCheckPaymentProcessingFee() int {
+	if t == nil {
+		t = &CheckPaymentProcessingFee{}
+	}
+	return t.CheckPaymentProcessingFee
 }
 
 type CheckShippingCharge struct {
@@ -4447,15 +9843,103 @@ func (t *CollectionsByAdmin) GetCollectionsByAdmin() []*CollectionsByAdmin_Colle
 	return t.CollectionsByAdmin
 }
 
-type Countries struct {
-	Locations []*Countries_Locations "json:\"locations\" graphql:\"locations\""
+type CouponCode struct {
+	CouponCode CouponCode_CouponCode "json:\"couponCode\" graphql:\"couponCode\""
 }
 
-func (t *Countries) GetLocations() []*Countries_Locations {
+func (t *CouponCode) GetCouponCode() *CouponCode_CouponCode {
 	if t == nil {
-		t = &Countries{}
+		t = &CouponCode{}
+	}
+	return &t.CouponCode
+}
+
+type CouponCodes struct {
+	CouponCodes []*CouponCodes_CouponCodes "json:\"couponCodes\" graphql:\"couponCodes\""
+}
+
+func (t *CouponCodes) GetCouponCodes() []*CouponCodes_CouponCodes {
+	if t == nil {
+		t = &CouponCodes{}
+	}
+	return t.CouponCodes
+}
+
+type CustomerProfile struct {
+	CustomerProfile CustomerProfile_CustomerProfile "json:\"customerProfile\" graphql:\"customerProfile\""
+}
+
+func (t *CustomerProfile) GetCustomerProfile() *CustomerProfile_CustomerProfile {
+	if t == nil {
+		t = &CustomerProfile{}
+	}
+	return &t.CustomerProfile
+}
+
+type CustomersByAdmin struct {
+	CustomersByAdmin []*CustomersByAdmin_CustomersByAdmin "json:\"customersByAdmin\" graphql:\"customersByAdmin\""
+}
+
+func (t *CustomersByAdmin) GetCustomersByAdmin() []*CustomersByAdmin_CustomersByAdmin {
+	if t == nil {
+		t = &CustomersByAdmin{}
+	}
+	return t.CustomersByAdmin
+}
+
+type LocationByID struct {
+	LocationByID LocationById_LocationByID "json:\"locationById\" graphql:\"locationById\""
+}
+
+func (t *LocationByID) GetLocationByID() *LocationById_LocationByID {
+	if t == nil {
+		t = &LocationByID{}
+	}
+	return &t.LocationByID
+}
+
+type Locations struct {
+	Locations []*Locations_Locations "json:\"locations\" graphql:\"locations\""
+}
+
+func (t *Locations) GetLocations() []*Locations_Locations {
+	if t == nil {
+		t = &Locations{}
 	}
 	return t.Locations
+}
+
+type MediaByAdmin struct {
+	MediaByAdmin []*MediaByAdmin_MediaByAdmin "json:\"mediaByAdmin\" graphql:\"mediaByAdmin\""
+}
+
+func (t *MediaByAdmin) GetMediaByAdmin() []*MediaByAdmin_MediaByAdmin {
+	if t == nil {
+		t = &MediaByAdmin{}
+	}
+	return t.MediaByAdmin
+}
+
+type Order struct {
+	Order Order_Order "json:\"order\" graphql:\"order\""
+}
+
+func (t *Order) GetOrder() *Order_Order {
+	if t == nil {
+		t = &Order{}
+	}
+	return &t.Order
+}
+
+type OrderByAdmin struct {
+	OrderByAdmin OrderByAdmin_OrderByAdmin "json:\"orderByAdmin\" graphql:\"orderByAdmin\""
+}
+
+func (t *OrderByAdmin) GetOrderByAdmin() *OrderByAdmin_OrderByAdmin {
+	if t == nil {
+		t = &OrderByAdmin{}
+	}
+	return &t.OrderByAdmin
 }
 
 type OrderByCustomerEmail struct {
@@ -4469,6 +9953,28 @@ func (t *OrderByCustomerEmail) GetOrderByCustomerEmail() *OrderByCustomerEmail_O
 	return &t.OrderByCustomerEmail
 }
 
+type Orders struct {
+	Orders []*Orders_Orders "json:\"orders\" graphql:\"orders\""
+}
+
+func (t *Orders) GetOrders() []*Orders_Orders {
+	if t == nil {
+		t = &Orders{}
+	}
+	return t.Orders
+}
+
+type OrdersByAdmin struct {
+	OrdersByAdmin []*OrdersByAdmin_OrdersByAdmin "json:\"ordersByAdmin\" graphql:\"ordersByAdmin\""
+}
+
+func (t *OrdersByAdmin) GetOrdersByAdmin() []*OrdersByAdmin_OrdersByAdmin {
+	if t == nil {
+		t = &OrdersByAdmin{}
+	}
+	return t.OrdersByAdmin
+}
+
 type PaymentMethods struct {
 	PaymentMethods []*PaymentMethods_PaymentMethods "json:\"paymentMethods\" graphql:\"paymentMethods\""
 }
@@ -4480,15 +9986,81 @@ func (t *PaymentMethods) GetPaymentMethods() []*PaymentMethods_PaymentMethods {
 	return t.PaymentMethods
 }
 
-type Products struct {
-	ProductSearch []*Products_ProductSearch "json:\"productSearch\" graphql:\"productSearch\""
+type Product struct {
+	Product Product_Product "json:\"product\" graphql:\"product\""
 }
 
-func (t *Products) GetProductSearch() []*Products_ProductSearch {
+func (t *Product) GetProduct() *Product_Product {
+	if t == nil {
+		t = &Product{}
+	}
+	return &t.Product
+}
+
+type ProductByAdmin struct {
+	ProductByAdmin ProductByAdmin_ProductByAdmin "json:\"productByAdmin\" graphql:\"productByAdmin\""
+}
+
+func (t *ProductByAdmin) GetProductByAdmin() *ProductByAdmin_ProductByAdmin {
+	if t == nil {
+		t = &ProductByAdmin{}
+	}
+	return &t.ProductByAdmin
+}
+
+type ProductBySlug struct {
+	ProductBySlug ProductBySlug_ProductBySlug "json:\"productBySlug\" graphql:\"productBySlug\""
+}
+
+func (t *ProductBySlug) GetProductBySlug() *ProductBySlug_ProductBySlug {
+	if t == nil {
+		t = &ProductBySlug{}
+	}
+	return &t.ProductBySlug
+}
+
+type ProductSearch struct {
+	ProductSearch []*ProductSearch_ProductSearch "json:\"productSearch\" graphql:\"productSearch\""
+}
+
+func (t *ProductSearch) GetProductSearch() []*ProductSearch_ProductSearch {
+	if t == nil {
+		t = &ProductSearch{}
+	}
+	return t.ProductSearch
+}
+
+type ProductSearchByAdmin struct {
+	ProductSearchByAdmin []*ProductSearchByAdmin_ProductSearchByAdmin "json:\"productSearchByAdmin\" graphql:\"productSearchByAdmin\""
+}
+
+func (t *ProductSearchByAdmin) GetProductSearchByAdmin() []*ProductSearchByAdmin_ProductSearchByAdmin {
+	if t == nil {
+		t = &ProductSearchByAdmin{}
+	}
+	return t.ProductSearchByAdmin
+}
+
+type Products struct {
+	Products []*Products_Products "json:\"products\" graphql:\"products\""
+}
+
+func (t *Products) GetProducts() []*Products_Products {
 	if t == nil {
 		t = &Products{}
 	}
-	return t.ProductSearch
+	return t.Products
+}
+
+type ProductsByAdmin struct {
+	ProductsByAdmin []*ProductsByAdmin_ProductsByAdmin "json:\"productsByAdmin\" graphql:\"productsByAdmin\""
+}
+
+func (t *ProductsByAdmin) GetProductsByAdmin() []*ProductsByAdmin_ProductsByAdmin {
+	if t == nil {
+		t = &ProductsByAdmin{}
+	}
+	return t.ProductsByAdmin
 }
 
 type ShippingMethods struct {
@@ -4995,7 +10567,80 @@ func (c *Client) CategoryByAdmin(ctx context.Context, id string, interceptors ..
 	return &res, nil
 }
 
-const CheckPaymentProcessingFeeDocument = `query CheckPaymentProcessingFee ($cartId: String!, $paymentMethodId: String!, $shippingMethodId: String) {
+const CheckDiscountDocument = `query checkDiscount ($couponCode: String!, $cartId: String!, $shippingMethodId: String) {
+	checkDiscount(couponCode: $couponCode, cartId: $cartId, shippingMethodId: $shippingMethodId)
+}
+`
+
+func (c *Client) CheckDiscount(ctx context.Context, couponCode string, cartID string, shippingMethodID *string, interceptors ...clientv2.RequestInterceptor) (*CheckDiscount, error) {
+	vars := map[string]interface{}{
+		"couponCode":       couponCode,
+		"cartId":           cartID,
+		"shippingMethodId": shippingMethodID,
+	}
+
+	var res CheckDiscount
+	if err := c.Client.Post(ctx, "checkDiscount", CheckDiscountDocument, &res, vars, interceptors...); err != nil {
+		if c.Client.ParseDataWhenErrors {
+			return &res, err
+		}
+
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+const CheckDiscountByAdminDocument = `query checkDiscountByAdmin ($couponCode: String!, $cartId: String!, $shippingMethodId: String, $customerId: String) {
+	checkDiscountByAdmin(couponCode: $couponCode, cartId: $cartId, shippingMethodId: $shippingMethodId, customerId: $customerId)
+}
+`
+
+func (c *Client) CheckDiscountByAdmin(ctx context.Context, couponCode string, cartID string, shippingMethodID *string, customerID *string, interceptors ...clientv2.RequestInterceptor) (*CheckDiscountByAdmin, error) {
+	vars := map[string]interface{}{
+		"couponCode":       couponCode,
+		"cartId":           cartID,
+		"shippingMethodId": shippingMethodID,
+		"customerId":       customerID,
+	}
+
+	var res CheckDiscountByAdmin
+	if err := c.Client.Post(ctx, "checkDiscountByAdmin", CheckDiscountByAdminDocument, &res, vars, interceptors...); err != nil {
+		if c.Client.ParseDataWhenErrors {
+			return &res, err
+		}
+
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+const CheckDiscountForGuestsDocument = `query checkDiscountForGuests ($couponCode: String!, $cartId: String!, $shippingMethodId: String) {
+	checkDiscountForGuests(couponCode: $couponCode, cartId: $cartId, shippingMethodId: $shippingMethodId)
+}
+`
+
+func (c *Client) CheckDiscountForGuests(ctx context.Context, couponCode string, cartID string, shippingMethodID *string, interceptors ...clientv2.RequestInterceptor) (*CheckDiscountForGuests, error) {
+	vars := map[string]interface{}{
+		"couponCode":       couponCode,
+		"cartId":           cartID,
+		"shippingMethodId": shippingMethodID,
+	}
+
+	var res CheckDiscountForGuests
+	if err := c.Client.Post(ctx, "checkDiscountForGuests", CheckDiscountForGuestsDocument, &res, vars, interceptors...); err != nil {
+		if c.Client.ParseDataWhenErrors {
+			return &res, err
+		}
+
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+const CheckPaymentProcessingFeeDocument = `query checkPaymentProcessingFee ($cartId: String!, $paymentMethodId: String!, $shippingMethodId: String) {
 	checkPaymentProcessingFee(cartId: $cartId, paymentMethodId: $paymentMethodId, shippingMethodId: $shippingMethodId)
 }
 `
@@ -5008,31 +10653,7 @@ func (c *Client) CheckPaymentProcessingFee(ctx context.Context, cartID string, p
 	}
 
 	var res CheckPaymentProcessingFee
-	if err := c.Client.Post(ctx, "CheckPaymentProcessingFee", CheckPaymentProcessingFeeDocument, &res, vars, interceptors...); err != nil {
-		if c.Client.ParseDataWhenErrors {
-			return &res, err
-		}
-
-		return nil, err
-	}
-
-	return &res, nil
-}
-
-const CheckDiscountForGuestsDocument = `query CheckDiscountForGuests ($cartId: String!, $couponCode: String!, $shippingMethodId: String) {
-	checkDiscountForGuests(cartId: $cartId, couponCode: $couponCode, shippingMethodId: $shippingMethodId)
-}
-`
-
-func (c *Client) CheckDiscountForGuests(ctx context.Context, cartID string, couponCode string, shippingMethodID *string, interceptors ...clientv2.RequestInterceptor) (*CheckDiscountForGuests, error) {
-	vars := map[string]interface{}{
-		"cartId":           cartID,
-		"couponCode":       couponCode,
-		"shippingMethodId": shippingMethodID,
-	}
-
-	var res CheckDiscountForGuests
-	if err := c.Client.Post(ctx, "CheckDiscountForGuests", CheckDiscountForGuestsDocument, &res, vars, interceptors...); err != nil {
+	if err := c.Client.Post(ctx, "checkPaymentProcessingFee", CheckPaymentProcessingFeeDocument, &res, vars, interceptors...); err != nil {
 		if c.Client.ParseDataWhenErrors {
 			return &res, err
 		}
@@ -5196,20 +10817,45 @@ func (c *Client) CollectionsByAdmin(ctx context.Context, query *string, page int
 	return &res, nil
 }
 
-const CountriesDocument = `query Countries {
-	locations {
+const CouponCodeDocument = `query couponCode ($id: String!) {
+	couponCode(id: $id) {
 		id
-		name
-		shortCode
+		updatedAt
+		createdAt
+		description
+		image
+		amount
+		code
+		customers {
+			email
+			firstName
+			lastName
+			profilePictureFull
+			profilePicture
+			phone
+		}
+		discountType
+		endAt
+		isActive
+		isFlatDiscount
+		isForNewUsersOnly
+		isUserSpecific
+		maxDiscountAmount
+		maxUsage
+		maxUsagePerUser
+		minOrderAmount
+		startAt
 	}
 }
 `
 
-func (c *Client) Countries(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*Countries, error) {
-	vars := map[string]interface{}{}
+func (c *Client) CouponCode(ctx context.Context, id string, interceptors ...clientv2.RequestInterceptor) (*CouponCode, error) {
+	vars := map[string]interface{}{
+		"id": id,
+	}
 
-	var res Countries
-	if err := c.Client.Post(ctx, "Countries", CountriesDocument, &res, vars, interceptors...); err != nil {
+	var res CouponCode
+	if err := c.Client.Post(ctx, "couponCode", CouponCodeDocument, &res, vars, interceptors...); err != nil {
 		if c.Client.ParseDataWhenErrors {
 			return &res, err
 		}
@@ -5220,7 +10866,437 @@ func (c *Client) Countries(ctx context.Context, interceptors ...clientv2.Request
 	return &res, nil
 }
 
-const OrderByCustomerEmailDocument = `query OrderByCustomerEmail ($hash: String!, $email: String!) {
+const CouponCodesDocument = `query couponCodes ($search: Search!, $sort: Sort, $pagination: Pagination!) {
+	couponCodes(search: $search, sort: $sort, pagination: $pagination) {
+		id
+		updatedAt
+		createdAt
+		description
+		image
+		amount
+		code
+		customers {
+			email
+			firstName
+			lastName
+			profilePictureFull
+			profilePicture
+			phone
+		}
+		discountType
+		endAt
+		isActive
+		isFlatDiscount
+		isForNewUsersOnly
+		isUserSpecific
+		maxDiscountAmount
+		maxUsage
+		maxUsagePerUser
+		minOrderAmount
+		startAt
+	}
+}
+`
+
+func (c *Client) CouponCodes(ctx context.Context, search models.Search, sort *models.Sort, pagination models.Pagination, interceptors ...clientv2.RequestInterceptor) (*CouponCodes, error) {
+	vars := map[string]interface{}{
+		"search":     search,
+		"sort":       sort,
+		"pagination": pagination,
+	}
+
+	var res CouponCodes
+	if err := c.Client.Post(ctx, "couponCodes", CouponCodesDocument, &res, vars, interceptors...); err != nil {
+		if c.Client.ParseDataWhenErrors {
+			return &res, err
+		}
+
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+const CustomerProfileDocument = `query customerProfile {
+	customerProfile {
+		phone
+		profilePicture
+		profilePictureFull
+		lastName
+		firstName
+		email
+	}
+}
+`
+
+func (c *Client) CustomerProfile(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*CustomerProfile, error) {
+	vars := map[string]interface{}{}
+
+	var res CustomerProfile
+	if err := c.Client.Post(ctx, "customerProfile", CustomerProfileDocument, &res, vars, interceptors...); err != nil {
+		if c.Client.ParseDataWhenErrors {
+			return &res, err
+		}
+
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+const CustomersByAdminDocument = `query customersByAdmin ($params: Search!, $sort: Sort!, $pagination: Pagination!) {
+	customersByAdmin(params: $params, sort: $sort, pagination: $pagination) {
+		phone
+		profilePicture
+		profilePictureFull
+		lastName
+		firstName
+		email
+	}
+}
+`
+
+func (c *Client) CustomersByAdmin(ctx context.Context, params models.Search, sort models.Sort, pagination models.Pagination, interceptors ...clientv2.RequestInterceptor) (*CustomersByAdmin, error) {
+	vars := map[string]interface{}{
+		"params":     params,
+		"sort":       sort,
+		"pagination": pagination,
+	}
+
+	var res CustomersByAdmin
+	if err := c.Client.Post(ctx, "customersByAdmin", CustomersByAdminDocument, &res, vars, interceptors...); err != nil {
+		if c.Client.ParseDataWhenErrors {
+			return &res, err
+		}
+
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+const LocationByIDDocument = `query locationById ($id: String!) {
+	locationById(id: $id) {
+		id
+		name
+		shortCode
+	}
+}
+`
+
+func (c *Client) LocationByID(ctx context.Context, id string, interceptors ...clientv2.RequestInterceptor) (*LocationByID, error) {
+	vars := map[string]interface{}{
+		"id": id,
+	}
+
+	var res LocationByID
+	if err := c.Client.Post(ctx, "locationById", LocationByIDDocument, &res, vars, interceptors...); err != nil {
+		if c.Client.ParseDataWhenErrors {
+			return &res, err
+		}
+
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+const LocationsDocument = `query locations {
+	locations {
+		id
+		name
+		shortCode
+	}
+}
+`
+
+func (c *Client) Locations(ctx context.Context, interceptors ...clientv2.RequestInterceptor) (*Locations, error) {
+	vars := map[string]interface{}{}
+
+	var res Locations
+	if err := c.Client.Post(ctx, "locations", LocationsDocument, &res, vars, interceptors...); err != nil {
+		if c.Client.ParseDataWhenErrors {
+			return &res, err
+		}
+
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+const MediaByAdminDocument = `query mediaByAdmin ($sort: Sort!, $pagination: Pagination) {
+	mediaByAdmin(sort: $sort, pagination: $pagination) {
+		path
+		permanentUrl
+		url
+	}
+}
+`
+
+func (c *Client) MediaByAdmin(ctx context.Context, sort models.Sort, pagination *models.Pagination, interceptors ...clientv2.RequestInterceptor) (*MediaByAdmin, error) {
+	vars := map[string]interface{}{
+		"sort":       sort,
+		"pagination": pagination,
+	}
+
+	var res MediaByAdmin
+	if err := c.Client.Post(ctx, "mediaByAdmin", MediaByAdminDocument, &res, vars, interceptors...); err != nil {
+		if c.Client.ParseDataWhenErrors {
+			return &res, err
+		}
+
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+const OrderDocument = `query order ($hash: String!) {
+	order(hash: $hash) {
+		id
+		hash
+		shippingCharge
+		paymentProcessingFee
+		subtotal
+		grandTotal
+		discountedAmount
+		status
+		paymentStatus
+		createdAt
+		updatedAt
+		billingAddress {
+			id
+			street
+			streetTwo
+			city
+			state
+			postcode
+			email
+			phone
+			location {
+				id
+				name
+				shortCode
+			}
+		}
+		shippingAddress {
+			id
+			street
+			streetTwo
+			city
+			state
+			postcode
+			email
+			phone
+			location {
+				id
+				name
+				shortCode
+			}
+		}
+		cart {
+			id
+			isShippingRequired
+			cartItems {
+				id
+				product {
+					id
+					name
+					slug
+					fullImages
+				}
+				quantity
+				purchasePrice
+				attributes {
+					name
+					selectedValue
+				}
+				variation {
+					id
+					name
+					price
+					sku
+					stock
+				}
+			}
+		}
+		customer {
+			email
+			phone
+			firstName
+			lastName
+			profilePicture
+		}
+		paymentMethod {
+			id
+			displayName
+			currencyName
+			currencySymbol
+			isDigitalPayment
+		}
+		shippingMethod {
+			id
+			displayName
+			deliveryCharge
+			deliveryTimeInDays
+			WeightUnit
+			isFlat
+			isActive
+		}
+		couponCode {
+			code
+			discountType
+		}
+		payments {
+			isPaid
+			payableAmount
+			gatewayName
+		}
+	}
+}
+`
+
+func (c *Client) Order(ctx context.Context, hash string, interceptors ...clientv2.RequestInterceptor) (*Order, error) {
+	vars := map[string]interface{}{
+		"hash": hash,
+	}
+
+	var res Order
+	if err := c.Client.Post(ctx, "order", OrderDocument, &res, vars, interceptors...); err != nil {
+		if c.Client.ParseDataWhenErrors {
+			return &res, err
+		}
+
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+const OrderByAdminDocument = `query orderByAdmin ($id: String!) {
+	orderByAdmin(id: $id) {
+		id
+		hash
+		shippingCharge
+		paymentProcessingFee
+		subtotal
+		grandTotal
+		discountedAmount
+		status
+		paymentStatus
+		createdAt
+		updatedAt
+		billingAddress {
+			id
+			street
+			streetTwo
+			city
+			state
+			postcode
+			email
+			phone
+			location {
+				id
+				name
+				shortCode
+			}
+		}
+		shippingAddress {
+			id
+			street
+			streetTwo
+			city
+			state
+			postcode
+			email
+			phone
+			location {
+				id
+				name
+				shortCode
+			}
+		}
+		cart {
+			id
+			isShippingRequired
+			cartItems {
+				id
+				product {
+					id
+					name
+					slug
+					fullImages
+				}
+				quantity
+				purchasePrice
+				attributes {
+					name
+					selectedValue
+				}
+				variation {
+					id
+					name
+					price
+					sku
+					stock
+				}
+			}
+		}
+		customer {
+			email
+			phone
+			firstName
+			lastName
+			profilePicture
+		}
+		paymentMethod {
+			id
+			displayName
+			currencyName
+			currencySymbol
+			isDigitalPayment
+		}
+		shippingMethod {
+			id
+			displayName
+			deliveryCharge
+			deliveryTimeInDays
+			WeightUnit
+			isFlat
+			isActive
+		}
+		couponCode {
+			code
+			discountType
+		}
+		payments {
+			isPaid
+			payableAmount
+			gatewayName
+		}
+	}
+}
+`
+
+func (c *Client) OrderByAdmin(ctx context.Context, id string, interceptors ...clientv2.RequestInterceptor) (*OrderByAdmin, error) {
+	vars := map[string]interface{}{
+		"id": id,
+	}
+
+	var res OrderByAdmin
+	if err := c.Client.Post(ctx, "orderByAdmin", OrderByAdminDocument, &res, vars, interceptors...); err != nil {
+		if c.Client.ParseDataWhenErrors {
+			return &res, err
+		}
+
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+const OrderByCustomerEmailDocument = `query orderByCustomerEmail ($hash: String!, $email: String!) {
 	orderByCustomerEmail(hash: $hash, email: $email) {
 		id
 		hash
@@ -5332,7 +11408,255 @@ func (c *Client) OrderByCustomerEmail(ctx context.Context, hash string, email st
 	}
 
 	var res OrderByCustomerEmail
-	if err := c.Client.Post(ctx, "OrderByCustomerEmail", OrderByCustomerEmailDocument, &res, vars, interceptors...); err != nil {
+	if err := c.Client.Post(ctx, "orderByCustomerEmail", OrderByCustomerEmailDocument, &res, vars, interceptors...); err != nil {
+		if c.Client.ParseDataWhenErrors {
+			return &res, err
+		}
+
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+const OrdersDocument = `query orders ($params: POrderSearchParams!, $sort: Sort!, $pagination: Pagination!) {
+	orders(params: $params, sort: $sort, pagination: $pagination) {
+		id
+		hash
+		shippingCharge
+		paymentProcessingFee
+		subtotal
+		grandTotal
+		discountedAmount
+		status
+		paymentStatus
+		createdAt
+		updatedAt
+		billingAddress {
+			id
+			street
+			streetTwo
+			city
+			state
+			postcode
+			email
+			phone
+			location {
+				id
+				name
+				shortCode
+			}
+		}
+		shippingAddress {
+			id
+			street
+			streetTwo
+			city
+			state
+			postcode
+			email
+			phone
+			location {
+				id
+				name
+				shortCode
+			}
+		}
+		cart {
+			id
+			isShippingRequired
+			cartItems {
+				id
+				product {
+					id
+					name
+					slug
+					fullImages
+				}
+				quantity
+				purchasePrice
+				attributes {
+					name
+					selectedValue
+				}
+				variation {
+					id
+					name
+					price
+					sku
+					stock
+				}
+			}
+		}
+		customer {
+			email
+			phone
+			firstName
+			lastName
+			profilePicture
+		}
+		paymentMethod {
+			id
+			displayName
+			currencyName
+			currencySymbol
+			isDigitalPayment
+		}
+		shippingMethod {
+			id
+			displayName
+			deliveryCharge
+			deliveryTimeInDays
+			WeightUnit
+			isFlat
+			isActive
+		}
+		couponCode {
+			code
+			discountType
+		}
+		payments {
+			isPaid
+			payableAmount
+			gatewayName
+		}
+	}
+}
+`
+
+func (c *Client) Orders(ctx context.Context, params models.POrderSearchParams, sort models.Sort, pagination models.Pagination, interceptors ...clientv2.RequestInterceptor) (*Orders, error) {
+	vars := map[string]interface{}{
+		"params":     params,
+		"sort":       sort,
+		"pagination": pagination,
+	}
+
+	var res Orders
+	if err := c.Client.Post(ctx, "orders", OrdersDocument, &res, vars, interceptors...); err != nil {
+		if c.Client.ParseDataWhenErrors {
+			return &res, err
+		}
+
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+const OrdersByAdminDocument = `query ordersByAdmin ($params: OrderSearchParams!, $sort: Sort!, $pagination: Pagination!) {
+	ordersByAdmin(params: $params, sort: $sort, pagination: $pagination) {
+		id
+		hash
+		shippingCharge
+		paymentProcessingFee
+		subtotal
+		grandTotal
+		discountedAmount
+		status
+		paymentStatus
+		createdAt
+		updatedAt
+		billingAddress {
+			id
+			street
+			streetTwo
+			city
+			state
+			postcode
+			email
+			phone
+			location {
+				id
+				name
+				shortCode
+			}
+		}
+		shippingAddress {
+			id
+			street
+			streetTwo
+			city
+			state
+			postcode
+			email
+			phone
+			location {
+				id
+				name
+				shortCode
+			}
+		}
+		cart {
+			id
+			isShippingRequired
+			cartItems {
+				id
+				product {
+					id
+					name
+					slug
+					fullImages
+				}
+				quantity
+				purchasePrice
+				attributes {
+					name
+					selectedValue
+				}
+				variation {
+					id
+					name
+					price
+					sku
+					stock
+				}
+			}
+		}
+		customer {
+			email
+			phone
+			firstName
+			lastName
+			profilePicture
+		}
+		paymentMethod {
+			id
+			displayName
+			currencyName
+			currencySymbol
+			isDigitalPayment
+		}
+		shippingMethod {
+			id
+			displayName
+			deliveryCharge
+			deliveryTimeInDays
+			WeightUnit
+			isFlat
+			isActive
+		}
+		couponCode {
+			code
+			discountType
+		}
+		payments {
+			isPaid
+			payableAmount
+			gatewayName
+		}
+	}
+}
+`
+
+func (c *Client) OrdersByAdmin(ctx context.Context, params models.OrderSearchParams, sort models.Sort, pagination models.Pagination, interceptors ...clientv2.RequestInterceptor) (*OrdersByAdmin, error) {
+	vars := map[string]interface{}{
+		"params":     params,
+		"sort":       sort,
+		"pagination": pagination,
+	}
+
+	var res OrdersByAdmin
+	if err := c.Client.Post(ctx, "ordersByAdmin", OrdersByAdminDocument, &res, vars, interceptors...); err != nil {
 		if c.Client.ParseDataWhenErrors {
 			return &res, err
 		}
@@ -5369,7 +11693,229 @@ func (c *Client) PaymentMethods(ctx context.Context, interceptors ...clientv2.Re
 	return &res, nil
 }
 
-const ProductsDocument = `query Products ($search: Search!, $page: Int!, $limit: Int!) {
+const ProductDocument = `query product ($productId: String!) {
+	product(productId: $productId) {
+		id
+		name
+		slug
+		description
+		sku
+		stock
+		maxItemPerOrder
+		price
+		fullImages
+		isDigitalProduct
+		views
+		createdAt
+		productUnit
+		updatedAt
+		category {
+			id
+			name
+			slug
+			description
+			fullImage
+		}
+		attributes {
+			id
+			name
+			values
+			isRequired
+		}
+		variations {
+			id
+			stock
+			sku
+			price
+			name
+		}
+		productSpecificDiscount
+		digitalItems {
+			id
+			description
+			title
+			position
+			contents {
+				position
+				title
+				id
+				updatedAt
+				contentText
+				contentType
+				contentUrl
+				isTrialAllowed
+			}
+		}
+	}
+}
+`
+
+func (c *Client) Product(ctx context.Context, productID string, interceptors ...clientv2.RequestInterceptor) (*Product, error) {
+	vars := map[string]interface{}{
+		"productId": productID,
+	}
+
+	var res Product
+	if err := c.Client.Post(ctx, "product", ProductDocument, &res, vars, interceptors...); err != nil {
+		if c.Client.ParseDataWhenErrors {
+			return &res, err
+		}
+
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+const ProductByAdminDocument = `query productByAdmin ($productId: String!) {
+	productByAdmin(productId: $productId) {
+		id
+		name
+		slug
+		description
+		sku
+		stock
+		maxItemPerOrder
+		price
+		fullImages
+		isDigitalProduct
+		views
+		createdAt
+		productUnit
+		updatedAt
+		category {
+			id
+			name
+			slug
+			description
+			fullImage
+		}
+		attributes {
+			id
+			name
+			values
+			isRequired
+		}
+		variations {
+			id
+			stock
+			sku
+			price
+			name
+		}
+		productSpecificDiscount
+		digitalItems {
+			id
+			description
+			title
+			position
+			contents {
+				position
+				title
+				id
+				updatedAt
+				contentText
+				contentType
+				contentUrl
+				isTrialAllowed
+			}
+		}
+	}
+}
+`
+
+func (c *Client) ProductByAdmin(ctx context.Context, productID string, interceptors ...clientv2.RequestInterceptor) (*ProductByAdmin, error) {
+	vars := map[string]interface{}{
+		"productId": productID,
+	}
+
+	var res ProductByAdmin
+	if err := c.Client.Post(ctx, "productByAdmin", ProductByAdminDocument, &res, vars, interceptors...); err != nil {
+		if c.Client.ParseDataWhenErrors {
+			return &res, err
+		}
+
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+const ProductBySlugDocument = `query productBySlug ($productSlug: String!) {
+	productBySlug(productSlug: $productSlug) {
+		id
+		name
+		slug
+		description
+		sku
+		stock
+		maxItemPerOrder
+		price
+		fullImages
+		isDigitalProduct
+		views
+		createdAt
+		productUnit
+		updatedAt
+		category {
+			id
+			name
+			slug
+			description
+			fullImage
+		}
+		attributes {
+			id
+			name
+			values
+			isRequired
+		}
+		variations {
+			id
+			stock
+			sku
+			price
+			name
+		}
+		productSpecificDiscount
+		digitalItems {
+			id
+			description
+			title
+			position
+			contents {
+				position
+				title
+				id
+				updatedAt
+				contentText
+				contentType
+				contentUrl
+				isTrialAllowed
+			}
+		}
+	}
+}
+`
+
+func (c *Client) ProductBySlug(ctx context.Context, productSlug string, interceptors ...clientv2.RequestInterceptor) (*ProductBySlug, error) {
+	vars := map[string]interface{}{
+		"productSlug": productSlug,
+	}
+
+	var res ProductBySlug
+	if err := c.Client.Post(ctx, "productBySlug", ProductBySlugDocument, &res, vars, interceptors...); err != nil {
+		if c.Client.ParseDataWhenErrors {
+			return &res, err
+		}
+
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+const ProductSearchDocument = `query productSearch ($search: Search!, $page: Int!, $limit: Int!) {
 	productSearch(search: $search, sort: {by:CreatedAt,direction:Desc}, pagination: {perPage:$limit,page:$page}) {
 		id
 		name
@@ -5398,7 +11944,182 @@ const ProductsDocument = `query Products ($search: Search!, $page: Int!, $limit:
 			values
 			isRequired
 		}
+		variations {
+			id
+			stock
+			sku
+			price
+			name
+		}
 		productSpecificDiscount
+		digitalItems {
+			id
+			description
+			title
+			position
+			contents {
+				position
+				title
+				id
+				updatedAt
+				contentText
+				contentType
+				contentUrl
+				isTrialAllowed
+			}
+		}
+	}
+}
+`
+
+func (c *Client) ProductSearch(ctx context.Context, search models.Search, page int, limit int, interceptors ...clientv2.RequestInterceptor) (*ProductSearch, error) {
+	vars := map[string]interface{}{
+		"search": search,
+		"page":   page,
+		"limit":  limit,
+	}
+
+	var res ProductSearch
+	if err := c.Client.Post(ctx, "productSearch", ProductSearchDocument, &res, vars, interceptors...); err != nil {
+		if c.Client.ParseDataWhenErrors {
+			return &res, err
+		}
+
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+const ProductSearchByAdminDocument = `query productSearchByAdmin ($search: Search!, $page: Int!, $limit: Int!) {
+	productSearchByAdmin(search: $search, sort: {by:CreatedAt,direction:Desc}, pagination: {perPage:$limit,page:$page}) {
+		id
+		name
+		slug
+		description
+		sku
+		stock
+		maxItemPerOrder
+		price
+		fullImages
+		isDigitalProduct
+		views
+		createdAt
+		productUnit
+		updatedAt
+		category {
+			id
+			name
+			slug
+			description
+			fullImage
+		}
+		attributes {
+			id
+			name
+			values
+			isRequired
+		}
+		variations {
+			id
+			stock
+			sku
+			price
+			name
+		}
+		productSpecificDiscount
+		digitalItems {
+			id
+			description
+			title
+			position
+			contents {
+				position
+				title
+				id
+				updatedAt
+				contentText
+				contentType
+				contentUrl
+				isTrialAllowed
+			}
+		}
+	}
+}
+`
+
+func (c *Client) ProductSearchByAdmin(ctx context.Context, search models.Search, page int, limit int, interceptors ...clientv2.RequestInterceptor) (*ProductSearchByAdmin, error) {
+	vars := map[string]interface{}{
+		"search": search,
+		"page":   page,
+		"limit":  limit,
+	}
+
+	var res ProductSearchByAdmin
+	if err := c.Client.Post(ctx, "productSearchByAdmin", ProductSearchByAdminDocument, &res, vars, interceptors...); err != nil {
+		if c.Client.ParseDataWhenErrors {
+			return &res, err
+		}
+
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+const ProductsDocument = `query products ($search: Search!, $page: Int!, $limit: Int!) {
+	products(search: $search, sort: {by:CreatedAt,direction:Desc}, pagination: {perPage:$limit,page:$page}) {
+		id
+		name
+		slug
+		description
+		sku
+		stock
+		maxItemPerOrder
+		price
+		fullImages
+		isDigitalProduct
+		views
+		createdAt
+		productUnit
+		updatedAt
+		category {
+			id
+			name
+			slug
+			description
+			fullImage
+		}
+		attributes {
+			id
+			name
+			values
+			isRequired
+		}
+		variations {
+			id
+			stock
+			sku
+			price
+			name
+		}
+		productSpecificDiscount
+		digitalItems {
+			id
+			description
+			title
+			position
+			contents {
+				position
+				title
+				id
+				updatedAt
+				contentText
+				contentType
+				contentUrl
+				isTrialAllowed
+			}
+		}
 	}
 }
 `
@@ -5411,7 +12132,83 @@ func (c *Client) Products(ctx context.Context, search models.Search, page int, l
 	}
 
 	var res Products
-	if err := c.Client.Post(ctx, "Products", ProductsDocument, &res, vars, interceptors...); err != nil {
+	if err := c.Client.Post(ctx, "products", ProductsDocument, &res, vars, interceptors...); err != nil {
+		if c.Client.ParseDataWhenErrors {
+			return &res, err
+		}
+
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+const ProductsByAdminDocument = `query productsByAdmin ($search: Search!, $page: Int!, $limit: Int!) {
+	productsByAdmin(search: $search, sort: {by:CreatedAt,direction:Desc}, pagination: {perPage:$limit,page:$page}) {
+		id
+		name
+		slug
+		description
+		sku
+		stock
+		maxItemPerOrder
+		price
+		fullImages
+		isDigitalProduct
+		views
+		createdAt
+		productUnit
+		updatedAt
+		category {
+			id
+			name
+			slug
+			description
+			fullImage
+		}
+		attributes {
+			id
+			name
+			values
+			isRequired
+		}
+		variations {
+			id
+			stock
+			sku
+			price
+			name
+		}
+		productSpecificDiscount
+		digitalItems {
+			id
+			description
+			title
+			position
+			contents {
+				position
+				title
+				id
+				updatedAt
+				contentText
+				contentType
+				contentUrl
+				isTrialAllowed
+			}
+		}
+	}
+}
+`
+
+func (c *Client) ProductsByAdmin(ctx context.Context, search models.Search, page int, limit int, interceptors ...clientv2.RequestInterceptor) (*ProductsByAdmin, error) {
+	vars := map[string]interface{}{
+		"search": search,
+		"page":   page,
+		"limit":  limit,
+	}
+
+	var res ProductsByAdmin
+	if err := c.Client.Post(ctx, "productsByAdmin", ProductsByAdminDocument, &res, vars, interceptors...); err != nil {
 		if c.Client.ParseDataWhenErrors {
 			return &res, err
 		}

@@ -1,4 +1,4 @@
-query Countries {
+query locations {
     locations {
         id
         name

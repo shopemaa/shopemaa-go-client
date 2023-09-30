@@ -1,5 +1,5 @@
-query products($search: Search!, $page: Int!, $limit: Int!){
-    products(search: $search, sort: {
+query productsByAdmin($search: Search!, $page: Int!, $limit: Int!){
+    productsByAdmin(search: $search, sort: {
         by: CreatedAt
         direction: Desc
     }, pagination: {

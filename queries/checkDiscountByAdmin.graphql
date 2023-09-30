@@ -1,0 +1,4 @@
+query checkDiscountByAdmin($couponCode: String!, $cartId: String!, $shippingMethodId: String, $customerId: String) {
+    checkDiscountByAdmin(couponCode: $couponCode, cartId: $cartId, shippingMethodId: $shippingMethodId, customerId: $customerId)
+}
+

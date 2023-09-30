@@ -1,0 +1,7 @@
+query mediaByAdmin ($sort: Sort!, $pagination: Pagination) {
+    mediaByAdmin(sort: $sort, pagination: $pagination) {
+        path
+        permanentUrl
+        url
+    }
+}

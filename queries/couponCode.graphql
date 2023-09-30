@@ -1,0 +1,30 @@
+query couponCode($id: String!) {
+    couponCode(id: $id) {
+        id
+        updatedAt
+        createdAt
+        description
+        image
+        amount
+        code
+        customers {
+            email
+            firstName
+            lastName
+            profilePictureFull
+            profilePicture
+            phone
+        }
+        discountType
+        endAt
+        isActive
+        isFlatDiscount
+        isForNewUsersOnly
+        isUserSpecific
+        maxDiscountAmount
+        maxUsage
+        maxUsagePerUser
+        minOrderAmount
+        startAt
+    }
+}

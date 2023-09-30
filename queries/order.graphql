@@ -1,5 +1,5 @@
-query OrderByCustomerEmail($hash: String!, $email: String!) {
-    orderByCustomerEmail(hash: $hash, email: $email) {
+query order($hash: String!) {
+    order(hash: $hash) {
         id
         hash
         shippingCharge

@@ -1,0 +1,10 @@
+query customersByAdmin($params: Search!, $sort: Sort!, $pagination: Pagination!) {
+    customersByAdmin(params: $params, sort: $sort, pagination: $pagination) {
+        phone
+        profilePicture
+        profilePictureFull
+        lastName
+        firstName
+        email
+    }
+}

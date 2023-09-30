@@ -1,0 +1,7 @@
+query locationById ($id: String!) {
+    locationById (id: $id) {
+        id
+        name
+        shortCode
+    }
+}

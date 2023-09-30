@@ -1,0 +1,10 @@
+query customerProfile {
+    customerProfile {
+        phone
+        profilePicture
+        profilePictureFull
+        lastName
+        firstName
+        email
+    }
+}
