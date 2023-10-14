@@ -17,6 +17,7 @@ type ShopemaaGraphQLClient interface {
 	BlogPostBySlug(ctx context.Context, slug string, interceptors ...clientv2.RequestInterceptor) (*BlogPostBySlug, error)
 	BlogPosts(ctx context.Context, search models.Search, pagination models.Pagination, sort models.Sort, interceptors ...clientv2.RequestInterceptor) (*BlogPosts, error)
 	BlogPostsByAdmin(ctx context.Context, search models.Search, pagination models.Pagination, sort models.Sort, interceptors ...clientv2.RequestInterceptor) (*BlogPostsByAdmin, error)
+	Cart(ctx context.Context, cartID string, interceptors ...clientv2.RequestInterceptor) (*Cart, error)
 	Categories(ctx context.Context, query *string, page int, limit int, interceptors ...clientv2.RequestInterceptor) (*Categories, error)
 	CategoriesByAdmin(ctx context.Context, query *string, page int, limit int, interceptors ...clientv2.RequestInterceptor) (*CategoriesByAdmin, error)
 	Category(ctx context.Context, id string, interceptors ...clientv2.RequestInterceptor) (*Category, error)
@@ -1352,6 +1353,194 @@ func (t *BlogPostsByAdmin_BlogPostsByAdmin) GetTags() []string {
 		t = &BlogPostsByAdmin_BlogPostsByAdmin{}
 	}
 	return t.Tags
+}
+
+type Cart_Cart_CartItems_Product struct {
+	ID                      string              "json:\"id\" graphql:\"id\""
+	Slug                    string              "json:\"slug\" graphql:\"slug\""
+	Description             string              "json:\"description\" graphql:\"description\""
+	Name                    string              "json:\"name\" graphql:\"name\""
+	Price                   int                 "json:\"price\" graphql:\"price\""
+	ProductSpecificDiscount int                 "json:\"productSpecificDiscount\" graphql:\"productSpecificDiscount\""
+	ProductUnit             *models.ProductUnit "json:\"productUnit,omitempty\" graphql:\"productUnit\""
+	IsDigitalProduct        bool                "json:\"isDigitalProduct\" graphql:\"isDigitalProduct\""
+}
+
+func (t *Cart_Cart_CartItems_Product) GetID() string {
+	if t == nil {
+		t = &Cart_Cart_CartItems_Product{}
+	}
+	return t.ID
+}
+func (t *Cart_Cart_CartItems_Product) GetSlug() string {
+	if t == nil {
+		t = &Cart_Cart_CartItems_Product{}
+	}
+	return t.Slug
+}
+func (t *Cart_Cart_CartItems_Product) GetDescription() string {
+	if t == nil {
+		t = &Cart_Cart_CartItems_Product{}
+	}
+	return t.Description
+}
+func (t *Cart_Cart_CartItems_Product) GetName() string {
+	if t == nil {
+		t = &Cart_Cart_CartItems_Product{}
+	}
+	return t.Name
+}
+func (t *Cart_Cart_CartItems_Product) GetPrice() int {
+	if t == nil {
+		t = &Cart_Cart_CartItems_Product{}
+	}
+	return t.Price
+}
+func (t *Cart_Cart_CartItems_Product) GetProductSpecificDiscount() int {
+	if t == nil {
+		t = &Cart_Cart_CartItems_Product{}
+	}
+	return t.ProductSpecificDiscount
+}
+func (t *Cart_Cart_CartItems_Product) GetProductUnit() *models.ProductUnit {
+	if t == nil {
+		t = &Cart_Cart_CartItems_Product{}
+	}
+	return t.ProductUnit
+}
+func (t *Cart_Cart_CartItems_Product) GetIsDigitalProduct() bool {
+	if t == nil {
+		t = &Cart_Cart_CartItems_Product{}
+	}
+	return t.IsDigitalProduct
+}
+
+type Cart_Cart_CartItems_Attributes struct {
+	Name          string "json:\"name\" graphql:\"name\""
+	SelectedValue string "json:\"selectedValue\" graphql:\"selectedValue\""
+}
+
+func (t *Cart_Cart_CartItems_Attributes) GetName() string {
+	if t == nil {
+		t = &Cart_Cart_CartItems_Attributes{}
+	}
+	return t.Name
+}
+func (t *Cart_Cart_CartItems_Attributes) GetSelectedValue() string {
+	if t == nil {
+		t = &Cart_Cart_CartItems_Attributes{}
+	}
+	return t.SelectedValue
+}
+
+type Cart_Cart_CartItems_Variation struct {
+	Name  string  "json:\"name\" graphql:\"name\""
+	Price int     "json:\"price\" graphql:\"price\""
+	ID    string  "json:\"id\" graphql:\"id\""
+	Sku   *string "json:\"sku,omitempty\" graphql:\"sku\""
+	Stock *int    "json:\"stock,omitempty\" graphql:\"stock\""
+}
+
+func (t *Cart_Cart_CartItems_Variation) GetName() string {
+	if t == nil {
+		t = &Cart_Cart_CartItems_Variation{}
+	}
+	return t.Name
+}
+func (t *Cart_Cart_CartItems_Variation) GetPrice() int {
+	if t == nil {
+		t = &Cart_Cart_CartItems_Variation{}
+	}
+	return t.Price
+}
+func (t *Cart_Cart_CartItems_Variation) GetID() string {
+	if t == nil {
+		t = &Cart_Cart_CartItems_Variation{}
+	}
+	return t.ID
+}
+func (t *Cart_Cart_CartItems_Variation) GetSku() *string {
+	if t == nil {
+		t = &Cart_Cart_CartItems_Variation{}
+	}
+	return t.Sku
+}
+func (t *Cart_Cart_CartItems_Variation) GetStock() *int {
+	if t == nil {
+		t = &Cart_Cart_CartItems_Variation{}
+	}
+	return t.Stock
+}
+
+type Cart_Cart_CartItems struct {
+	ID            int                               "json:\"id\" graphql:\"id\""
+	PurchasePrice int                               "json:\"purchasePrice\" graphql:\"purchasePrice\""
+	Quantity      int                               "json:\"quantity\" graphql:\"quantity\""
+	Product       Cart_Cart_CartItems_Product       "json:\"product\" graphql:\"product\""
+	Attributes    []*Cart_Cart_CartItems_Attributes "json:\"attributes\" graphql:\"attributes\""
+	Variation     *Cart_Cart_CartItems_Variation    "json:\"variation,omitempty\" graphql:\"variation\""
+}
+
+func (t *Cart_Cart_CartItems) GetID() int {
+	if t == nil {
+		t = &Cart_Cart_CartItems{}
+	}
+	return t.ID
+}
+func (t *Cart_Cart_CartItems) GetPurchasePrice() int {
+	if t == nil {
+		t = &Cart_Cart_CartItems{}
+	}
+	return t.PurchasePrice
+}
+func (t *Cart_Cart_CartItems) GetQuantity() int {
+	if t == nil {
+		t = &Cart_Cart_CartItems{}
+	}
+	return t.Quantity
+}
+func (t *Cart_Cart_CartItems) GetProduct() *Cart_Cart_CartItems_Product {
+	if t == nil {
+		t = &Cart_Cart_CartItems{}
+	}
+	return &t.Product
+}
+func (t *Cart_Cart_CartItems) GetAttributes() []*Cart_Cart_CartItems_Attributes {
+	if t == nil {
+		t = &Cart_Cart_CartItems{}
+	}
+	return t.Attributes
+}
+func (t *Cart_Cart_CartItems) GetVariation() *Cart_Cart_CartItems_Variation {
+	if t == nil {
+		t = &Cart_Cart_CartItems{}
+	}
+	return t.Variation
+}
+
+type Cart_Cart struct {
+	ID                 string                 "json:\"id\" graphql:\"id\""
+	IsShippingRequired bool                   "json:\"isShippingRequired\" graphql:\"isShippingRequired\""
+	CartItems          []*Cart_Cart_CartItems "json:\"cartItems\" graphql:\"cartItems\""
+}
+
+func (t *Cart_Cart) GetID() string {
+	if t == nil {
+		t = &Cart_Cart{}
+	}
+	return t.ID
+}
+func (t *Cart_Cart) GetIsShippingRequired() bool {
+	if t == nil {
+		t = &Cart_Cart{}
+	}
+	return t.IsShippingRequired
+}
+func (t *Cart_Cart) GetCartItems() []*Cart_Cart_CartItems {
+	if t == nil {
+		t = &Cart_Cart{}
+	}
+	return t.CartItems
 }
 
 type Categories_Categories struct {
@@ -9700,6 +9889,17 @@ func (t *BlogPostsByAdmin) GetBlogPostsByAdmin() []*BlogPostsByAdmin_BlogPostsBy
 	return t.BlogPostsByAdmin
 }
 
+type Cart struct {
+	Cart Cart_Cart "json:\"cart\" graphql:\"cart\""
+}
+
+func (t *Cart) GetCart() *Cart_Cart {
+	if t == nil {
+		t = &Cart{}
+	}
+	return &t.Cart
+}
+
 type Categories struct {
 	Categories []*Categories_Categories "json:\"categories\" graphql:\"categories\""
 }
@@ -10427,6 +10627,57 @@ func (c *Client) BlogPostsByAdmin(ctx context.Context, search models.Search, pag
 
 	var res BlogPostsByAdmin
 	if err := c.Client.Post(ctx, "blogPostsByAdmin", BlogPostsByAdminDocument, &res, vars, interceptors...); err != nil {
+		if c.Client.ParseDataWhenErrors {
+			return &res, err
+		}
+
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+const CartDocument = `query cart ($cartId: String!) {
+	cart(cartId: $cartId) {
+		id
+		isShippingRequired
+		cartItems {
+			id
+			purchasePrice
+			quantity
+			product {
+				id
+				slug
+				description
+				name
+				price
+				productSpecificDiscount
+				productUnit
+				isDigitalProduct
+			}
+			attributes {
+				name
+				selectedValue
+			}
+			variation {
+				name
+				price
+				id
+				sku
+				stock
+			}
+		}
+	}
+}
+`
+
+func (c *Client) Cart(ctx context.Context, cartID string, interceptors ...clientv2.RequestInterceptor) (*Cart, error) {
+	vars := map[string]interface{}{
+		"cartId": cartID,
+	}
+
+	var res Cart
+	if err := c.Client.Post(ctx, "cart", CartDocument, &res, vars, interceptors...); err != nil {
 		if c.Client.ParseDataWhenErrors {
 			return &res, err
 		}
